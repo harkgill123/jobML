@@ -37,6 +37,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'coreApp',
+    'jobML'
 ]
 
 MIDDLEWARE = [
@@ -76,11 +78,11 @@ WSGI_APPLICATION = 'jobML.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'Mysql',
-        'USER': 'harkgill',
-        'PASSWORD': 'harkgill_TMU',
-        'HOST': 'localhost',  
-        'PORT': '',           
+        'NAME': 'CAPSTONE',
+        'USER': 'admin',
+        'PASSWORD': 'capstone123',
+        'HOST': 'capstone-rds.cb9amhr7q5sa.us-east-2.rds.amazonaws.com',  
+        'PORT': '3306',           
     }
 }
 
