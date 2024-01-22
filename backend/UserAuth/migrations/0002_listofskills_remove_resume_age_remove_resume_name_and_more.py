@@ -7,7 +7,7 @@ import django.db.models.deletion
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('coreApp', '0001_initial'),
+        ('UserAuth', '0001_initial'),
     ]
 
     operations = [
@@ -44,7 +44,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='resume',
             name='user',
-            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, to='coreApp.user'),
+            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, to='UserAuth.user'),
         ),
         migrations.AddField(
             model_name='user',
@@ -80,7 +80,7 @@ class Migration(migrations.Migration):
                 ('start_date', models.DateField()),
                 ('end_date', models.DateField()),
                 ('job_description', models.TextField()),
-                ('resumeID', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='coreApp.resume')),
+                ('resumeID', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='UserAuth.resume')),
             ],
         ),
         migrations.CreateModel(
@@ -88,7 +88,7 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('skillID', models.CharField(max_length=255, unique=True)),
-                ('resumeID', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='coreApp.resume')),
+                ('resumeID', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='UserAuth.resume')),
             ],
         ),
         migrations.CreateModel(
@@ -97,7 +97,7 @@ class Migration(migrations.Migration):
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('title', models.CharField(max_length=200)),
                 ('description', models.TextField()),
-                ('resume', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='coreApp.resume')),
+                ('resume', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='UserAuth.resume')),
             ],
         ),
         migrations.CreateModel(
@@ -110,7 +110,7 @@ class Migration(migrations.Migration):
                 ('start_date', models.DateField()),
                 ('end_date', models.DateField()),
                 ('gpa', models.FloatField(blank=True, max_length=100, null=True)),
-                ('resumeID', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='coreApp.resume')),
+                ('resumeID', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='UserAuth.resume')),
             ],
         ),
     ]
