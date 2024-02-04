@@ -1,24 +1,33 @@
 from django.contrib.auth.models import AbstractUser, Group, Permission
 from django.db import models
 from django.utils import timezone
+from django.conf import settings
+
 
 
 class User(AbstractUser):
+    class UserType(models.TextChoices):
+        RECRUITER = 'Recruiter', ('Recruiter')
+        APPLICANT = 'Applicant', ('Applicant')
+
     username = models.CharField(max_length=255, unique=True)
     name = models.CharField(max_length=255)
     email = models.CharField(max_length=255, unique=True)
     password = models.CharField(max_length=255)
     phone_number = models.CharField(max_length=15)
+    user_type = models.CharField(
+        max_length=50,
+        choices=UserType.choices,
+        default=UserType.APPLICANT,
+    )
 
-    USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['username']
-
+    #Was getting error with permissions, this fixes it do not change
     groups = models.ManyToManyField(
         Group,
         verbose_name='groups',
         blank=True,
         help_text='The groups this user belongs to. A user will get all permissions granted to each of their groups.',
-        related_name="userauth_user_set",
+        related_name="userauth_user_set",  
         related_query_name="userauth_user",
     )
     user_permissions = models.ManyToManyField(
@@ -26,9 +35,12 @@ class User(AbstractUser):
         verbose_name='user permissions',
         blank=True,
         help_text='Specific permissions for this user.',
-        related_name="userauth_user_set",
+        related_name="userauth_permission_set", 
         related_query_name="userauth_user",
     )
+
+    USERNAME_FIELD = 'email'
+    REQUIRED_FIELDS = ['username']
     
 class Resume(models.Model):
     resumeID = models.CharField(max_length=255, unique=True, default='DefaultResumeID')
@@ -74,6 +86,13 @@ class JobPosting(models.Model):
     job_description = models.TextField(default='Default Job Description')
     posted_date = models.DateField(default=timezone.now)
     application_deadline = models.DateField(default=timezone.now)
+    creator = models.ForeignKey(
+    settings.AUTH_USER_MODEL, 
+    on_delete=models.CASCADE, 
+    related_name='job_postings',
+    null=True, 
+    blank=True
+)
 
 class JobRequirements(models.Model):
     requirementID = models.CharField(max_length=255, unique=True, default='DefaultReqID')

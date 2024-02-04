@@ -1,16 +1,14 @@
+from .models import User
+from .forms import SignupForm
+import jwt, datetime, os
+
 from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.response import Response
-
-from .models import User
-from .serializers import UserSerializer
 from .forms import SignupForm
-
-import jwt, datetime, os
-
+from .serializers import UserSerializer
 
 class SignUpView(APIView):
-
     def post(self, request):
         form = SignupForm(request.data)
         if form.is_valid():
@@ -33,8 +31,8 @@ class SignUpView(APIView):
                 'message': 'Invalid form data. Please correct the following errors:',
                 'errors': form.errors
             }, status=status.HTTP_400_BAD_REQUEST)
+
  
-    
 class LoginView(APIView):
     def post(self, request):
         email = request.data['email']
@@ -55,13 +53,14 @@ class LoginView(APIView):
         
         payload = {
             'id': user.id,
+            'user_type': user.user_type,
             'exp': datetime.datetime.utcnow() + datetime.timedelta(minutes=60),
             'iat': datetime.datetime.utcnow()
         }
 
         token = jwt.encode(payload, os.environ.get('JWT_SECRET_KEY'), algorithm='HS256')
 
-        response.data = { 'success': True, 'token': token }
+        response.data = { 'success': True, 'token': token, 'user_type': user.user_type }
 
         return response
     

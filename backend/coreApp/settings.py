@@ -39,7 +39,9 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'CoreApp',
-    'UserAuth'
+    'UserAuth',
+    'Recruiter',
+    'Applicant'
 ]
 
 MIDDLEWARE = [
