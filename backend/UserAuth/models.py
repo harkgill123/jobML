@@ -55,7 +55,6 @@ class WorkExperience(models.Model):
 class ResumeToSkills(models.Model):
     resume = models.ForeignKey(Resume, on_delete=models.CASCADE, related_name='resume_skills')
     skillID = models.CharField(max_length=255, unique=True, default='DefaultSkillID')
-    # proficiency remains commented out
 
 class ListOfSkills(models.Model):
     skillID = models.CharField(max_length=255, unique=True, default='DefaultSkillID')
@@ -65,3 +64,32 @@ class Project(models.Model):
     resume = models.ForeignKey(Resume, on_delete=models.CASCADE, related_name='projects')
     title = models.CharField(max_length=200, default='Default Project Title')
     description = models.TextField(default='Default Project Description')
+
+
+class JobPosting(models.Model):
+    jobID = models.CharField(max_length=255, unique=True, default='DefaultJobID')
+    title = models.CharField(max_length=200, default='Default Job Title')
+    company_name = models.CharField(max_length=200, default='Default Company')
+    location = models.CharField(max_length=200, default='Default Location')
+    job_description = models.TextField(default='Default Job Description')
+    posted_date = models.DateField(default=timezone.now)
+    application_deadline = models.DateField(default=timezone.now)
+
+class JobRequirements(models.Model):
+    requirementID = models.CharField(max_length=255, unique=True, default='DefaultReqID')
+    job_posting = models.ForeignKey(JobPosting, on_delete=models.CASCADE, related_name='requirements')
+    description = models.TextField(default='Default Requirement Description')
+
+class JobToSkills(models.Model):
+    job_posting = models.ForeignKey(JobPosting, on_delete=models.CASCADE, related_name='job_skills')
+    skillID = models.CharField(max_length=255, unique=True, default='DefaultSkillID')
+
+class Benefits(models.Model):
+    benefitID = models.CharField(max_length=255, unique=True, default='DefaultBenefitID')
+    job_posting = models.ForeignKey(JobPosting, on_delete=models.CASCADE, related_name='benefits')
+    description = models.TextField(default='Default Benefit Description')
+
+class EmploymentType(models.Model):
+    typeID = models.CharField(max_length=255, unique=True, default='DefaultTypeID')
+    job_posting = models.ForeignKey(JobPosting, on_delete=models.CASCADE, related_name='employment_type')
+    type_name = models.CharField(max_length=200, default='Default Employment Type')
