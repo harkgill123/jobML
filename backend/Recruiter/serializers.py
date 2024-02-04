@@ -9,7 +9,10 @@ class JobPostingCreateSerializer(serializers.ModelSerializer):
         fields = ('title', 'company_name', 'location', 'job_description', 'posted_date', 'application_deadline', 'requirements', 'job_skills', 'benefits', 'employment_type')
 
     def create(self, validated_data):
-        validated_data['creator'] = self.context['request'].user
+        try:
+            validated_data['creator'] = self.context['request'].user
+        except:
+            validated_data['creator'] = "NA"
         return super().create(validated_data)
 
 class JobRequirementsSerializer(serializers.ModelSerializer):
@@ -45,3 +48,6 @@ class JobPostingSerializer(serializers.ModelSerializer):
             'posted_date', 'application_deadline', 'requirements', 
             'job_skills', 'benefits', 'employment_type'
         )
+
+
+

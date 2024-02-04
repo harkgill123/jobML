@@ -24,3 +24,17 @@ class JobPostingCreateView(APIView):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+
+class UploadJob:
+
+    def upload(self,data):
+     
+        serialzer=JobPostingCreateSerializer(data=data)
+
+        if serialzer.is_valid():
+            serialzer.save()
+            return True
+        else:
+            return False
+        
