@@ -1,5 +1,4 @@
 from django.conf import settings
-settings.configure( 'CoreApp.settings',DEBUG=True)
 from django.contrib.auth.models import AbstractUser, Group, Permission
 from django.db import models
 from django.utils import timezone

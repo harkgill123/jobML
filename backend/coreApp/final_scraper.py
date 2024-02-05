@@ -14,7 +14,15 @@ import pandas as pd
 import uuid
 import json
 from django.conf import settings
-settings.configure( 'CoreApp.settings',DEBUG=True)
+import django
+import os
+
+import sys
+from pathlib import Path
+sys.path.append(Path(__file__).resolve().parent.parent.__str__())
+
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'CoreApp.settings')
+django.setup()
 
 #from ...backend.Recruiter.viewsimport UploadJob
 
@@ -23,7 +31,8 @@ import os
 
 from django.core.wsgi import get_wsgi_application
 
-
+def run():
+    print('hi')
 #([a-z]|.)*@[a-z]*.(com|ca)
 class scrapejob:
     #TODO: 

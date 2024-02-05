@@ -41,7 +41,8 @@ INSTALLED_APPS = [
     'CoreApp',
     'UserAuth',
     'Recruiter',
-    'Applicant'
+    'Applicant',
+    'django_extensions'
 ]
 
 MIDDLEWARE = [
