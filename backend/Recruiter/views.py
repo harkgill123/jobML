@@ -29,7 +29,7 @@ class JobPostingCreateView(APIView):
 class UploadJob:
 
     def upload(self,data):
-     
+        print("HERE")
         serialzer=JobPostingCreateSerializer(data=data)
 
         if serialzer.is_valid():
