@@ -1,0 +1,180 @@
+.stackIcon {
+  height: 24px;
+  width: 24px;
+  position: relative;
+}
+.logOut {
+  position: relative;
+  line-height: 20px;
+  font-weight: 500;
+}
+.dashboardNavItem {
+  align-self: stretch;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  padding: var(--padding-3xs) var(--padding-xl);
+  gap: var(--gap-base);
+}
+.logOut1 {
+  position: absolute;
+  top: calc(50% - 10px);
+  left: 60px;
+  line-height: 20px;
+  font-weight: 500;
+}
+.usercircleIcon {
+  position: absolute;
+  top: 10px;
+  left: 20px;
+  width: 24px;
+  height: 24px;
+}
+.dashboardNavItem1 {
+  align-self: stretch;
+  height: 44px;
+  position: relative;
+  display: none;
+}
+.logOut2,
+.pluscircleIcon {
+  height: 24px;
+  width: 24px;
+  position: relative;
+}
+.logOut2 {
+  width: 71px;
+  border: 0;
+  outline: 0;
+  font-weight: 500;
+  font-family: var(--button-button);
+  font-size: var(--body-small-500-size);
+  background-color: transparent;
+  height: 20px;
+  line-height: 20px;
+  color: var(--primary-500);
+  text-align: left;
+  display: inline-block;
+}
+.dashboardNavItem2 {
+  align-self: stretch;
+  background-color: var(--primary-50);
+  box-shadow: 3px 0 0#0a65cc inset;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  padding: var(--padding-3xs) var(--padding-xl);
+  gap: var(--gap-base);
+}
+.briefcaseIcon {
+  height: 24px;
+  width: 24px;
+  position: relative;
+}
+.logOut3 {
+  position: relative;
+  line-height: 20px;
+  font-weight: 500;
+}
+.dashboardNavItem3 {
+  align-self: stretch;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  padding: var(--padding-3xs) var(--padding-xl);
+  gap: var(--gap-base);
+}
+.bookmarksimpleIcon {
+  height: 24px;
+  width: 24px;
+  position: relative;
+}
+.logOut4 {
+  position: relative;
+  line-height: 20px;
+  font-weight: 500;
+}
+.dashboardNavItem4 {
+  align-self: stretch;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  padding: var(--padding-3xs) var(--padding-xl);
+  gap: var(--gap-base);
+}
+.logOut5 {
+  position: absolute;
+  top: calc(50% - 10px);
+  left: 60px;
+  line-height: 20px;
+  font-weight: 500;
+}
+.notebookIcon {
+  position: absolute;
+  top: 10px;
+  left: 20px;
+  width: 24px;
+  height: 24px;
+}
+.dashboardNavItem5 {
+  align-self: stretch;
+  height: 44px;
+  position: relative;
+  display: none;
+}
+.logOut6 {
+  position: absolute;
+  top: calc(50% - 10px);
+  left: 60px;
+  line-height: 20px;
+  font-weight: 500;
+}
+.userListIcon {
+  position: absolute;
+  top: 10px;
+  left: 20px;
+  width: 24px;
+  height: 24px;
+  overflow: hidden;
+}
+.dashboardNavItem6 {
+  align-self: stretch;
+  height: 44px;
+  position: relative;
+  display: none;
+}
+.logOut7 {
+  position: absolute;
+  top: calc(50% - 10px);
+  left: 60px;
+  line-height: 20px;
+  font-weight: 500;
+}
+.gearIcon {
+  position: absolute;
+  top: 10px;
+  left: 20px;
+  width: 24px;
+  height: 24px;
+}
+.dashboardNavItem7 {
+  align-self: stretch;
+  height: 44px;
+  position: relative;
+  display: none;
+}
+.frameContainer {
+  align-self: stretch;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  text-align: left;
+  font-size: var(--body-small-500-size);
+  color: var(--gray-500);
+  font-family: var(--button-button);
+}

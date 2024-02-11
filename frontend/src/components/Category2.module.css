@@ -1,0 +1,59 @@
+.megaphoneSimpleDuotone1Icon {
+  height: 32px;
+  width: 32px;
+  position: relative;
+  overflow: hidden;
+  flex-shrink: 0;
+  object-fit: contain;
+}
+.icon {
+  cursor: pointer;
+  border: 0;
+  padding: var(--padding-lg);
+  background-color: var(--primary-50);
+  border-radius: var(--br-5xs);
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+.digitalMarketing,
+.openPosition {
+  align-self: stretch;
+  position: relative;
+}
+.digitalMarketing {
+  line-height: 28px;
+  font-weight: 500;
+}
+.openPosition {
+  font-size: var(--body-small-500-size);
+  line-height: 20px;
+  color: var(--gray-600);
+}
+.category,
+.info {
+  display: flex;
+  justify-content: flex-start;
+}
+.info {
+  flex: 1;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--gap-5xs);
+}
+.category {
+  width: 312px;
+  border-radius: var(--br-xs);
+  background-color: var(--gray-scale-white);
+  flex-direction: row;
+  align-items: center;
+  padding: var(--padding-5xl);
+  box-sizing: border-box;
+  gap: var(--gap-base);
+  min-width: 125px;
+  text-align: left;
+  font-size: var(--body-large-500-size);
+  color: var(--gray-900);
+  font-family: var(--button-button);
+}

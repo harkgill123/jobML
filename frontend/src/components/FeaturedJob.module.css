@@ -1,0 +1,1475 @@
+.jobsYouMight {
+  margin: 0;
+  position: relative;
+  font-size: inherit;
+  line-height: 48px;
+  font-weight: 500;
+  font-family: inherit;
+  display: inline-block;
+  max-width: 100%;
+}
+.primary {
+  position: relative;
+  font-size: var(--button-button-size);
+  line-height: 24px;
+  text-transform: capitalize;
+  font-weight: 600;
+  font-family: var(--button-button);
+  color: var(--primary-500);
+  text-align: left;
+}
+.fiarrowRightIcon {
+  height: 24px;
+  width: 24px;
+  position: relative;
+  overflow: hidden;
+  flex-shrink: 0;
+  min-height: 24px;
+}
+.button,
+.heading {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+.button {
+  cursor: pointer;
+  border: 1px solid var(--primary-50);
+  padding: var(--padding-xs) var(--padding-2xl);
+  background-color: transparent;
+  width: 147px;
+  border-radius: var(--br-10xs);
+  box-sizing: border-box;
+  justify-content: center;
+  gap: var(--gap-xs);
+}
+.button:hover {
+  background-color: var(--color-lightgray-300);
+  border: 1px solid var(--color-lightgray-100);
+  box-sizing: border-box;
+}
+.heading {
+  width: 1320px;
+  justify-content: space-between;
+  gap: var(--gap-xl);
+  max-width: 100%;
+}
+.techicalSupportSpecialist {
+  align-self: stretch;
+  position: relative;
+  line-height: 28px;
+  font-weight: 500;
+}
+.partTime {
+  position: relative;
+  line-height: 12px;
+  text-transform: uppercase;
+  font-weight: 600;
+}
+.type {
+  border-radius: var(--br-10xs);
+  background-color: var(--success-50);
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: flex-start;
+  padding: var(--padding-9xs) var(--padding-5xs);
+}
+.salary20000 {
+  position: relative;
+  font-size: var(--body-small-500-size);
+  line-height: 20px;
+  color: var(--gray-500);
+}
+.heading1,
+.loactionGroup {
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+.loactionGroup {
+  flex-direction: row;
+  gap: var(--gap-5xs);
+  font-size: var(--body-xs-400-size);
+  color: var(--success-500);
+}
+.heading1 {
+  align-self: stretch;
+  flex-direction: column;
+  gap: var(--gap-7xs);
+}
+.googleInc {
+  align-self: stretch;
+  position: relative;
+  line-height: 24px;
+  font-weight: 500;
+}
+.mappinIcon {
+  height: 18px;
+  width: 18px;
+  position: relative;
+}
+.torontoOntario {
+  flex: 1;
+  position: relative;
+  line-height: 20px;
+}
+.info,
+.loaction {
+  display: flex;
+  justify-content: flex-start;
+  gap: var(--gap-9xs);
+}
+.loaction {
+  align-self: stretch;
+  flex-direction: row;
+  align-items: center;
+  font-size: var(--body-small-500-size);
+  color: var(--gray-500);
+}
+.info {
+  flex: 1;
+  flex-direction: column;
+  align-items: flex-start;
+  min-width: 221px;
+  max-width: 100%;
+}
+.bookmarksimpleIcon {
+  height: 24px;
+  width: 24px;
+  position: relative;
+}
+.company,
+.job {
+  display: flex;
+  max-width: 100%;
+}
+.company {
+  align-self: stretch;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: var(--gap-xs);
+  font-size: var(--button-button-size);
+}
+.job {
+  width: 424px;
+  border-radius: var(--br-5xs);
+  background-color: var(--gray-scale-white);
+  box-shadow: 0 2px 18px rgba(24, 25, 28, 0.03);
+  border: 1px solid var(--gray-100);
+  box-sizing: border-box;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  padding: var(--padding-5xl) var(--padding-6xl) var(--padding-5xl)
+    var(--padding-4xl);
+  gap: var(--gap-xl);
+}
+.seniorUxDesigner {
+  align-self: stretch;
+  position: relative;
+  line-height: 28px;
+  font-weight: 500;
+}
+.fullTime {
+  position: relative;
+  line-height: 12px;
+  text-transform: uppercase;
+  font-weight: 600;
+}
+.type1 {
+  border-radius: var(--br-10xs);
+  background-color: var(--success-50);
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: flex-start;
+  padding: var(--padding-9xs) var(--padding-5xs);
+}
+.salary200001 {
+  position: relative;
+  font-size: var(--body-small-500-size);
+  line-height: 20px;
+  color: var(--gray-500);
+}
+.heading2,
+.typeParent {
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+.typeParent {
+  flex-direction: row;
+  gap: var(--gap-5xs);
+  font-size: var(--body-xs-400-size);
+  color: var(--success-500);
+}
+.heading2 {
+  align-self: stretch;
+  flex-direction: column;
+  gap: var(--gap-7xs);
+}
+.googleInc1 {
+  align-self: stretch;
+  position: relative;
+  line-height: 24px;
+  font-weight: 500;
+}
+.mappinIcon1 {
+  height: 18px;
+  width: 18px;
+  position: relative;
+}
+.torontoOntario1 {
+  flex: 1;
+  position: relative;
+  line-height: 20px;
+}
+.info1,
+.loaction1 {
+  display: flex;
+  justify-content: flex-start;
+  gap: var(--gap-9xs);
+}
+.loaction1 {
+  align-self: stretch;
+  flex-direction: row;
+  align-items: center;
+  font-size: var(--body-small-500-size);
+  color: var(--gray-500);
+}
+.info1 {
+  flex: 1;
+  flex-direction: column;
+  align-items: flex-start;
+  min-width: 221px;
+  max-width: 100%;
+}
+.bookmarksimpleIcon1 {
+  height: 24px;
+  width: 24px;
+  position: relative;
+}
+.company1,
+.job1 {
+  display: flex;
+  max-width: 100%;
+}
+.company1 {
+  align-self: stretch;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: var(--gap-xs);
+  font-size: var(--button-button-size);
+}
+.job1 {
+  width: 424px;
+  border-radius: var(--br-5xs);
+  background-color: var(--gray-scale-white);
+  box-shadow: 0 2px 18px rgba(24, 25, 28, 0.03);
+  border: 1px solid var(--gray-100);
+  box-sizing: border-box;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  padding: var(--padding-5xl) var(--padding-6xl) var(--padding-5xl)
+    var(--padding-4xl);
+  gap: var(--gap-xl);
+}
+.marketingOfficer {
+  align-self: stretch;
+  position: relative;
+  line-height: 28px;
+  font-weight: 500;
+}
+.internship {
+  position: relative;
+  line-height: 12px;
+  text-transform: uppercase;
+  font-weight: 600;
+}
+.type2 {
+  border-radius: var(--br-10xs);
+  background-color: var(--success-50);
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: flex-start;
+  padding: var(--padding-9xs) var(--padding-5xs);
+}
+.salary200002 {
+  position: relative;
+  font-size: var(--body-small-500-size);
+  line-height: 20px;
+  color: var(--gray-500);
+}
+.heading3,
+.typeGroup {
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+.typeGroup {
+  flex-direction: row;
+  gap: var(--gap-5xs);
+  font-size: var(--body-xs-400-size);
+  color: var(--success-500);
+}
+.heading3 {
+  align-self: stretch;
+  flex-direction: column;
+  gap: var(--gap-7xs);
+}
+.googleInc2 {
+  align-self: stretch;
+  position: relative;
+  line-height: 24px;
+  font-weight: 500;
+}
+.mappinIcon2 {
+  height: 18px;
+  width: 18px;
+  position: relative;
+}
+.torontoOntario2 {
+  flex: 1;
+  position: relative;
+  line-height: 20px;
+}
+.info2,
+.loaction2 {
+  display: flex;
+  justify-content: flex-start;
+  gap: var(--gap-9xs);
+}
+.loaction2 {
+  align-self: stretch;
+  flex-direction: row;
+  align-items: center;
+  font-size: var(--body-small-500-size);
+  color: var(--gray-500);
+}
+.info2 {
+  flex: 1;
+  flex-direction: column;
+  align-items: flex-start;
+  min-width: 221px;
+  max-width: 100%;
+}
+.bookmarksimpleIcon2 {
+  height: 24px;
+  width: 24px;
+  position: relative;
+}
+.company2,
+.job2 {
+  display: flex;
+  max-width: 100%;
+}
+.company2 {
+  align-self: stretch;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: var(--gap-xs);
+  font-size: var(--button-button-size);
+}
+.job2 {
+  width: 424px;
+  border-radius: var(--br-5xs);
+  background-color: var(--gray-scale-white);
+  box-shadow: 0 2px 18px rgba(24, 25, 28, 0.03);
+  border: 1px solid var(--gray-100);
+  box-sizing: border-box;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  padding: var(--padding-5xl) var(--padding-6xl) var(--padding-5xl)
+    var(--padding-4xl);
+  gap: var(--gap-xl);
+}
+.juniorGraphicDesigner {
+  align-self: stretch;
+  position: relative;
+  line-height: 28px;
+  font-weight: 500;
+}
+.internship1 {
+  position: relative;
+  line-height: 12px;
+  text-transform: uppercase;
+  font-weight: 600;
+}
+.type3 {
+  border-radius: var(--br-10xs);
+  background-color: var(--success-50);
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: flex-start;
+  padding: var(--padding-9xs) var(--padding-5xs);
+}
+.salary200003 {
+  position: relative;
+  font-size: var(--body-small-500-size);
+  line-height: 20px;
+  color: var(--gray-500);
+}
+.heading4,
+.typeContainer {
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+.typeContainer {
+  flex-direction: row;
+  gap: var(--gap-5xs);
+  font-size: var(--body-xs-400-size);
+  color: var(--success-500);
+}
+.heading4 {
+  align-self: stretch;
+  flex-direction: column;
+  gap: var(--gap-7xs);
+}
+.googleInc3 {
+  align-self: stretch;
+  position: relative;
+  line-height: 24px;
+  font-weight: 500;
+}
+.mappinIcon3 {
+  height: 18px;
+  width: 18px;
+  position: relative;
+}
+.torontoOntario3 {
+  flex: 1;
+  position: relative;
+  line-height: 20px;
+}
+.info3,
+.loaction3 {
+  display: flex;
+  justify-content: flex-start;
+  gap: var(--gap-9xs);
+}
+.loaction3 {
+  align-self: stretch;
+  flex-direction: row;
+  align-items: center;
+  font-size: var(--body-small-500-size);
+  color: var(--gray-500);
+}
+.info3 {
+  flex: 1;
+  flex-direction: column;
+  align-items: flex-start;
+  min-width: 221px;
+  max-width: 100%;
+}
+.bookmarksimpleIcon3 {
+  height: 24px;
+  width: 24px;
+  position: relative;
+}
+.company3,
+.job3 {
+  display: flex;
+  max-width: 100%;
+}
+.company3 {
+  align-self: stretch;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: var(--gap-xs);
+  font-size: var(--button-button-size);
+}
+.job3 {
+  width: 424px;
+  border-radius: var(--br-5xs);
+  background-color: var(--gray-scale-white);
+  box-shadow: 0 2px 18px rgba(24, 25, 28, 0.03);
+  border: 1px solid var(--gray-100);
+  box-sizing: border-box;
+  overflow: hidden;
+  flex-shrink: 0;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  padding: var(--padding-5xl) var(--padding-6xl) var(--padding-5xl)
+    var(--padding-4xl);
+  gap: var(--gap-xl);
+}
+.interactionDesigner {
+  align-self: stretch;
+  position: relative;
+  line-height: 28px;
+  font-weight: 500;
+}
+.partTime1 {
+  position: relative;
+  line-height: 12px;
+  text-transform: uppercase;
+  font-weight: 600;
+}
+.type4 {
+  border-radius: var(--br-10xs);
+  background-color: var(--success-50);
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: flex-start;
+  padding: var(--padding-9xs) var(--padding-5xs);
+}
+.salary200004 {
+  position: relative;
+  font-size: var(--body-small-500-size);
+  line-height: 20px;
+  color: var(--gray-500);
+}
+.frameDiv,
+.heading5 {
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+.frameDiv {
+  flex-direction: row;
+  gap: var(--gap-5xs);
+  font-size: var(--body-xs-400-size);
+  color: var(--success-500);
+}
+.heading5 {
+  align-self: stretch;
+  flex-direction: column;
+  gap: var(--gap-7xs);
+}
+.googleInc4 {
+  align-self: stretch;
+  position: relative;
+  line-height: 24px;
+  font-weight: 500;
+}
+.mappinIcon4 {
+  height: 18px;
+  width: 18px;
+  position: relative;
+}
+.torontoOntario4 {
+  flex: 1;
+  position: relative;
+  line-height: 20px;
+}
+.info4,
+.loaction4 {
+  display: flex;
+  justify-content: flex-start;
+  gap: var(--gap-9xs);
+}
+.loaction4 {
+  align-self: stretch;
+  flex-direction: row;
+  align-items: center;
+  font-size: var(--body-small-500-size);
+  color: var(--gray-500);
+}
+.info4 {
+  flex: 1;
+  flex-direction: column;
+  align-items: flex-start;
+  min-width: 221px;
+  max-width: 100%;
+}
+.bookmarksimpleIcon4 {
+  height: 24px;
+  width: 24px;
+  position: relative;
+}
+.company4,
+.job4 {
+  display: flex;
+  max-width: 100%;
+}
+.company4 {
+  align-self: stretch;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: var(--gap-xs);
+  font-size: var(--button-button-size);
+}
+.job4 {
+  width: 424px;
+  border-radius: var(--br-5xs);
+  background-color: var(--gray-scale-white);
+  box-shadow: 0 2px 18px rgba(24, 25, 28, 0.03);
+  border: 1px solid var(--gray-100);
+  box-sizing: border-box;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  padding: var(--padding-5xl) var(--padding-6xl) var(--padding-5xl)
+    var(--padding-4xl);
+  gap: var(--gap-xl);
+}
+.projectManager {
+  align-self: stretch;
+  position: relative;
+  line-height: 28px;
+  font-weight: 500;
+}
+.fullTime1 {
+  position: relative;
+  line-height: 12px;
+  text-transform: uppercase;
+  font-weight: 600;
+}
+.type5 {
+  border-radius: var(--br-10xs);
+  background-color: var(--success-50);
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: flex-start;
+  padding: var(--padding-9xs) var(--padding-5xs);
+}
+.salary200005 {
+  position: relative;
+  font-size: var(--body-small-500-size);
+  line-height: 20px;
+  color: var(--gray-500);
+}
+.heading6,
+.typeParent1 {
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+.typeParent1 {
+  flex-direction: row;
+  gap: var(--gap-5xs);
+  font-size: var(--body-xs-400-size);
+  color: var(--success-500);
+}
+.heading6 {
+  align-self: stretch;
+  flex-direction: column;
+  gap: var(--gap-7xs);
+}
+.googleInc5 {
+  align-self: stretch;
+  position: relative;
+  line-height: 24px;
+  font-weight: 500;
+}
+.mappinIcon5 {
+  height: 18px;
+  width: 18px;
+  position: relative;
+}
+.torontoOntario5 {
+  flex: 1;
+  position: relative;
+  line-height: 20px;
+}
+.info5,
+.loaction5 {
+  display: flex;
+  justify-content: flex-start;
+  gap: var(--gap-9xs);
+}
+.loaction5 {
+  align-self: stretch;
+  flex-direction: row;
+  align-items: center;
+  font-size: var(--body-small-500-size);
+  color: var(--gray-500);
+}
+.info5 {
+  flex: 1;
+  flex-direction: column;
+  align-items: flex-start;
+  min-width: 221px;
+  max-width: 100%;
+}
+.bookmarksimpleIcon5 {
+  height: 24px;
+  width: 24px;
+  position: relative;
+}
+.company5,
+.job5 {
+  display: flex;
+  max-width: 100%;
+}
+.company5 {
+  align-self: stretch;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: var(--gap-xs);
+  font-size: var(--button-button-size);
+}
+.job5 {
+  width: 424px;
+  border-radius: var(--br-5xs);
+  background-color: var(--gray-scale-white);
+  box-shadow: 0 2px 18px rgba(24, 25, 28, 0.03);
+  border: 1px solid var(--gray-100);
+  box-sizing: border-box;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  padding: var(--padding-5xl) var(--padding-6xl) var(--padding-5xl)
+    var(--padding-4xl);
+  gap: var(--gap-xl);
+}
+.softwareEngineer {
+  align-self: stretch;
+  position: relative;
+  line-height: 28px;
+  font-weight: 500;
+}
+.fullTime2 {
+  position: relative;
+  line-height: 12px;
+  text-transform: uppercase;
+  font-weight: 600;
+}
+.type6 {
+  border-radius: var(--br-10xs);
+  background-color: var(--success-50);
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: flex-start;
+  padding: var(--padding-9xs) var(--padding-5xs);
+}
+.salary200006 {
+  position: relative;
+  font-size: var(--body-small-500-size);
+  line-height: 20px;
+  color: var(--gray-500);
+}
+.heading7,
+.typeParent2 {
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+.typeParent2 {
+  flex-direction: row;
+  gap: var(--gap-5xs);
+  font-size: var(--body-xs-400-size);
+  color: var(--success-500);
+}
+.heading7 {
+  align-self: stretch;
+  flex-direction: column;
+  gap: var(--gap-7xs);
+}
+.googleInc6 {
+  align-self: stretch;
+  position: relative;
+  line-height: 24px;
+  font-weight: 500;
+}
+.mappinIcon6 {
+  height: 18px;
+  width: 18px;
+  position: relative;
+}
+.torontoOntario6 {
+  flex: 1;
+  position: relative;
+  line-height: 20px;
+}
+.info6,
+.loaction6 {
+  display: flex;
+  justify-content: flex-start;
+  gap: var(--gap-9xs);
+}
+.loaction6 {
+  align-self: stretch;
+  flex-direction: row;
+  align-items: center;
+  font-size: var(--body-small-500-size);
+  color: var(--gray-500);
+}
+.info6 {
+  flex: 1;
+  flex-direction: column;
+  align-items: flex-start;
+  min-width: 221px;
+  max-width: 100%;
+}
+.bookmarksimpleIcon6 {
+  height: 24px;
+  width: 24px;
+  position: relative;
+}
+.company6,
+.job6 {
+  display: flex;
+  max-width: 100%;
+}
+.company6 {
+  align-self: stretch;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: var(--gap-xs);
+  font-size: var(--button-button-size);
+}
+.job6 {
+  width: 424px;
+  border-radius: var(--br-5xs);
+  background-color: var(--gray-scale-white);
+  box-shadow: 0 2px 18px rgba(24, 25, 28, 0.03);
+  border: 1px solid var(--gray-100);
+  box-sizing: border-box;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  padding: var(--padding-5xl) var(--padding-6xl) var(--padding-5xl)
+    var(--padding-4xl);
+  gap: var(--gap-xl);
+}
+.visualDesigner {
+  align-self: stretch;
+  position: relative;
+  line-height: 28px;
+  font-weight: 500;
+}
+.fullTime3 {
+  position: relative;
+  line-height: 12px;
+  text-transform: uppercase;
+  font-weight: 600;
+}
+.type7 {
+  border-radius: var(--br-10xs);
+  background-color: var(--success-50);
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: flex-start;
+  padding: var(--padding-9xs) var(--padding-5xs);
+}
+.salary200007 {
+  position: relative;
+  font-size: var(--body-small-500-size);
+  line-height: 20px;
+  color: var(--gray-500);
+}
+.heading8,
+.typeParent3 {
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+.typeParent3 {
+  flex-direction: row;
+  gap: var(--gap-5xs);
+  font-size: var(--body-xs-400-size);
+  color: var(--success-500);
+}
+.heading8 {
+  align-self: stretch;
+  flex-direction: column;
+  gap: var(--gap-7xs);
+}
+.googleInc7 {
+  align-self: stretch;
+  position: relative;
+  line-height: 24px;
+  font-weight: 500;
+}
+.mappinIcon7 {
+  height: 18px;
+  width: 18px;
+  position: relative;
+}
+.torontoOntario7 {
+  flex: 1;
+  position: relative;
+  line-height: 20px;
+}
+.info7,
+.loaction7 {
+  display: flex;
+  justify-content: flex-start;
+  gap: var(--gap-9xs);
+}
+.loaction7 {
+  align-self: stretch;
+  flex-direction: row;
+  align-items: center;
+  font-size: var(--body-small-500-size);
+  color: var(--gray-500);
+}
+.info7 {
+  flex: 1;
+  flex-direction: column;
+  align-items: flex-start;
+  min-width: 221px;
+  max-width: 100%;
+}
+.bookmarksimpleIcon7 {
+  height: 24px;
+  width: 24px;
+  position: relative;
+}
+.company7,
+.job7 {
+  display: flex;
+  max-width: 100%;
+}
+.company7 {
+  align-self: stretch;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: var(--gap-xs);
+  font-size: var(--button-button-size);
+}
+.job7 {
+  width: 424px;
+  border-radius: var(--br-5xs);
+  background-color: var(--gray-scale-white);
+  box-shadow: 0 2px 18px rgba(24, 25, 28, 0.03);
+  border: 1px solid var(--gray-100);
+  box-sizing: border-box;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  padding: var(--padding-5xl) var(--padding-6xl) var(--padding-5xl)
+    var(--padding-4xl);
+  gap: var(--gap-xl);
+}
+.projectManager1 {
+  align-self: stretch;
+  position: relative;
+  line-height: 28px;
+  font-weight: 500;
+}
+.fullTime4 {
+  position: relative;
+  line-height: 12px;
+  text-transform: uppercase;
+  font-weight: 600;
+}
+.type8 {
+  border-radius: var(--br-10xs);
+  background-color: var(--success-50);
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: flex-start;
+  padding: var(--padding-9xs) var(--padding-5xs);
+}
+.salary200008 {
+  position: relative;
+  font-size: var(--body-small-500-size);
+  line-height: 20px;
+  color: var(--gray-500);
+}
+.heading9,
+.typeParent4 {
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+.typeParent4 {
+  flex-direction: row;
+  gap: var(--gap-5xs);
+  font-size: var(--body-xs-400-size);
+  color: var(--success-500);
+}
+.heading9 {
+  align-self: stretch;
+  flex-direction: column;
+  gap: var(--gap-7xs);
+}
+.googleInc8 {
+  align-self: stretch;
+  position: relative;
+  line-height: 24px;
+  font-weight: 500;
+}
+.mappinIcon8 {
+  height: 18px;
+  width: 18px;
+  position: relative;
+}
+.torontoOntario8 {
+  flex: 1;
+  position: relative;
+  line-height: 20px;
+}
+.info8,
+.loaction8 {
+  display: flex;
+  justify-content: flex-start;
+  gap: var(--gap-9xs);
+}
+.loaction8 {
+  align-self: stretch;
+  flex-direction: row;
+  align-items: center;
+  font-size: var(--body-small-500-size);
+  color: var(--gray-500);
+}
+.info8 {
+  flex: 1;
+  flex-direction: column;
+  align-items: flex-start;
+  min-width: 221px;
+  max-width: 100%;
+}
+.bookmarksimpleIcon8 {
+  height: 24px;
+  width: 24px;
+  position: relative;
+}
+.company8,
+.job8 {
+  display: flex;
+  max-width: 100%;
+}
+.company8 {
+  align-self: stretch;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: var(--gap-xs);
+  font-size: var(--button-button-size);
+}
+.job8 {
+  width: 424px;
+  border-radius: var(--br-5xs);
+  background-color: var(--gray-scale-white);
+  box-shadow: 0 2px 18px rgba(24, 25, 28, 0.03);
+  border: 1px solid var(--gray-100);
+  box-sizing: border-box;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  padding: var(--padding-5xl) var(--padding-6xl) var(--padding-5xl)
+    var(--padding-4xl);
+  gap: var(--gap-xl);
+}
+.frontEndDeveloper {
+  align-self: stretch;
+  position: relative;
+  line-height: 28px;
+  font-weight: 500;
+}
+.partTime2 {
+  position: relative;
+  line-height: 12px;
+  text-transform: uppercase;
+  font-weight: 600;
+}
+.type9 {
+  border-radius: var(--br-10xs);
+  background-color: var(--success-50);
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: flex-start;
+  padding: var(--padding-9xs) var(--padding-5xs);
+}
+.salary200009 {
+  position: relative;
+  font-size: var(--body-small-500-size);
+  line-height: 20px;
+  color: var(--gray-500);
+}
+.heading10,
+.typeParent5 {
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+.typeParent5 {
+  flex-direction: row;
+  gap: var(--gap-5xs);
+  font-size: var(--body-xs-400-size);
+  color: var(--success-500);
+}
+.heading10 {
+  align-self: stretch;
+  flex-direction: column;
+  gap: var(--gap-7xs);
+}
+.googleInc9 {
+  align-self: stretch;
+  position: relative;
+  line-height: 24px;
+  font-weight: 500;
+}
+.mappinIcon9 {
+  height: 18px;
+  width: 18px;
+  position: relative;
+}
+.torontoOntario9 {
+  flex: 1;
+  position: relative;
+  line-height: 20px;
+}
+.info9,
+.loaction9 {
+  display: flex;
+  justify-content: flex-start;
+  gap: var(--gap-9xs);
+}
+.loaction9 {
+  align-self: stretch;
+  flex-direction: row;
+  align-items: center;
+  font-size: var(--body-small-500-size);
+  color: var(--gray-500);
+}
+.info9 {
+  flex: 1;
+  flex-direction: column;
+  align-items: flex-start;
+  min-width: 221px;
+  max-width: 100%;
+}
+.bookmarksimpleIcon9 {
+  height: 24px;
+  width: 24px;
+  position: relative;
+}
+.company9,
+.job9 {
+  display: flex;
+  max-width: 100%;
+}
+.company9 {
+  align-self: stretch;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: var(--gap-xs);
+  font-size: var(--button-button-size);
+}
+.job9 {
+  width: 424px;
+  border-radius: var(--br-5xs);
+  background-color: var(--gray-scale-white);
+  box-shadow: 0 2px 18px rgba(24, 25, 28, 0.03);
+  border: 1px solid var(--gray-100);
+  box-sizing: border-box;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  padding: var(--padding-5xl) var(--padding-6xl) var(--padding-5xl)
+    var(--padding-4xl);
+  gap: var(--gap-xl);
+}
+.seniorUxDesigner1 {
+  align-self: stretch;
+  position: relative;
+  line-height: 28px;
+  font-weight: 500;
+}
+.fullTime5 {
+  position: relative;
+  line-height: 12px;
+  text-transform: uppercase;
+  font-weight: 600;
+}
+.type10 {
+  border-radius: var(--br-10xs);
+  background-color: var(--success-50);
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: flex-start;
+  padding: var(--padding-9xs) var(--padding-5xs);
+}
+.salary2000010 {
+  position: relative;
+  font-size: var(--body-small-500-size);
+  line-height: 20px;
+  color: var(--gray-500);
+}
+.heading11,
+.typeParent6 {
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+.typeParent6 {
+  flex-direction: row;
+  gap: var(--gap-5xs);
+  font-size: var(--body-xs-400-size);
+  color: var(--success-500);
+}
+.heading11 {
+  align-self: stretch;
+  flex-direction: column;
+  gap: var(--gap-7xs);
+}
+.googleInc10 {
+  align-self: stretch;
+  position: relative;
+  line-height: 24px;
+  font-weight: 500;
+}
+.mappinIcon10 {
+  height: 18px;
+  width: 18px;
+  position: relative;
+}
+.torontoOntario10 {
+  flex: 1;
+  position: relative;
+  line-height: 20px;
+}
+.info10,
+.loaction10 {
+  display: flex;
+  justify-content: flex-start;
+  gap: var(--gap-9xs);
+}
+.loaction10 {
+  align-self: stretch;
+  flex-direction: row;
+  align-items: center;
+  font-size: var(--body-small-500-size);
+  color: var(--gray-500);
+}
+.info10 {
+  flex: 1;
+  flex-direction: column;
+  align-items: flex-start;
+  min-width: 221px;
+  max-width: 100%;
+}
+.bookmarksimpleIcon10 {
+  height: 24px;
+  width: 24px;
+  position: relative;
+}
+.company10,
+.job10 {
+  display: flex;
+  max-width: 100%;
+}
+.company10 {
+  align-self: stretch;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: var(--gap-xs);
+  font-size: var(--button-button-size);
+}
+.job10 {
+  width: 424px;
+  border-radius: var(--br-5xs);
+  background-color: var(--gray-scale-white);
+  box-shadow: 0 2px 18px rgba(24, 25, 28, 0.03);
+  border: 1px solid var(--gray-100);
+  box-sizing: border-box;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  padding: var(--padding-5xl) var(--padding-6xl) var(--padding-5xl)
+    var(--padding-4xl);
+  gap: var(--gap-xl);
+}
+.marketingManager {
+  align-self: stretch;
+  position: relative;
+  line-height: 28px;
+  font-weight: 500;
+}
+.internship2 {
+  position: relative;
+  line-height: 12px;
+  text-transform: uppercase;
+  font-weight: 600;
+}
+.type11 {
+  border-radius: var(--br-10xs);
+  background-color: var(--success-50);
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: flex-start;
+  padding: var(--padding-9xs) var(--padding-5xs);
+}
+.salary2000011 {
+  position: relative;
+  font-size: var(--body-small-500-size);
+  line-height: 20px;
+  color: var(--gray-500);
+}
+.heading12,
+.typeParent7 {
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+.typeParent7 {
+  flex-direction: row;
+  gap: var(--gap-5xs);
+  font-size: var(--body-xs-400-size);
+  color: var(--success-500);
+}
+.heading12 {
+  align-self: stretch;
+  flex-direction: column;
+  gap: var(--gap-7xs);
+}
+.googleInc11 {
+  align-self: stretch;
+  position: relative;
+  line-height: 24px;
+  font-weight: 500;
+}
+.mappinIcon11 {
+  height: 18px;
+  width: 18px;
+  position: relative;
+}
+.torontoOntario11 {
+  flex: 1;
+  position: relative;
+  line-height: 20px;
+}
+.info11,
+.loaction11 {
+  display: flex;
+  justify-content: flex-start;
+  gap: var(--gap-9xs);
+}
+.loaction11 {
+  align-self: stretch;
+  flex-direction: row;
+  align-items: center;
+  font-size: var(--body-small-500-size);
+  color: var(--gray-500);
+}
+.info11 {
+  flex: 1;
+  flex-direction: column;
+  align-items: flex-start;
+  min-width: 221px;
+  max-width: 100%;
+}
+.bookmarksimpleIcon11 {
+  height: 24px;
+  width: 24px;
+  position: relative;
+}
+.company11,
+.job11 {
+  display: flex;
+  max-width: 100%;
+}
+.company11 {
+  align-self: stretch;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: var(--gap-xs);
+  font-size: var(--button-button-size);
+}
+.job11 {
+  width: 424px;
+  border-radius: var(--br-5xs);
+  background-color: var(--gray-scale-white);
+  box-shadow: 0 2px 18px rgba(24, 25, 28, 0.03);
+  border: 1px solid var(--gray-100);
+  box-sizing: border-box;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  padding: var(--padding-5xl) var(--padding-6xl) var(--padding-5xl)
+    var(--padding-4xl);
+  gap: var(--gap-xl);
+}
+.featuredJob,
+.musicAudio {
+  display: flex;
+  justify-content: center;
+  max-width: 100%;
+}
+.musicAudio {
+  width: 1320px;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: 24px 20px;
+  min-height: 752px;
+  text-align: left;
+  font-size: var(--body-large-500-size);
+  color: var(--gray-900);
+}
+.featuredJob {
+  align-self: stretch;
+  background-color: var(--gray-scale-white);
+  flex-direction: column;
+  align-items: center;
+  padding: var(--padding-81xl) var(--padding-xl);
+  box-sizing: border-box;
+  gap: var(--gap-31xl);
+  text-align: center;
+  font-size: var(--heading-01-size);
+  color: var(--gray-scale-900);
+  font-family: var(--button-button);
+}
+@media screen and (max-width: 1275px) {
+  .featuredJob {
+    padding-top: var(--padding-46xl);
+    padding-bottom: var(--padding-46xl);
+    box-sizing: border-box;
+  }
+}
+@media screen and (max-width: 900px) {
+  .jobsYouMight {
+    font-size: var(--heading-03-size);
+    line-height: 38px;
+  }
+  .heading {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .featuredJob {
+    gap: var(--gap-31xl);
+    padding-top: var(--padding-23xl);
+    padding-bottom: var(--padding-23xl);
+    box-sizing: border-box;
+  }
+}
+@media screen and (max-width: 450px) {
+  .jobsYouMight {
+    font-size: var(--heading-04-size);
+    line-height: 29px;
+  }
+  .company,
+  .company1,
+  .company10,
+  .company11,
+  .company2,
+  .company3,
+  .company4,
+  .company5,
+  .company6,
+  .company7,
+  .company8,
+  .company9 {
+    flex-wrap: wrap;
+  }
+}

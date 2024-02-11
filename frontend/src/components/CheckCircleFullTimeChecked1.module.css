@@ -1,0 +1,154 @@
+.checkCircleFullTimeCheckedChild {
+  height: 1px;
+  flex: 1;
+  position: relative;
+  border-top: 1px solid var(--gray-100);
+  box-sizing: border-box;
+  max-width: 100%;
+}
+.suniorUxDesigner {
+  align-self: stretch;
+  position: relative;
+  line-height: 24px;
+  font-weight: 500;
+}
+.daysRemaining,
+.div,
+.fullTime {
+  position: relative;
+  line-height: 20px;
+}
+.fullTimeParent,
+.suniorUxDesignerParent {
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+.fullTimeParent {
+  flex-direction: row;
+  gap: var(--gap-3xs);
+  font-size: var(--body-small-500-size);
+  color: var(--gray-500);
+}
+.suniorUxDesignerParent {
+  flex: 1;
+  flex-direction: column;
+  gap: var(--gap-5xs);
+  min-width: 239px;
+  max-width: 100%;
+  font-size: var(--button-button-size);
+}
+.checkcircle {
+  cursor: pointer;
+  margin: 0;
+  height: 20px;
+  width: 20px;
+  position: relative;
+  min-height: 20px;
+}
+.active {
+  flex: 1;
+  position: relative;
+  line-height: 20px;
+  font-weight: 500;
+}
+.jobStatus {
+  width: 88px;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: flex-start;
+  gap: var(--gap-9xs);
+  color: var(--success-500);
+}
+.usersIcon {
+  height: 24px;
+  width: 24px;
+  position: relative;
+}
+.applications {
+  flex: 1;
+  position: relative;
+  line-height: 20px;
+}
+.jobStatus1 {
+  width: 184px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: var(--gap-5xs);
+  color: var(--gray-600);
+}
+.primary {
+  position: relative;
+  font-size: var(--button-button-size);
+  line-height: 24px;
+  text-transform: capitalize;
+  font-weight: 600;
+  font-family: var(--button-button);
+  color: var(--primary-500);
+  text-align: left;
+}
+.button {
+  cursor: pointer;
+  border: 0;
+  padding: var(--padding-xs) var(--padding-3xl);
+  background-color: var(--gray-50);
+  border-radius: var(--br-10xs);
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
+}
+.button:hover {
+  background-color: var(--color-gainsboro-200);
+}
+.dotsthreeverticalIcon {
+  height: 24px;
+  width: 24px;
+  position: relative;
+}
+.iconButton {
+  border-radius: var(--br-8xs);
+  align-items: flex-start;
+  padding: var(--padding-xs);
+}
+.buttonPrimary,
+.checkCircleFullTimeChecked,
+.iconButton,
+.job {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+}
+.buttonPrimary {
+  align-items: flex-start;
+  gap: var(--gap-5xs);
+}
+.checkCircleFullTimeChecked,
+.job {
+  max-width: 100%;
+}
+.job {
+  flex: 0.9593;
+  border-radius: var(--br-5xs);
+  overflow: hidden;
+  flex-wrap: wrap;
+  align-items: center;
+  padding: var(--padding-xl);
+  box-sizing: border-box;
+  gap: var(--gap-xl);
+  z-index: 5;
+  margin-left: -984px;
+}
+.checkCircleFullTimeChecked {
+  align-self: stretch;
+  align-items: flex-end;
+  flex-shrink: 0;
+  text-align: left;
+  font-size: var(--body-small-500-size);
+  color: var(--gray-900);
+  font-family: var(--button-button);
+}

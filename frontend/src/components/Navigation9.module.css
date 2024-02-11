@@ -1,0 +1,17 @@
+.navigation,
+.navigation1,
+.navigation2 {
+  box-shadow: 0-1px 0#e4e5e8 inset;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  max-width: 100%;
+}
+.navigation1,
+.navigation2 {
+  flex: 1;
+}
+.navigation {
+  align-self: stretch;
+}

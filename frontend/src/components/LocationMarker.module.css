@@ -1,0 +1,217 @@
+.locationMarkerChild {
+  align-self: stretch;
+  height: 1px;
+  position: relative;
+  border-top: 1px solid var(--gray-100);
+  box-sizing: border-box;
+}
+.employersLogoIcon {
+  height: 24px;
+  width: 24px;
+  position: relative;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+.employersLogo {
+  height: 68px;
+  border-radius: var(--br-9xs);
+  background-color: var(--gray-scale-50);
+  display: none;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: flex-start;
+  padding: var(--padding-base) var(--padding-9xl) var(--padding-base)
+    var(--padding-base);
+  box-sizing: border-box;
+}
+.seniorUxDesigner {
+  position: relative;
+  line-height: 24px;
+  font-weight: 500;
+}
+.featured {
+  position: relative;
+  line-height: 20px;
+}
+.badge,
+.heading1 {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+}
+.badge {
+  border-radius: var(--br-44xl);
+  background-color: var(--primary-501);
+  align-items: flex-start;
+  padding: var(--padding-10xs) var(--padding-4xs) var(--padding-10xs)
+    var(--padding-xs);
+  white-space: nowrap;
+  font-size: var(--body-small-500-size);
+  color: var(--primary-500);
+}
+.heading1 {
+  align-items: center;
+  gap: var(--gap-5xs);
+}
+.fimapPinIcon {
+  height: 22px;
+  width: 22px;
+  position: relative;
+  overflow: hidden;
+  flex-shrink: 0;
+  min-height: 22px;
+}
+.unitedKingdomOf {
+  position: relative;
+  line-height: 20px;
+}
+.loaction {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  gap: var(--gap-7xs);
+}
+.currencyDollar1Icon {
+  height: 22px;
+  width: 22px;
+  position: relative;
+  overflow: hidden;
+  flex-shrink: 0;
+  min-height: 22px;
+}
+.k35k {
+  position: relative;
+  line-height: 20px;
+}
+.price {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  gap: var(--gap-9xs);
+}
+.calendarBlank11 {
+  height: 22px;
+  width: 22px;
+  position: relative;
+  overflow: hidden;
+  flex-shrink: 0;
+  display: none;
+}
+.xcircleIcon {
+  height: 20px;
+  width: 20px;
+  position: relative;
+  min-height: 20px;
+}
+.daysRemaining {
+  position: relative;
+  line-height: 20px;
+  font-weight: 500;
+}
+.price1 {
+  flex-direction: row;
+  align-items: center;
+  gap: var(--gap-9xs);
+  color: var(--danger-500);
+}
+.heading,
+.info,
+.info1,
+.price1 {
+  display: flex;
+  justify-content: flex-start;
+}
+.info1 {
+  flex-direction: row;
+  align-items: center;
+  gap: var(--gap-base);
+  font-size: var(--body-small-500-size);
+  color: var(--gray-scale-600);
+}
+.heading,
+.info {
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--gap-xs);
+  max-width: 100%;
+}
+.info {
+  flex-direction: row;
+  align-items: center;
+  gap: var(--gap-xl);
+}
+.bookmarksimpleIcon {
+  height: 24px;
+  width: 24px;
+  position: relative;
+}
+.iconButton {
+  border-radius: var(--br-8xs);
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: flex-start;
+  padding: var(--padding-xs);
+}
+.primary {
+  position: relative;
+  font-size: var(--button-button-size);
+  line-height: 24px;
+  text-transform: capitalize;
+  font-weight: 600;
+  font-family: var(--button-button);
+  color: var(--gray-400);
+  text-align: left;
+}
+.button {
+  cursor: pointer;
+  border: 0;
+  padding: var(--padding-xs) var(--padding-3xl);
+  background-color: var(--gray-50);
+  border-radius: var(--br-10xs);
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
+}
+.button:hover {
+  background-color: var(--color-gainsboro-200);
+}
+.iconButtonParent,
+.job {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: flex-start;
+  gap: var(--gap-5xs);
+}
+.job {
+  align-self: stretch;
+  border-radius: var(--br-5xs);
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--padding-xl);
+  box-sizing: border-box;
+  gap: var(--gap-xl);
+  max-width: 100%;
+}
+.locationMarker {
+  width: 984px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  text-align: left;
+  font-size: var(--button-button-size);
+  color: var(--gray-900);
+  font-family: var(--button-button);
+}
+@media screen and (max-width: 450px) {
+  .heading1,
+  .info1 {
+    flex-wrap: wrap;
+  }
+}

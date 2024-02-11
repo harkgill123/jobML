@@ -1,0 +1,283 @@
+.myJobs {
+  font-weight: 500;
+}
+.span {
+  color: var(--gray-400);
+}
+.myJobs589Container {
+  position: relative;
+  line-height: 32px;
+}
+.jobStatus,
+.select1 {
+  position: relative;
+  line-height: 20px;
+}
+.select1 {
+  line-height: 24px;
+}
+.fichevronDownIcon {
+  height: 20px;
+  width: 20px;
+  position: relative;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+.select {
+  flex: 1;
+  border-radius: var(--br-9xs);
+  background-color: var(--gray-scale-white);
+  border: 1px solid var(--gray-100);
+  justify-content: space-between;
+  padding: var(--padding-xs) var(--padding-mid);
+  gap: var(--gap-xl);
+  white-space: nowrap;
+  font-size: var(--button-button-size);
+  color: var(--gray-600);
+}
+.applicationsActionNode,
+.jobStatusPanel,
+.select {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+.applicationsActionNode {
+  width: 258px;
+  justify-content: flex-start;
+  gap: var(--gap-5xl);
+  font-size: var(--body-small-500-size);
+}
+.jobStatusPanel {
+  align-self: stretch;
+  justify-content: space-between;
+  padding: 0 var(--padding-11xs);
+  gap: var(--gap-xl);
+}
+.actions,
+.applications,
+.jobs,
+.status {
+  position: relative;
+  line-height: 18px;
+  display: inline-block;
+}
+.jobs {
+  flex: 1;
+  max-width: 100%;
+}
+.actions,
+.applications,
+.status {
+  width: 88px;
+  flex-shrink: 0;
+}
+.actions,
+.applications {
+  width: 184px;
+}
+.actions {
+  width: 244px;
+}
+.jobFrame,
+.nav {
+  width: 984px;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+.nav {
+  border-radius: var(--br-9xs);
+  background-color: var(--gray-50);
+  padding: var(--padding-3xs) var(--padding-xl);
+  box-sizing: border-box;
+  gap: var(--gap-xl);
+}
+.jobFrame {
+  font-size: var(--body-small-500-size);
+  color: var(--gray-900);
+}
+.lineSeparator {
+  height: 1px;
+  flex: 1;
+  position: relative;
+  border-top: 1px solid var(--gray-100);
+  box-sizing: border-box;
+  max-width: 100%;
+  z-index: 1;
+  margin-left: -980px;
+}
+.jobParent,
+.jobsContainer {
+  width: 988px;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+.jobsContainer {
+  overflow-x: auto;
+  flex-direction: column;
+  max-width: 100%;
+  font-size: var(--body-xs-400-size);
+  color: var(--gray-700);
+}
+.fiarrowRightIcon {
+  height: 24px;
+  width: 24px;
+  position: relative;
+  overflow: hidden;
+  flex-shrink: 0;
+  transform: rotate(-180deg);
+}
+.iconButton {
+  height: 48px;
+  width: 48px;
+  border-radius: var(--br-65xl);
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: flex-start;
+  padding: var(--padding-xs);
+  box-sizing: border-box;
+  transform: rotate(180deg);
+}
+.paginationData {
+  position: relative;
+  line-height: 20px;
+  font-weight: 500;
+}
+.pagination1 {
+  flex: 1;
+  border-radius: var(--br-31xl);
+  background-color: var(--primary-500);
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  padding: var(--padding-sm);
+  color: var(--gray-scale-white);
+}
+.div {
+  position: relative;
+  line-height: 20px;
+  font-weight: 500;
+}
+.pagination2 {
+  flex: 1;
+  border-radius: var(--br-31xl);
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  padding: var(--padding-sm);
+}
+.div1 {
+  position: relative;
+  line-height: 20px;
+  font-weight: 500;
+}
+.pagination3 {
+  border-radius: var(--br-31xl);
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  padding: var(--padding-sm) var(--padding-sm) var(--padding-sm)
+    var(--padding-mini);
+}
+.div2 {
+  position: relative;
+  line-height: 20px;
+  font-weight: 500;
+}
+.pagination4 {
+  border-radius: var(--br-31xl);
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  padding: var(--padding-sm) var(--padding-sm) var(--padding-sm)
+    var(--padding-mini);
+}
+.div3 {
+  position: relative;
+  line-height: 20px;
+  font-weight: 500;
+}
+.pages,
+.pagination5 {
+  flex: 1;
+  display: flex;
+  flex-direction: row;
+}
+.pagination5 {
+  border-radius: var(--br-31xl);
+  align-items: center;
+  justify-content: center;
+  padding: var(--padding-sm);
+}
+.pages {
+  align-items: flex-start;
+  justify-content: flex-start;
+  min-width: 156px;
+}
+.fiarrowRightIcon1 {
+  height: 24px;
+  width: 24px;
+  position: relative;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+.iconButton1 {
+  cursor: pointer;
+  border: 0;
+  padding: var(--padding-xs);
+  background-color: var(--primary-50);
+  height: 48px;
+  width: 48px;
+  border-radius: var(--br-65xl);
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: flex-start;
+  box-sizing: border-box;
+}
+.jobStatusPanelParent,
+.pagination {
+  display: flex;
+  justify-content: flex-start;
+  max-width: 100%;
+}
+.pagination {
+  width: 352px;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  padding: var(--padding-5xl) 0 0;
+  box-sizing: border-box;
+  gap: var(--gap-5xs);
+  text-align: center;
+  font-size: var(--body-small-500-size);
+  color: var(--gray-600);
+}
+.jobStatusPanelParent {
+  align-self: stretch;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--gap-5xl);
+  text-align: left;
+  font-size: var(--body-xl-500-size);
+  color: var(--gray-900);
+  font-family: var(--button-button);
+}
+@media screen and (max-width: 450px) {
+  .myJobs589Container {
+    font-size: var(--button-button-size);
+    line-height: 26px;
+  }
+  .jobStatusPanel {
+    flex-wrap: wrap;
+  }
+}

@@ -1,0 +1,66 @@
+.appliedJobs,
+.jobCardFrame {
+  align-self: stretch;
+  position: relative;
+}
+.jobCardFrame {
+  line-height: 32px;
+  font-weight: 600;
+}
+.appliedJobs {
+  font-size: var(--body-small-500-size);
+  line-height: 20px;
+  color: var(--color-gray-100);
+}
+.jobDateStatusActionFrame {
+  width: 180px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  gap: var(--gap-9xs);
+}
+.briefcaseDuotone11 {
+  height: 32px;
+  width: 32px;
+  position: relative;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+.funFacts,
+.icon {
+  border-radius: var(--br-8xs);
+  background-color: var(--gray-scale-white);
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: flex-start;
+  padding: var(--padding-base);
+}
+.funFacts {
+  flex: 1;
+  border-radius: var(--br-5xs);
+  background-color: var(--color-deeppink-100);
+  overflow: hidden;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--padding-xl) var(--padding-12xl) var(--padding-xl)
+    var(--padding-16xl);
+  box-sizing: border-box;
+  min-width: 308px;
+  gap: var(--gap-xl);
+  max-width: 100%;
+  text-align: left;
+  font-size: var(--heading-04-size);
+  color: var(--gray-900);
+  font-family: var(--button-button);
+}
+@media screen and (max-width: 450px) {
+  .jobCardFrame {
+    font-size: var(--font-size-lgi);
+    line-height: 26px;
+  }
+  .funFacts {
+    flex-wrap: wrap;
+  }
+}

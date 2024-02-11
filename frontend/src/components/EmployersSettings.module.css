@@ -1,0 +1,509 @@
+.settings {
+  margin: 0;
+  position: relative;
+  font-size: inherit;
+  line-height: 32px;
+  font-weight: 500;
+  font-family: inherit;
+}
+.tabChild {
+  height: 1px;
+  width: 984px;
+  position: relative;
+  border-top: 1px solid var(--gray-100);
+  box-sizing: border-box;
+  max-width: 100%;
+}
+.userIcon {
+  height: 24px;
+  width: 24px;
+  position: relative;
+}
+.personal {
+  position: relative;
+  font-size: var(--body-small-500-size);
+  line-height: 20px;
+  font-weight: 600;
+  font-family: var(--button-button);
+  color: var(--primary-500);
+  text-align: left;
+}
+.tab1 {
+  cursor: pointer;
+  border: 0;
+  padding: var(--padding-xs) var(--padding-mid) var(--padding-xs)
+    var(--padding-xl);
+  background-color: var(--gray-scale-white);
+  box-shadow: 0-2px 0#0a65cc inset;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  gap: var(--gap-5xs);
+  white-space: nowrap;
+}
+.tab1:hover {
+  background-color: var(--color-gainsboro-100);
+}
+.usercircleIcon {
+  height: 24px;
+  width: 24px;
+  position: relative;
+}
+.personal1 {
+  position: relative;
+  line-height: 20px;
+  font-weight: 500;
+}
+.tab2 {
+  display: none;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  padding: var(--padding-xs) var(--padding-xl);
+  gap: var(--gap-5xs);
+}
+.globesimpleIcon {
+  height: 24px;
+  width: 24px;
+  position: relative;
+}
+.personal2 {
+  position: relative;
+  line-height: 20px;
+  font-weight: 500;
+}
+.tab3 {
+  display: none;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  padding: var(--padding-xs) var(--padding-xl);
+  gap: var(--gap-5xs);
+}
+.gearsixIcon {
+  height: 24px;
+  width: 24px;
+  position: relative;
+}
+.personal3 {
+  position: relative;
+  line-height: 20px;
+  font-weight: 500;
+}
+.tab,
+.tab4,
+.tabParent {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+}
+.tab4 {
+  align-items: center;
+  padding: var(--padding-xs) var(--padding-mid) var(--padding-xs)
+    var(--padding-xl);
+  gap: var(--gap-5xs);
+}
+.tab,
+.tabParent {
+  max-width: 100%;
+}
+.tabParent {
+  align-items: flex-start;
+  gap: var(--gap-xs);
+  margin-left: -984px;
+}
+.tab {
+  flex: 1;
+  align-items: flex-end;
+}
+.settingsParent,
+.tabWrapper {
+  align-self: stretch;
+  display: flex;
+  max-width: 100%;
+}
+.tabWrapper {
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--body-small-500-size);
+  color: var(--gray-500);
+}
+.settingsParent {
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  gap: var(--gap-base);
+}
+.logoBanner {
+  align-self: stretch;
+  position: relative;
+  font-size: var(--body-large-500-size);
+  line-height: 28px;
+  font-weight: 500;
+}
+.profilePicture1 {
+  position: relative;
+  line-height: 20px;
+}
+.bg {
+  align-self: stretch;
+  flex: 1;
+  position: relative;
+  border-radius: var(--br-7xs);
+  background-color: var(--gray-500);
+}
+.mb,
+.remove,
+.replace {
+  position: relative;
+  line-height: 20px;
+}
+.remove,
+.replace {
+  color: var(--gray-900);
+}
+.replace {
+  font-weight: 500;
+  color: var(--primary-500);
+}
+.information,
+.profilePicture {
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  gap: var(--gap-5xs);
+}
+.information {
+  flex-direction: row;
+  padding: var(--padding-9xs) 0 0;
+  color: var(--gray-600);
+}
+.profilePicture {
+  height: 302px;
+  width: 240px;
+  flex-direction: column;
+}
+.bannerImage {
+  position: relative;
+  line-height: 20px;
+}
+.bg1 {
+  border: 0;
+  background-color: var(--gray-500);
+  height: 240px;
+  width: auto;
+  outline: 0;
+  align-self: stretch;
+  position: relative;
+  border-radius: var(--br-7xs);
+}
+.mb1,
+.remove1,
+.replace1 {
+  position: relative;
+  line-height: 20px;
+}
+.remove1,
+.replace1 {
+  color: var(--gray-900);
+}
+.replace1 {
+  font-weight: 500;
+  color: var(--primary-500);
+}
+.information1,
+.profilePicture2 {
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  gap: var(--gap-5xs);
+}
+.information1 {
+  flex-direction: row;
+  padding: var(--padding-9xs) 0 0;
+  color: var(--gray-600);
+}
+.profilePicture2 {
+  flex: 1;
+  flex-direction: column;
+  min-width: 468px;
+  max-width: 100%;
+}
+.inputField,
+.profilePictureParent {
+  align-self: stretch;
+  box-sizing: border-box;
+}
+.profilePictureParent {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: flex-start;
+  padding: 0 0 var(--padding-7xs);
+  gap: var(--gap-5xl);
+  max-width: 100%;
+}
+.inputField {
+  height: 1px;
+  position: relative;
+  border-top: 1px solid var(--gray-100);
+}
+.companyName {
+  position: relative;
+  line-height: 20px;
+}
+.inputField2 {
+  border: 1px solid var(--gray-100);
+  outline: 0;
+  background-color: var(--gray-scale-white);
+  align-self: stretch;
+  height: 48px;
+  position: relative;
+  border-radius: var(--br-8xs);
+  box-sizing: border-box;
+  padding: var(--padding-3xs);
+  min-width: 250px;
+}
+.inputField1 {
+  align-self: stretch;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  padding: var(--padding-7xs) 0 0;
+  gap: var(--gap-5xs);
+}
+.aboutUs,
+.writeDownAbout {
+  position: relative;
+  line-height: 20px;
+}
+.writeDownAbout {
+  line-height: 24px;
+}
+.writeDownAboutYourCompanyWrapper {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: flex-start;
+  padding: 0 var(--padding-5xs);
+  box-sizing: border-box;
+  max-width: 100%;
+}
+.textBolder1Icon {
+  height: 18px;
+  width: 18px;
+  position: relative;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+.textBolder1Wrapper {
+  border-radius: var(--br-9xs);
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: flex-start;
+  padding: var(--padding-5xs);
+}
+.textItalic1Icon {
+  height: 18px;
+  width: 18px;
+  position: relative;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+.textItalic1Wrapper {
+  border-radius: var(--br-9xs);
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: flex-start;
+  padding: var(--padding-5xs);
+}
+.textUnderline1Icon {
+  height: 18px;
+  width: 18px;
+  position: relative;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+.textUnderline1Wrapper {
+  border-radius: var(--br-9xs);
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: flex-start;
+  padding: var(--padding-5xs);
+}
+.textstrikethroughIcon {
+  height: 18px;
+  width: 18px;
+  position: relative;
+}
+.textstrikethroughWrapper {
+  border-radius: var(--br-9xs);
+  padding: var(--padding-5xs);
+}
+.frameList,
+.textstrikethroughWrapper {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+.frameChild {
+  height: 24px;
+  width: 1px;
+  position: relative;
+  border-right: 1px solid var(--gray-100);
+  box-sizing: border-box;
+}
+.filinkIcon {
+  height: 18px;
+  width: 18px;
+  position: relative;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+.linkButton {
+  border-radius: var(--br-9xs);
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: flex-start;
+  padding: var(--padding-5xs);
+}
+.frameItem {
+  height: 24px;
+  width: 1px;
+  position: relative;
+  border-right: 1px solid var(--gray-100);
+  box-sizing: border-box;
+}
+.listdashesIcon {
+  height: 18px;
+  width: 18px;
+  position: relative;
+}
+.buttonInstance {
+  border-radius: var(--br-9xs);
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: flex-start;
+  padding: var(--padding-5xs);
+}
+.listnumbersIcon {
+  height: 18px;
+  width: 18px;
+  position: relative;
+}
+.buttonInstance1 {
+  border-radius: var(--br-9xs);
+  padding: var(--padding-5xs);
+}
+.buttonInstance1,
+.frameListParent,
+.listDashes {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+.frameListParent {
+  align-items: center;
+  gap: var(--gap-5xs);
+}
+.inputField3,
+.inputField4,
+.logoBannerImageParent {
+  align-self: stretch;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  max-width: 100%;
+}
+.inputField4 {
+  border-radius: var(--br-7xs);
+  background-color: var(--gray-scale-white);
+  border: 1px solid var(--gray-100);
+  box-sizing: border-box;
+  padding: var(--padding-xs) var(--padding-3xs) var(--padding-5xs);
+  gap: var(--gap-73xl);
+  font-size: var(--button-button-size);
+  color: var(--gray-400);
+}
+.inputField3,
+.logoBannerImageParent {
+  gap: var(--gap-5xs);
+}
+.logoBannerImageParent {
+  gap: var(--gap-3xs);
+  font-size: var(--body-small-500-size);
+}
+.primary {
+  position: relative;
+  font-size: var(--button-button-size);
+  line-height: 24px;
+  text-transform: capitalize;
+  font-weight: 600;
+  font-family: var(--button-button);
+  color: var(--gray-scale-white);
+  text-align: left;
+}
+.button {
+  cursor: pointer;
+  border: 0;
+  padding: var(--padding-base) var(--padding-9xl) var(--padding-base)
+    var(--padding-13xl);
+  background-color: var(--primary-500);
+  border-radius: var(--br-9xs);
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
+}
+.button:hover {
+  background-color: var(--color-dodgerblue);
+}
+.employersSettings {
+  width: 984px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  gap: var(--gap-13xl);
+  max-width: 100%;
+  text-align: left;
+  font-size: var(--heading-04-size);
+  color: var(--gray-900);
+  font-family: var(--button-button);
+}
+@media screen and (max-width: 900px) {
+  .profilePicture2 {
+    min-width: 100%;
+  }
+  .inputField4 {
+    gap: var(--gap-73xl);
+  }
+  .employersSettings {
+    gap: var(--gap-13xl);
+  }
+}
+@media screen and (max-width: 450px) {
+  .settings {
+    font-size: var(--font-size-lgi);
+    line-height: 26px;
+  }
+  .tabParent {
+    flex-wrap: wrap;
+  }
+  .inputField4 {
+    gap: var(--gap-73xl);
+  }
+}

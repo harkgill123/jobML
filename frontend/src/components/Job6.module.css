@@ -1,0 +1,133 @@
+.suniorUxDesigner {
+  align-self: stretch;
+  position: relative;
+  line-height: 24px;
+  font-weight: 500;
+}
+.daysRemaining,
+.div,
+.fullTime {
+  position: relative;
+  line-height: 20px;
+}
+.dotsButtonFrame,
+.statusCircle {
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+.dotsButtonFrame {
+  flex-direction: row;
+  gap: var(--gap-3xs);
+  font-size: var(--body-small-500-size);
+  color: var(--gray-500);
+}
+.statusCircle {
+  flex: 1;
+  flex-direction: column;
+  gap: var(--gap-5xs);
+  min-width: 239px;
+  max-width: 100%;
+  font-size: var(--button-button-size);
+}
+.xcircleIcon {
+  height: 20px;
+  width: 20px;
+  position: relative;
+  min-height: 20px;
+}
+.expire {
+  flex: 1;
+  position: relative;
+  line-height: 20px;
+  font-weight: 500;
+}
+.jobStatus {
+  width: 88px;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: flex-start;
+  gap: var(--gap-9xs);
+  color: var(--danger-500);
+}
+.usersIcon {
+  height: 24px;
+  width: 24px;
+  position: relative;
+}
+.applications {
+  flex: 1;
+  position: relative;
+  line-height: 20px;
+}
+.jobStatus1 {
+  width: 184px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: var(--gap-5xs);
+  color: var(--gray-600);
+}
+.primary {
+  position: relative;
+  font-size: var(--button-button-size);
+  line-height: 24px;
+  text-transform: capitalize;
+  font-weight: 600;
+  font-family: var(--button-button);
+  color: var(--primary-500);
+  text-align: left;
+}
+.button {
+  cursor: pointer;
+  border: 0;
+  padding: var(--padding-xs) var(--padding-3xl);
+  background-color: var(--gray-50);
+  border-radius: var(--br-10xs);
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
+}
+.button:hover {
+  background-color: var(--color-gainsboro-200);
+}
+.dotsthreeverticalIcon {
+  height: 24px;
+  width: 24px;
+  position: relative;
+}
+.applicationStatusFrame,
+.iconButton,
+.job {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+.iconButton {
+  border-radius: var(--br-8xs);
+  padding: var(--padding-xs);
+}
+.applicationStatusFrame,
+.job {
+  gap: var(--gap-5xs);
+}
+.job {
+  flex: 0.9593;
+  border-radius: var(--br-5xs);
+  overflow: hidden;
+  align-items: center;
+  justify-content: center;
+  padding: var(--padding-xl);
+  box-sizing: border-box;
+  gap: var(--gap-xl);
+  max-width: 100%;
+  text-align: left;
+  font-size: var(--body-small-500-size);
+  color: var(--gray-900);
+  font-family: var(--button-button);
+}

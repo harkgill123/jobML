@@ -1,0 +1,29 @@
+.candidateMyProfile,
+.candidateSettingsWrapper {
+  display: flex;
+  align-items: flex-start;
+  box-sizing: border-box;
+}
+.candidateSettingsWrapper {
+  width: 1604px;
+  flex-direction: row;
+  justify-content: center;
+  padding: 0 var(--padding-xl);
+  max-width: 100%;
+}
+.candidateMyProfile {
+  width: 100%;
+  position: relative;
+  background-color: var(--gray-scale-white);
+  overflow: hidden;
+  flex-direction: column;
+  justify-content: flex-start;
+  padding: 0 0 256px;
+  gap: var(--gap-31xl);
+  letter-spacing: normal;
+}
+@media screen and (max-width: 900px) {
+  .candidateMyProfile {
+    gap: var(--gap-31xl);
+  }
+}
