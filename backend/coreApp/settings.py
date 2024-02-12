@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-@$o*d9ud7#kwn7@xcrso=b-djf7v4lcn61xjeborl3@lbu^y)s
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"]
 
 
 # Application definition
@@ -41,7 +41,8 @@ INSTALLED_APPS = [
     'CoreApp',
     'UserAuth',
     'Recruiter',
-    'Applicant'
+    'Applicant',
+    'django_extensions'
 ]
 
 MIDDLEWARE = [
