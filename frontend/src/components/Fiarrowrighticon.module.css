@@ -1,0 +1,58 @@
+.savedCadidates {
+  margin: 0;
+  position: relative;
+  font-size: inherit;
+  line-height: 32px;
+  font-weight: 500;
+  font-family: inherit;
+}
+.headingChild {
+  height: 20px;
+  width: 20px;
+  display: none;
+}
+.heading {
+  flex: 1;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  gap: var(--gap-783xl);
+  max-width: 100%;
+}
+.fiarrowrighticon,
+.iconbutton,
+.primaryButton {
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  max-width: 100%;
+}
+.iconbutton {
+  align-self: stretch;
+  flex-direction: row;
+  padding: 0 0 var(--padding-xs);
+  box-sizing: border-box;
+  font-size: var(--body-xl-500-size);
+}
+.fiarrowrighticon,
+.primaryButton {
+  flex-direction: column;
+}
+.primaryButton {
+  width: 984px;
+  overflow-x: auto;
+}
+.fiarrowrighticon {
+  align-self: stretch;
+  text-align: left;
+  font-size: var(--body-small-500-size);
+  color: var(--gray-900);
+  font-family: var(--button-button);
+}
+@media screen and (max-width: 450px) {
+  .savedCadidates {
+    font-size: var(--button-button-size);
+    line-height: 26px;
+  }
+}

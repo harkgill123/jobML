@@ -1,0 +1,45 @@
+.education {
+  width: 86px;
+  position: relative;
+  line-height: 20px;
+  display: inline-block;
+  padding-right: var(--padding-xl);
+}
+.select1 {
+  position: relative;
+  line-height: 24px;
+}
+.fichevronDownIcon {
+  height: 20px;
+  width: 20px;
+  position: relative;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+.select {
+  align-self: stretch;
+  border-radius: var(--br-7xs);
+  background-color: var(--gray-scale-white);
+  border: 1px solid var(--gray-100);
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--padding-xs) var(--padding-mid);
+  gap: var(--gap-xl);
+  font-size: var(--button-button-size);
+  color: var(--gray-500);
+}
+.inputField {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  gap: var(--gap-5xs);
+  min-width: 237px;
+  text-align: left;
+  font-size: var(--body-small-500-size);
+  color: var(--gray-900);
+  font-family: var(--button-button);
+}

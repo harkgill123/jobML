@@ -1,0 +1,704 @@
+.setting {
+  margin: 0;
+  align-self: stretch;
+  position: relative;
+  font-size: inherit;
+  line-height: 32px;
+  font-weight: 500;
+  font-family: inherit;
+}
+.frameChild {
+  height: 1px;
+  width: 984px;
+  position: relative;
+  border-top: 1px solid var(--gray-100);
+  box-sizing: border-box;
+  max-width: 100%;
+}
+.userIcon {
+  height: 24px;
+  width: 24px;
+  position: relative;
+}
+.personal {
+  position: relative;
+  font-size: var(--body-small-500-size);
+  line-height: 20px;
+  font-weight: 600;
+  font-family: var(--button-button);
+  color: var(--primary-500);
+  text-align: left;
+}
+.tab {
+  cursor: pointer;
+  border: 0;
+  padding: var(--padding-xs) var(--padding-xl);
+  background-color: var(--gray-scale-white);
+  box-shadow: 0-2px 0#0a65cc inset;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  gap: var(--gap-5xs);
+}
+.tab:hover {
+  background-color: var(--color-gainsboro-100);
+}
+.usercircleIcon {
+  height: 24px;
+  width: 24px;
+  position: relative;
+}
+.personal1 {
+  position: relative;
+  line-height: 20px;
+  font-weight: 500;
+}
+.tab1 {
+  display: none;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  padding: var(--padding-xs) var(--padding-xl);
+  gap: var(--gap-5xs);
+}
+.globesimpleIcon {
+  height: 24px;
+  width: 24px;
+  position: relative;
+}
+.personal2 {
+  position: relative;
+  line-height: 20px;
+  font-weight: 500;
+}
+.tab2 {
+  display: none;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  padding: var(--padding-xs) var(--padding-xl);
+  gap: var(--gap-5xs);
+}
+.gearsixIcon {
+  height: 24px;
+  width: 24px;
+  position: relative;
+}
+.personal3 {
+  position: relative;
+  line-height: 20px;
+  font-weight: 500;
+}
+.tab3 {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  padding: var(--padding-xs) var(--padding-mid) var(--padding-xs)
+    var(--padding-xl);
+  gap: var(--gap-5xs);
+}
+.lineParent,
+.settingParent,
+.tabParent {
+  display: flex;
+  justify-content: flex-start;
+  max-width: 100%;
+}
+.tabParent {
+  flex-direction: row;
+  align-items: flex-start;
+  gap: var(--gap-xs);
+  margin-left: -984px;
+}
+.lineParent,
+.settingParent {
+  align-self: stretch;
+}
+.lineParent {
+  flex-direction: row;
+  align-items: flex-end;
+  font-size: var(--body-small-500-size);
+  color: var(--gray-500);
+}
+.settingParent {
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--gap-base);
+}
+.basicInformation {
+  align-self: stretch;
+  position: relative;
+  line-height: 28px;
+  font-weight: 500;
+}
+.profilePicture1 {
+  height: 20px;
+  position: relative;
+  line-height: 20px;
+  display: inline-block;
+}
+.bg {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  border-radius: var(--br-7xs);
+  background-color: var(--color-whitesmoke-300);
+  border: 2px dashed var(--color-lightgray-200);
+  box-sizing: border-box;
+}
+.fiuploadCloudIcon {
+  width: 48px;
+  height: 48px;
+  position: relative;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+.browsePhoto {
+  font-weight: 500;
+}
+.orDropHere {
+  color: var(--gray-700);
+}
+.browsePhotoOrContainer {
+  align-self: stretch;
+  height: 20px;
+  position: relative;
+  line-height: 20px;
+  display: inline-block;
+}
+.aPhotoLarger {
+  align-self: stretch;
+  flex: 1;
+  position: relative;
+  font-size: var(--body-xs-400-size);
+  line-height: 18px;
+  color: var(--gray-500);
+}
+.content,
+.info {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+.info {
+  align-self: stretch;
+  flex: 1;
+  align-items: flex-start;
+  gap: var(--gap-7xs);
+}
+.content {
+  position: absolute;
+  top: calc(50% - 63px);
+  left: calc(50% - 100px);
+  width: 200px;
+  align-items: center;
+  gap: var(--gap-base);
+}
+.uploadProfilePhoto {
+  width: 240px;
+  height: 240px;
+  position: relative;
+  text-align: center;
+}
+.profilePicture {
+  display: none;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  padding: var(--padding-xl) 0;
+  gap: var(--gap-5xs);
+}
+.fullName {
+  position: relative;
+  line-height: 20px;
+}
+.inputField2 {
+  border: 1px solid var(--gray-100);
+  outline: 0;
+  background-color: var(--gray-scale-white);
+  align-self: stretch;
+  height: 48px;
+  position: relative;
+  border-radius: var(--br-8xs);
+  box-sizing: border-box;
+  padding: var(--padding-3xs);
+  min-width: 203px;
+}
+.inputField1 {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  gap: var(--gap-5xs);
+  min-width: 220px;
+  max-width: 100%;
+}
+.tittleheadline {
+  position: relative;
+  line-height: 20px;
+}
+.inputField4 {
+  border: 1px solid var(--gray-100);
+  outline: 0;
+  background-color: var(--gray-scale-white);
+  align-self: stretch;
+  height: 48px;
+  position: relative;
+  border-radius: var(--br-8xs);
+  box-sizing: border-box;
+  padding: var(--padding-3xs);
+  min-width: 203px;
+}
+.inputField3,
+.row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  max-width: 100%;
+}
+.inputField3 {
+  flex: 1;
+  flex-direction: column;
+  gap: var(--gap-5xs);
+  min-width: 220px;
+}
+.row {
+  align-self: stretch;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: var(--gap-lg);
+}
+.experience,
+.select1 {
+  position: relative;
+  line-height: 20px;
+}
+.select1 {
+  line-height: 24px;
+}
+.fichevronDownIcon {
+  height: 20px;
+  width: 20px;
+  position: relative;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+.select {
+  align-self: stretch;
+  border-radius: var(--br-7xs);
+  background-color: var(--gray-scale-white);
+  border: 1px solid var(--gray-100);
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--padding-xs) var(--padding-mid);
+  gap: var(--gap-xl);
+  font-size: var(--button-button-size);
+  color: var(--gray-500);
+}
+.inputField5 {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  gap: var(--gap-5xs);
+  min-width: 220px;
+  max-width: 100%;
+}
+.educations,
+.select3 {
+  position: relative;
+  line-height: 20px;
+}
+.select3 {
+  line-height: 24px;
+}
+.fichevronDownIcon1 {
+  height: 20px;
+  width: 20px;
+  position: relative;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+.select2 {
+  align-self: stretch;
+  border-radius: var(--br-7xs);
+  background-color: var(--gray-scale-white);
+  border: 1px solid var(--gray-100);
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--padding-xs) var(--padding-mid);
+  gap: var(--gap-xl);
+  font-size: var(--button-button-size);
+  color: var(--gray-500);
+}
+.inputField6,
+.row1 {
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  max-width: 100%;
+}
+.inputField6 {
+  flex: 1;
+  flex-direction: column;
+  gap: var(--gap-5xs);
+  min-width: 220px;
+}
+.row1 {
+  align-self: stretch;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: var(--gap-lg);
+}
+.personalWebsite {
+  position: relative;
+  line-height: 20px;
+}
+.linksimpleIcon {
+  height: 24px;
+  width: 24px;
+  position: relative;
+  min-height: 24px;
+}
+.jobTittleKeyword {
+  width: 98px;
+  border: 0;
+  outline: 0;
+  font-family: var(--button-button);
+  font-size: var(--button-button-size);
+  background-color: transparent;
+  height: 24px;
+  position: relative;
+  line-height: 24px;
+  color: var(--gray-400);
+  text-align: left;
+  display: inline-block;
+}
+.inputField,
+.inputField7,
+.inputField8 {
+  align-self: stretch;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+.inputField8 {
+  border-radius: var(--br-7xs);
+  background-color: var(--gray-scale-white);
+  border: 1px solid var(--gray-100);
+  flex-direction: row;
+  padding: var(--padding-xs) var(--padding-lg);
+  gap: var(--gap-xs);
+}
+.inputField,
+.inputField7 {
+  flex-direction: column;
+  gap: var(--gap-5xs);
+}
+.inputField {
+  gap: var(--gap-lg);
+  max-width: 100%;
+}
+.primary {
+  position: relative;
+  font-size: var(--button-button-size);
+  line-height: 24px;
+  text-transform: capitalize;
+  font-weight: 600;
+  font-family: var(--button-button);
+  color: var(--gray-scale-white);
+  text-align: left;
+}
+.button {
+  cursor: pointer;
+  border: 0;
+  padding: var(--padding-base) var(--padding-9xl) var(--padding-base)
+    var(--padding-13xl);
+  background-color: var(--primary-500);
+  border-radius: var(--br-9xs);
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
+}
+.button:hover {
+  background-color: var(--color-dodgerblue);
+}
+.inputFieldParent {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  gap: var(--gap-13xl);
+  max-width: 100%;
+}
+.profilePictureParent {
+  width: 696px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: var(--gap-29xl);
+  max-width: 100%;
+  font-size: var(--body-small-500-size);
+}
+.basicInformationParent,
+.yourCvresume1 {
+  align-self: stretch;
+  font-size: var(--body-large-500-size);
+}
+.basicInformationParent {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  gap: var(--gap-lg);
+  max-width: 100%;
+}
+.yourCvresume1 {
+  position: relative;
+  line-height: 28px;
+  font-weight: 500;
+}
+.filetextIcon {
+  height: 32px;
+  width: 32px;
+  position: relative;
+  z-index: 0;
+}
+.mb,
+.professionalResume {
+  flex: 1;
+  position: relative;
+  line-height: 20px;
+}
+.professionalResume {
+  align-self: stretch;
+  font-weight: 500;
+}
+.mb {
+  color: var(--gray-600);
+}
+.information {
+  align-self: stretch;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  gap: var(--gap-11xs);
+  z-index: 1;
+}
+.dot,
+.dot1,
+.dot2 {
+  height: 3px;
+  width: 3px;
+  position: relative;
+  border-radius: 50%;
+  background-color: var(--gray-900);
+}
+.button1 {
+  width: 24px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--padding-2xs-5) var(--padding-9xs);
+  box-sizing: border-box;
+  gap: var(--gap-9xs-5);
+  z-index: 2;
+}
+.editIcon,
+.editResume {
+  position: absolute;
+  top: calc(50% - 10px);
+}
+.editResume {
+  left: 44px;
+  line-height: 20px;
+  font-weight: 500;
+}
+.editIcon {
+  left: 16px;
+  width: 20px;
+  height: 20px;
+  overflow: hidden;
+}
+.menuItem {
+  align-self: stretch;
+  height: 40px;
+  position: relative;
+  background-color: var(--primary-50);
+  white-space: nowrap;
+}
+.delete,
+.trashIcon {
+  position: absolute;
+  top: calc(50% - 10px);
+}
+.delete {
+  left: 44px;
+  line-height: 20px;
+  font-weight: 500;
+}
+.trashIcon {
+  left: 16px;
+  width: 20px;
+  height: 20px;
+}
+.menuItem1 {
+  align-self: stretch;
+  height: 40px;
+  position: relative;
+  color: var(--danger-500);
+}
+.cvResume,
+.dropdown,
+.row2 {
+  justify-content: flex-start;
+  box-sizing: border-box;
+}
+.dropdown {
+  width: 160px;
+  margin: 0 !important;
+  position: absolute;
+  top: 57px;
+  left: 132px;
+  border-radius: var(--br-7xs);
+  background-color: var(--gray-scale-white);
+  box-shadow: 0 12px 32px rgba(24, 25, 28, 0.08);
+  border: 1px solid var(--color-whitesmoke-100);
+  overflow: hidden;
+  flex-shrink: 0;
+  display: none;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: var(--padding-xs) 0;
+  z-index: 3;
+  color: var(--primary-500);
+}
+.cvResume,
+.row2 {
+  width: 312px;
+  flex-direction: row;
+}
+.cvResume {
+  align-self: stretch;
+  border-radius: var(--br-7xs);
+  background-color: var(--gray-50);
+  display: none;
+  align-items: center;
+  padding: var(--padding-xl);
+  position: relative;
+  gap: var(--gap-xs);
+}
+.row2 {
+  display: flex;
+  align-items: flex-start;
+  padding: 0 0 var(--padding-7xs);
+  gap: var(--gap-5xl);
+}
+.pluscircleIcon {
+  height: 32px;
+  width: 32px;
+  position: relative;
+}
+.addCvresume,
+.browseFileOr {
+  align-self: stretch;
+  position: relative;
+  line-height: 20px;
+}
+.addCvresume {
+  font-weight: 500;
+}
+.browseFileOr {
+  width: calc(100% - 0px);
+  border: 0;
+  outline: 0;
+  font-family: var(--button-button);
+  font-size: var(--body-small-500-size);
+  background-color: transparent;
+  height: 20px;
+  color: var(--gray-600);
+  text-align: left;
+  display: inline-block;
+  min-width: 137px;
+}
+.cvResume1,
+.information1 {
+  display: flex;
+  justify-content: flex-start;
+}
+.information1 {
+  flex: 1;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--gap-11xs);
+}
+.cvResume1 {
+  width: 312px;
+  border-radius: var(--br-7xs);
+  background-color: var(--gray-scale-white);
+  border: 2px dashed var(--gray-100);
+  box-sizing: border-box;
+  flex-direction: row;
+  align-items: center;
+  padding: var(--padding-xl) var(--padding-3xl) var(--padding-xl)
+    var(--padding-lg);
+  gap: var(--gap-xs);
+}
+.candidateSettings,
+.yourCvresume {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+.yourCvresume {
+  align-self: stretch;
+  gap: var(--gap-lg);
+  font-size: var(--body-small-500-size);
+}
+.candidateSettings {
+  width: 984px;
+  background-color: var(--gray-scale-white);
+  gap: var(--gap-13xl);
+  max-width: 100%;
+  text-align: left;
+  font-size: var(--heading-04-size);
+  color: var(--gray-900);
+  font-family: var(--button-button);
+}
+@media screen and (max-width: 900px) {
+  .inputFieldParent {
+    gap: var(--gap-13xl);
+  }
+  .profilePictureParent {
+    gap: var(--gap-29xl);
+  }
+  .candidateSettings {
+    gap: var(--gap-13xl);
+  }
+}
+@media screen and (max-width: 450px) {
+  .setting {
+    font-size: var(--font-size-lgi);
+    line-height: 26px;
+  }
+}

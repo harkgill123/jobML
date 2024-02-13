@@ -1,0 +1,225 @@
+.employersLogoIcon {
+  height: 28px;
+  width: 28px;
+  position: relative;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+.employersLogo {
+  border-radius: var(--br-7xs);
+  background-color: var(--color-tomato);
+  display: none;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: flex-start;
+  padding: var(--padding-xl);
+}
+.seniorUxDesigner {
+  position: relative;
+  line-height: 28px;
+  font-weight: 500;
+}
+.featured {
+  position: relative;
+  line-height: 20px;
+}
+.badge,
+.heading1 {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+}
+.badge {
+  border-radius: var(--br-33xl);
+  background-color: var(--primary-501);
+  align-items: flex-start;
+  padding: var(--padding-10xs) var(--padding-4xs) var(--padding-10xs)
+    var(--padding-xs);
+  white-space: nowrap;
+  font-size: var(--body-small-500-size);
+  color: var(--primary-500);
+}
+.heading1 {
+  align-items: center;
+  gap: var(--gap-5xs);
+}
+.fimapPinIcon {
+  height: 22px;
+  width: 22px;
+  position: relative;
+  overflow: hidden;
+  flex-shrink: 0;
+  min-height: 22px;
+}
+.unitedKingdomOf {
+  position: relative;
+  line-height: 20px;
+}
+.loaction {
+  flex: 1;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  gap: var(--gap-7xs);
+  min-width: 95px;
+}
+.currencyDollar1Icon {
+  height: 22px;
+  width: 22px;
+  position: relative;
+  overflow: hidden;
+  flex-shrink: 0;
+  min-height: 22px;
+}
+.k35k {
+  position: relative;
+  line-height: 20px;
+}
+.price {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  gap: var(--gap-9xs);
+}
+.calendarBlank11 {
+  height: 22px;
+  width: 22px;
+  position: relative;
+  overflow: hidden;
+  flex-shrink: 0;
+  min-height: 22px;
+}
+.xcircleIcon {
+  height: 20px;
+  width: 20px;
+  position: relative;
+  display: none;
+}
+.daysRemaining {
+  position: relative;
+  line-height: 20px;
+}
+.price1 {
+  flex: 1;
+  flex-direction: row;
+  align-items: center;
+  gap: var(--gap-7xs);
+  min-width: 97px;
+}
+.heading,
+.info,
+.info1,
+.price1 {
+  display: flex;
+  justify-content: flex-start;
+}
+.info1 {
+  align-self: stretch;
+  flex-direction: row;
+  align-items: center;
+  gap: var(--gap-base);
+  font-size: var(--body-small-500-size);
+  color: var(--gray-scale-600);
+}
+.heading,
+.info {
+  max-width: 100%;
+}
+.heading {
+  flex: 1;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--gap-xs);
+}
+.info {
+  width: 428px;
+  flex-direction: row;
+  align-items: center;
+  gap: var(--gap-xl);
+}
+.bookmarksimpleIcon {
+  height: 24px;
+  width: 24px;
+  position: relative;
+}
+.iconButton {
+  border-radius: var(--br-8xs);
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: flex-start;
+  padding: var(--padding-xs);
+}
+.primary {
+  position: relative;
+  font-size: var(--button-button-size);
+  line-height: 24px;
+  text-transform: capitalize;
+  font-weight: 600;
+  font-family: var(--button-button);
+  color: var(--primary-500);
+  text-align: left;
+}
+.fiarrowRightIcon {
+  height: 24px;
+  width: 24px;
+  position: relative;
+  overflow: hidden;
+  flex-shrink: 0;
+  min-height: 24px;
+}
+.button,
+.job,
+.pagination {
+  display: flex;
+  flex-direction: row;
+}
+.button {
+  cursor: pointer;
+  border: 0;
+  padding: var(--padding-xs) var(--padding-3xl);
+  background-color: var(--primary-50);
+  border-radius: var(--br-10xs);
+  align-items: center;
+  justify-content: center;
+  gap: var(--gap-xs);
+  white-space: nowrap;
+}
+.button:hover {
+  background-color: var(--color-lightgray-100);
+}
+.job,
+.pagination {
+  align-items: flex-start;
+  justify-content: flex-start;
+  gap: var(--gap-5xs);
+}
+.job {
+  align-self: stretch;
+  border-radius: var(--br-5xs);
+  background-color: var(--gray-scale-white);
+  border: 1px solid var(--gray-100);
+  box-sizing: border-box;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--padding-13xl);
+  gap: var(--gap-xl);
+  max-width: 100%;
+  text-align: left;
+  font-size: var(--body-large-500-size);
+  color: var(--gray-900);
+  font-family: var(--button-button);
+}
+@media screen and (max-width: 900px) {
+  .job {
+    flex-wrap: wrap;
+  }
+}
+@media screen and (max-width: 450px) {
+  .heading1,
+  .info1 {
+    flex-wrap: wrap;
+  }
+}

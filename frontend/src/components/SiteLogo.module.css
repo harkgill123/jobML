@@ -1,0 +1,224 @@
+.findAJob {
+  margin: 0;
+  width: 652px;
+  height: 128px;
+  position: relative;
+  font-size: inherit;
+  line-height: 64px;
+  font-weight: 500;
+  font-family: inherit;
+  display: inline-block;
+  max-width: 100%;
+}
+.fisearchIcon {
+  height: 24px;
+  width: 24px;
+  position: relative;
+  overflow: hidden;
+  flex-shrink: 0;
+  min-height: 24px;
+}
+.jobTittleKeyword {
+  width: 156px;
+  border: 0;
+  outline: 0;
+  font-family: var(--button-button);
+  font-size: var(--button-button-size);
+  background-color: transparent;
+  height: 24px;
+  position: relative;
+  line-height: 24px;
+  color: var(--gray-400);
+  text-align: left;
+  display: inline-block;
+}
+.inputField {
+  flex: 1;
+  border-radius: var(--br-8xs);
+  background-color: var(--gray-scale-white);
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: flex-start;
+  padding: var(--padding-base) var(--padding-lg);
+  box-sizing: border-box;
+  gap: var(--gap-xs);
+  min-width: 180px;
+}
+.searchChild {
+  height: 33px;
+  width: 1px;
+  position: relative;
+  border-right: 1px solid var(--gray-100);
+  box-sizing: border-box;
+  display: none;
+}
+.fimapPinIcon,
+.yourLocation {
+  height: 24px;
+  position: relative;
+}
+.fimapPinIcon {
+  width: 24px;
+  overflow: hidden;
+  flex-shrink: 0;
+  min-height: 24px;
+}
+.yourLocation {
+  width: 104px;
+  border: 0;
+  outline: 0;
+  font-family: var(--button-button);
+  font-size: var(--button-button-size);
+  background-color: transparent;
+  line-height: 24px;
+  color: var(--gray-400);
+  text-align: left;
+  display: inline-block;
+}
+.icon,
+.inputField1 {
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+.inputField1 {
+  align-self: stretch;
+  border-radius: var(--br-8xs);
+  background-color: var(--gray-scale-white);
+  flex-direction: row;
+  padding: var(--padding-base) var(--padding-lg);
+  gap: var(--gap-xs);
+}
+.icon {
+  width: 236px;
+  flex-direction: column;
+  padding: 0 var(--padding-xs) 0 0;
+  box-sizing: border-box;
+}
+.primary {
+  position: relative;
+  font-size: var(--button-button-size);
+  line-height: 24px;
+  text-transform: capitalize;
+  font-weight: 600;
+  font-family: var(--button-button);
+  color: var(--gray-scale-white);
+  text-align: left;
+}
+.button {
+  cursor: pointer;
+  border: 0;
+  padding: var(--padding-base) var(--padding-9xl) var(--padding-base)
+    var(--padding-13xl);
+  background-color: var(--primary-500);
+  border-radius: var(--br-9xs);
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
+}
+.button:hover {
+  background-color: var(--color-dodgerblue);
+}
+.container,
+.headerSection,
+.search {
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+.search {
+  margin: 0;
+  align-self: stretch;
+  border-radius: var(--br-5xs);
+  background-color: var(--gray-scale-white);
+  box-shadow: var(--search-shadow);
+  border: 1px solid var(--gray-100);
+  flex-direction: row;
+  padding: var(--padding-xs) var(--padding-smi) var(--padding-xs)
+    var(--padding-2xs);
+  row-gap: 20px;
+}
+.container,
+.headerSection {
+  flex-direction: column;
+  max-width: 100%;
+}
+.container {
+  align-self: stretch;
+  gap: var(--gap-13xl);
+}
+.headerSection {
+  flex: 1;
+  padding: var(--padding-4xs) 0 0;
+  box-sizing: border-box;
+  min-width: 441px;
+}
+.illustrationIcon {
+  width: 492px;
+  position: relative;
+  max-height: 100%;
+  overflow: hidden;
+  flex-shrink: 0;
+  max-width: 100%;
+}
+.siteLogo {
+  align-self: stretch;
+  background-color: var(--color-whitesmoke-500);
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: center;
+  padding: var(--padding-81xl) var(--padding-281xl);
+  box-sizing: border-box;
+  gap: var(--gap-130xl);
+  max-width: 100%;
+  text-align: left;
+  font-size: var(--display-01-size);
+  color: var(--gray-900);
+  font-family: var(--button-button);
+}
+@media screen and (max-width: 1600px) {
+  .illustrationIcon {
+    flex: 1;
+  }
+  .siteLogo {
+    flex-wrap: wrap;
+  }
+}
+@media screen and (max-width: 1275px) {
+  .headerSection {
+    min-width: 100%;
+  }
+  .siteLogo {
+    gap: var(--gap-130xl);
+    padding-left: var(--padding-131xl);
+    padding-right: var(--padding-131xl);
+    box-sizing: border-box;
+  }
+}
+@media screen and (max-width: 900px) {
+  .findAJob {
+    font-size: var(--font-size-26xl);
+    line-height: 51px;
+  }
+  .search {
+    flex-wrap: wrap;
+  }
+  .container {
+    gap: var(--gap-13xl);
+  }
+  .siteLogo {
+    gap: var(--gap-130xl);
+    padding: var(--padding-46xl) var(--padding-56xl);
+    box-sizing: border-box;
+  }
+}
+@media screen and (max-width: 450px) {
+  .findAJob {
+    font-size: var(--font-size-15xl);
+    line-height: 38px;
+  }
+}
