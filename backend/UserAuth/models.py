@@ -69,47 +69,55 @@ class ResumeToSkills(models.Model):
     resume = models.ForeignKey(Resume, on_delete=models.CASCADE, related_name='resume_skills')
     skillID = models.CharField(max_length=255, unique=True, default='DefaultSkillID')
 
-class ListOfSkills(models.Model):
-    skillID = models.CharField(max_length=255, unique=True, default='DefaultSkillID')
-    skill_name = models.CharField(max_length=200, default='Default Skill')
 
 class Project(models.Model):
     resume = models.ForeignKey(Resume, on_delete=models.CASCADE, related_name='projects')
     title = models.CharField(max_length=200, default='Default Project Title')
     description = models.TextField(default='Default Project Description')
 
+class ListOfSkills(models.Model):
+    #skillID = models.AutoField(max_length=255, unique=True)
+    skill_name = models.CharField(max_length=200, default='Default Skill')
+
+    def __str__(self):
+        return self.skill_name
 
 class JobPosting(models.Model):
-    jobID = models.CharField(max_length=255, unique=True, default='DefaultJobID')
-    title = models.CharField(max_length=200, default='Default Job Title')
-    company_name = models.CharField(max_length=200, default='Default Company')
-    location = models.CharField(max_length=200, default='Default Location')
-    job_description = models.TextField(default='Default Job Description')
+    #jobID = models.AutoField(max_length=255, unique=True)
+    title = models.CharField(max_length=200, null=True, blank=True)
+    company_name = models.CharField(max_length=200, null=True, blank=True)
+    location = models.CharField(max_length=200, null=True, blank=True)
+    job_description = models.TextField(null=True, blank=True)
     posted_date = models.DateField(default=timezone.now)
     application_deadline = models.DateField(default=timezone.now)
+    experience_required = models.CharField(max_length=255, null=True, blank=True, default='No experience required')  
+    skills = models.ManyToManyField(ListOfSkills, related_name='job_postings', blank=True)  
     creator = models.ForeignKey(
-    settings.AUTH_USER_MODEL, 
-    on_delete=models.CASCADE, 
-    related_name='job_postings',
-    null=True, 
-    blank=True
-)
+        settings.AUTH_USER_MODEL, 
+        on_delete=models.CASCADE, 
+        related_name='job_postings',
+        null=True, 
+        blank=True
+    )
+
+    def __str__(self):
+        return self.title
 
 class JobRequirements(models.Model):
-    requirementID = models.CharField(max_length=255, unique=True, default='DefaultReqID')
+    #requirementID = models.AutoField(max_length=255, unique=True)
     job_posting = models.ForeignKey(JobPosting, on_delete=models.CASCADE, related_name='requirements')
     description = models.TextField(default='Default Requirement Description')
 
 class JobToSkills(models.Model):
     job_posting = models.ForeignKey(JobPosting, on_delete=models.CASCADE, related_name='job_skills')
-    skillID = models.CharField(max_length=255, unique=True, default='DefaultSkillID')
+    #skillID = models.CharField(max_length=255, unique=True, default='DefaultSkillID')
 
 class Benefits(models.Model):
-    benefitID = models.CharField(max_length=255, unique=True, default='DefaultBenefitID')
+    #benefitID = models.AutoField(max_length=255, unique=True)
     job_posting = models.ForeignKey(JobPosting, on_delete=models.CASCADE, related_name='benefits')
     description = models.TextField(default='Default Benefit Description')
 
 class EmploymentType(models.Model):
-    typeID = models.CharField(max_length=255, unique=True, default='DefaultTypeID')
+    #typeID = models.AutoField(max_length=255, unique=True)
     job_posting = models.ForeignKey(JobPosting, on_delete=models.CASCADE, related_name='employment_type')
     type_name = models.CharField(max_length=200, default='Default Employment Type')

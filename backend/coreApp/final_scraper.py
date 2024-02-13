@@ -1,4 +1,6 @@
 from selenium import webdriver
+import nltk
+nltk.download('punkt')
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
@@ -17,6 +19,8 @@ from django.conf import settings
 import django
 import os
 
+
+
 import sys
 from pathlib import Path
 sys.path.append(Path(__file__).resolve().parent.parent.__str__())
@@ -25,7 +29,8 @@ os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'CoreApp.settings')
 django.setup()
 
 #from ...backend.Recruiter.viewsimport UploadJob
-
+from UserAuth.models import JobPosting, ListOfSkills
+from django.utils import timezone
 from Recruiter.views import UploadJob
 import os
 
@@ -160,8 +165,8 @@ class scrapejob:
                 #finding position title
                 current_job_data["uid"]=uuid.uuid4().hex
                
-                titles=doc.find_all("span",class_="css-1x7z1ps eu4oa1w0")
-                location_company=doc.find_all("div",class_="css-t4u72d eu4oa1w0")
+                titles=doc.find_all("span",class_="css-92r8pb eu4oa1w0")
+                location_company=doc.find_all("div",class_="css-1p0sjhy eu4oa1w0")
                 secondary_index=0
 
                 for title in titles:
@@ -205,8 +210,29 @@ class scrapejob:
                 current_job_data["skills"]=self.extract_skills(description.get_text().replace('\n'," ").lower())
                 current_job_data["desc"]=description.get_text().replace('\n'," ").lower()
                 current_job_data["experience"]=self.parse_experience(description.get_text().replace('\n'," ").lower())
+
+                job_posting_data = {
+                    "title": current_job_data.get("title", "Default Job Title"),
+                    "company_name": current_job_data.get("company", "Default Company"),
+                    "location": current_job_data.get("location", "Default Location"),
+                    "job_description": current_job_data.get("desc", "Default Job Description"),
+                    "posted_date": timezone.now(),
+                    "application_deadline": timezone.now(),
+                    "experience_required": current_job_data.get("experience_required", "No experience required"),
+                    "creator": None,
+                }
+
+                job_posting = JobPosting.objects.create(**job_posting_data)
+
+                skills_list = current_job_data.get("skills", [])
+
+                for skill_name in skills_list:
+                    skill, created = ListOfSkills.objects.get_or_create(skill_name=skill_name)
+                    job_posting.skills.add(skill)
+
                 time.sleep(5)
                 pp.pprint(current_job_data) 
+                print("CREATED JOB POSTING ENTRY")
                 databases_profile_job_df = self.extract_databases(current_job_data['skills'],current_job_data['uid'],databases_profile_job_df)
                 domain_job_profile_df = self.extract_domains(current_job_data['skills'],current_job_data['uid'],domain_job_profile_df)
                 frameworks_profile_job = self.extract_frameworks(current_job_data['skills'],current_job_data['uid'],frameworks_profile_job)
