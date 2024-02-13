@@ -292,15 +292,36 @@
     gap: var(--gap-13xl);
     max-width: 100%;
   }
-  .employerCreateAccount {
-    width: 1918px;
-    background-color: var(--gray-scale-white);
-    overflow: hidden;
-    align-items: center;
-    padding: 0 0 234px;
-    gap: var(--gap-100xl);
-    letter-spacing: normal;
-  }
+.employerCreateAccount {
+  width: 100%; /* Take the full width */
+  height: 100vh; /* Take the full height of the viewport */
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Center horizontally */
+  padding: 0; /* Reset any padding if not needed */
+  box-sizing: border-box; /* Include padding and border in the element's total width and height */
+  gap: var(--gap-100xl);
+  background-color: var(--gray-scale-white);
+}
+.logIn {
+  /* Add styles to make it look more like a clickable link or button */
+  color: #0066ff; /* Example: blue color for link text */
+  cursor: pointer; /* Change cursor to indicate it's clickable */
+  text-decoration: underline; /* Underline to indicate it's clickable */
+}
+
+.logIn:hover {
+  text-decoration: none; /* Remove underline on hover for a button-like effect */
+}
+.selected {
+  /* Add styles to make it look more like a clickable link or button */
+  color: #0066ff; /* Example: blue color for link text */
+  cursor: pointer; /* Change cursor to indicate it's clickable */
+}
+
+.selected:hover {
+  text-decoration: none; /* Remove underline on hover for a button-like effect */
+}
   @media screen and (max-width: 975px) {
     .employerCreateAccount {
       gap: var(--gap-100xl);

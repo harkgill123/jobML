@@ -23,7 +23,7 @@
   width: 51px;
   font-weight: 500;
   color: var(--primary-500);
-  display: inline-block;
+  display: block;
 }
 .createAnApplicantAccountParent,
 .logInText {
@@ -79,7 +79,7 @@
   max-width: 100%;
 }
 .emailAddress {
-  width: 75px;
+  width: 100%;
   border: 0;
   outline: 0;
   font-family: var(--button-button);
@@ -106,7 +106,7 @@
   min-width: 168px;
 }
 .emailAddress1 {
-  width: 78px;
+  width: 100%;
   border: 0;
   outline: 0;
   font-family: var(--button-button);
@@ -142,7 +142,7 @@
   gap: var(--gap-xl);
 }
 .emailAddress2 {
-  width: 106px;
+  width: 100%;
   border: 0;
   outline: 0;
   font-family: var(--button-button);
@@ -167,7 +167,7 @@
   padding: var(--padding-xs) var(--padding-lg);
 }
 .password {
-  width: 74px;
+  width: 100%;
   border: 0;
   outline: 0;
   font-family: var(--button-button);
@@ -201,7 +201,7 @@
   gap: var(--gap-xl);
 }
 .password1 {
-  width: 139px;
+  width: 100%;
   border: 0;
   outline: 0;
   font-family: var(--button-button);
@@ -339,6 +339,25 @@
   box-sizing: border-box;
   gap: var(--gap-13xl);
   max-width: 100%;
+}
+.logIn {
+  /* Add styles to make it look more like a clickable link or button */
+  color: #0066ff; /* Example: blue color for link text */
+  cursor: pointer; /* Change cursor to indicate it's clickable */
+  text-decoration: underline; /* Underline to indicate it's clickable */
+}
+
+.logIn:hover {
+  text-decoration: none; /* Remove underline on hover for a button-like effect */
+}
+.selected {
+  /* Add styles to make it look more like a clickable link or button */
+  color: #0066ff; /* Example: blue color for link text */
+  cursor: pointer; /* Change cursor to indicate it's clickable */
+}
+
+.selected:hover {
+  text-decoration: none; /* Remove underline on hover for a button-like effect */
 }
 @media screen and (max-width: 700px) {
   .createFrame {
