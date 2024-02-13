@@ -264,26 +264,11 @@ class scrapejob:
                     with open("jobs_to_upload.json","w") as out:
                         out.write(json_object)
 
-                    databases_profile_job_df.to_csv("./databases_profile_job.csv")
-                    domain_job_profile_df.to_csv("./domain_job_profile.csv")
-                    frameworks_profile_job.to_csv("./frameworks_profile_job.csv")
-                    languages_profile_job.to_csv("./languages_profile_job.csv")
-                    platforms_profile_job.to_csv("./platforms_profile_job.csv")
-                    """
-                    file = open('jobs-to-upload-data.pkl','wb')
-
-                    pickle.dump(self.jobs_to_upload,file)
-
-                    file.close()
-                    
-                    file = open('jobs-to-check-data.pkl','wb')
-
-                    pickle.dump(self.jobs_to_check,file)
-
-                    file.close()
-                    """
+  
                     break
             except:
+                with open("jobs_to_upload.json","w") as out:
+                        out.write(json_object)
                 self.driver.close()
                 file = open('jobs-to-upload-data.pkl','wb')
 
