@@ -21,16 +21,18 @@ const CreateFrame = () => {
     }
 
     const formData = new FormData();
-    formData.append("fullName", fullName);
+    formData.append("name", fullName);
     formData.append("username", username);
     formData.append("email", email);
     formData.append("password", password);
+    formData.append("phone_number", "723-789-1234");
+    formData.append("user_type", "Recruiter");
     if (cvFile) {
       formData.append("cvFile", cvFile);
     }
 
     try {
-      const response = await fetch('YOUR_API_ENDPOINT', {
+      const response = await fetch('http://localhost:8000/UserAuth/Signup/', {
         method: 'POST',
         body: formData,
       });
