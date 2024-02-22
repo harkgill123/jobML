@@ -24,6 +24,7 @@ import EmployerSettingsAccount from "./pages/EmployerSettingsAccount";
 import EmployerSearchPage from "./pages/EmployerSearchPage";
 import CreateAccount from "./pages/CreateAccount";
 import EmployerCreateAccount from "./pages/EmployerCreateAccount";
+import ResumeUpload from "./pages/ResumeUpload";
 
 function App() {
   const action = useNavigationType();
@@ -117,6 +118,10 @@ function App() {
           title = "";
           metaDescription = "";
           break;
+        case "/resume-upload":
+          title = "";
+           metaDescription = "";
+          break;
     }
 
     if (title) {
@@ -171,6 +176,7 @@ function App() {
       />
       <Route path="/employer-search-page" element={<EmployerSearchPage />} />
       <Route path="/candidate-create-account" element={<CreateAccount />} />
+      <Route path="/resume-upload" element={<ResumeUpload />} />
       <Route path="/employer-create-account" element={<EmployerCreateAccount />} />
     </Routes>
   );

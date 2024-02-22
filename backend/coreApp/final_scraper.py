@@ -25,7 +25,7 @@ import sys
 from pathlib import Path
 sys.path.append(Path(__file__).resolve().parent.parent.__str__())
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'CoreApp.settings')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'coreApp.settings')
 django.setup()
 
 #from ...backend.Recruiter.viewsimport UploadJob
@@ -480,7 +480,7 @@ class scrapejob:
 
 if __name__ =="__main__":
     #link="https://ca.indeed.com/"
-    #os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'CoreApp.settings')
+    #os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'coreApp.settings')
     
     look_for_job=scrapejob("indeed") 
     look_for_job.connect()

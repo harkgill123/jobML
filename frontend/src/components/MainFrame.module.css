@@ -48,6 +48,7 @@
   color: var(--gray-500);
   text-align: left;
   display: block;
+  color: var(--black-500);
 }
 .inputField {
   align-self: stretch;
@@ -70,7 +71,7 @@
   height: 24px;
   position: relative;
   line-height: 24px;
-  color: var(--gray-500);
+  color: var(--black-500);
   text-align: left;
   display: block;
 }
@@ -189,7 +190,6 @@
   max-width: 100%;
 }
 .createAccount {
-  /* Add styles to make it look more like a clickable link or button */
   color: #0066ff; /* Example: blue color for link text */
   cursor: pointer; /* Change cursor to indicate it's clickable */
   text-decoration: underline; /* Underline to indicate it's clickable */

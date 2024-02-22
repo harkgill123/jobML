@@ -5,48 +5,46 @@ import styles from './EmployerCreateAccount.module.css';
 
 const EmployerCreateAccount = () => {
   // State for form inputs
-  const [companyName, setCompanyName] = useState('');
+  const [fullName, setCompanyName] = useState('');
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [phoneNumber, setPhoneNumber] = useState("");
   const navigate = useNavigate();
 
   // Handler for form submission
-  const handleSubmit = async (event) => {
+  const handleFormSubmit = async (event) => {
     event.preventDefault();
 
-    // Construct the payload from the state
-    const payload = {
-      companyName,
-      username,
-      email,
-      password,
-      confirmPassword,
-    };
+    const formData = new FormData();
+    formData.append("username", username);
+    formData.append("name", fullName);
+    formData.append("email", email);
+    formData.append("phone_number", phoneNumber);
+    formData.append("password", password);
+    formData.append("user_type", "Recruiter");
 
     try {
-      // Replace 'your-backend-endpoint' with the actual endpoint URL
-      const response = await fetch('/api/signup', {
+      const response = await fetch('http://localhost:8000/UserAuth/Signup/', {
         method: 'POST',
+        body: formData,
         headers: {
-          'Content-Type': 'application/json',
+          'Accept': 'application/json',
         },
-        body: JSON.stringify(payload),
       });
 
-      const data = await response.json();
-      if (data.success) {
-        // Handle success scenario
-        console.log(data.message);
-        // Redirect to another page or clear the form
+      if (response.ok) {
+        const data = await response.json();
+        // Handle success
+        console.log(data);
+        navigate('/');
       } else {
-        // Handle failure scenario
-        console.error(data.message);
-        // Display error messages from 'data.errors' if any
+        // Handle error
+        console.error("Signup failed:", response);
       }
     } catch (error) {
-      console.error('There was an error during the request', error);
+      console.error("There was an error during the signup process", error);
     }
   };
 
@@ -61,7 +59,7 @@ const EmployerCreateAccount = () => {
   return (
     <div className={styles.employerCreateAccount}>
       <header className={styles.createAccountFrame}><Navigation14 /></header>
-      <form className={styles.anotherFrame} onSubmit={handleSubmit}>
+      <form className={styles.anotherFrame} onSubmit={handleFormSubmit}>
         <div className={styles.selectionFrameParent}>
           <div className={styles.selectionFrame}>
             <h3 className={styles.createAnEmployer}>Create an Employer account.</h3>
@@ -85,7 +83,7 @@ const EmployerCreateAccount = () => {
         <div className={styles.inputFieldEmail}>
           <div className={styles.inputFieldFrame}>
             <div className={styles.inputField}>
-              <input className={styles.emailAddress} placeholder="Company Name" type="text" value={companyName} onChange={(e) => setCompanyName(e.target.value)} />
+              <input className={styles.emailAddress} placeholder="Company Name" type="text" value={fullName} onChange={(e) => setCompanyName(e.target.value)} />
             </div>
             <div className={styles.inputField1}>
               <input className={styles.emailAddress1} placeholder="Username" type="text" value={username} onChange={(e) => setUsername(e.target.value)} />
@@ -94,6 +92,15 @@ const EmployerCreateAccount = () => {
           <div className={styles.inputField2}>
             <input className={styles.emailAddress2} placeholder="Email address" type="text" value={email} onChange={(e) => setEmail(e.target.value)} />
           </div>
+          <div className={styles.inputField5}>
+          <input
+            className={styles.phoneNumber}
+            placeholder="Phone Number"
+            type="phone_number"
+            value={phoneNumber}
+            onChange={(e) => setPhoneNumber(e.target.value)}
+          />
+        </div>
           <div className={styles.inputField3}>
             <input className={styles.password} placeholder="Password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
             <img className={styles.fieyeIcon} alt="" src="/fieye.svg" />

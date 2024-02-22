@@ -18,7 +18,7 @@ class ResumeSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = Resume
-        fields = ('user', 'educations', 'work_experiences')
+        fields = ('educations', 'work_experiences')
     
     def create(self, validated_data):
         educations_data = validated_data.pop('educations')

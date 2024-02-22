@@ -8,6 +8,8 @@ const CreateFrame = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
+
   const [cvFile, setCvFile] = useState(null);
   const navigate = useNavigate();
 
@@ -21,32 +23,54 @@ const CreateFrame = () => {
     }
 
     const formData = new FormData();
-    formData.append("name", fullName);
     formData.append("username", username);
+    formData.append("name", fullName);
     formData.append("email", email);
+    formData.append("phone_number", phoneNumber);
     formData.append("password", password);
-    formData.append("phone_number", "723-789-1234");
-    formData.append("user_type", "Recruiter");
-    if (cvFile) {
-      formData.append("cvFile", cvFile);
-    }
+    formData.append("user_type", "Applicant");
 
     try {
-      const response = await fetch('http://localhost:8000/UserAuth/Signup/', {
+      const signupResponse = await fetch('http://localhost:8000/UserAuth/Signup/', {
         method: 'POST',
         body: formData,
+        headers: {
+          'Accept': 'application/json',
+        },
       });
 
-      if (response.ok) {
-        const data = await response.json();
-        // Handle success
-        console.log(data);
+      if (signupResponse.ok) {
+        // Assume the response from signup does not automatically sign in the user
+        // Therefore, proceed to sign in the user using the provided credentials
+        const loginResponse = await fetch('http://localhost:8000/UserAuth/Login/', {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ email, password }),
+        });
+
+        if (loginResponse.ok) {
+          const loginData = await loginResponse.json();
+          localStorage.setItem('token', loginData.token);
+          console.log('Auto sign-in successful', loginData);
+
+          // Since this page is only for applicants, navigate directly to the resume upload page
+          navigate("/resume-upload");
+        } else {
+          // Handle failed login
+          console.error("Auto sign-in failed after account creation");
+          // Optionally, provide user feedback here
+        }
       } else {
-        // Handle error
-        console.error("Signup failed:", response);
+        // Handle account creation error
+        const errorData = await signupResponse.json();
+        console.error("Signup failed:", errorData);
+        // Optionally, provide user feedback here
       }
     } catch (error) {
-      console.error("There was an error during the signup process", error);
+      console.error("There was an error during the signup or login process", error);
+      // Optionally, provide user feedback here
     }
   };
 
@@ -116,6 +140,15 @@ const CreateFrame = () => {
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
+          />
+        </div>
+        <div className={styles.inputField5}>
+          <input
+            className={styles.phoneNumber}
+            placeholder="Phone Number"
+            type="phone_number"
+            value={phoneNumber}
+            onChange={(e) => setPhoneNumber(e.target.value)}
           />
         </div>
         <div className={styles.inputField3}>

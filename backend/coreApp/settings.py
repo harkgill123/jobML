@@ -39,7 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'corsheaders',
-    'CoreApp',
+    'coreApp',
     'UserAuth',
     'Recruiter',
     'Applicant',
@@ -57,7 +57,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'CoreApp.urls'
+ROOT_URLCONF = 'coreApp.urls'
 
 TEMPLATES = [
     {
@@ -75,7 +75,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'CoreApp.wsgi.application'
+WSGI_APPLICATION = 'coreApp.wsgi.application'
 
 
 # Database

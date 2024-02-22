@@ -80,7 +80,7 @@
     max-width: 100%;
   }
   .emailAddress {
-    width: 121px;
+    width: 100%;
     border: 0;
     outline: 0;
     font-family: var(--button-button);
@@ -107,7 +107,7 @@
     min-width: 168px;
   }
   .emailAddress1 {
-    width: 78px;
+    width: 100%;
     border: 0;
     outline: 0;
     font-family: var(--button-button);
@@ -143,7 +143,7 @@
     gap: var(--gap-xl);
   }
   .emailAddress2 {
-    width: 106px;
+    width: 100%;
     border: 0;
     outline: 0;
     font-family: var(--button-button);
@@ -167,8 +167,33 @@
     justify-content: flex-start;
     padding: var(--padding-xs) var(--padding-lg);
   }
+  .phoneNumber {
+    width: 100%;
+    border: 0;
+    outline: 0;
+    font-family: var(--button-button);
+    font-size: var(--button-button-size);
+    background-color: transparent;
+    height: 24px;
+    position: relative;
+    line-height: 24px;
+    color: var(--gray-500);
+    text-align: left;
+    display: inline-block;
+  }
+  .inputField5 {
+    align-self: stretch;
+    border-radius: var(--br-8xs);
+    background-color: var(--gray-scale-white);
+    border: 1px solid var(--gray-100);
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    padding: var(--padding-xs) var(--padding-lg);
+  }
   .password {
-    width: 74px;
+    width: 100%;
     border: 0;
     outline: 0;
     font-family: var(--button-button);
@@ -202,7 +227,7 @@
     gap: var(--gap-xl);
   }
   .password1 {
-    width: 139px;
+    width: 100%;
     border: 0;
     outline: 0;
     font-family: var(--button-button);

@@ -2,14 +2,18 @@ import { FunctionComponent } from "react";
 import { useNavigate } from "react-router-dom"; // Import useNavigate hook for programmatic navigation
 import styles from "./Navigation1.module.css";
 
-const Navigation1: FunctionComponent = () => {
+
+
+const Navigation1 = ({ fullName }) => {
   const navigate = useNavigate(); // useNavigate hook for navigation
 
   // Placeholder for the logout function; you'll fill in your logout logic here
   const handleLogout = () => {
     console.log("Logging out...");
-    // Implement logout logic here
-    // navigate('/sign-in'); Uncomment and replace '/sign-in' with your actual logout route if needed
+    // Remove the token from local storage
+    localStorage.removeItem('token');
+    //Navigate back to the sign-in page
+    navigate('/');
   };
   return (
     <header className={styles.navigation}>
@@ -49,6 +53,7 @@ const Navigation1: FunctionComponent = () => {
           </div>
         </div>
         <div className={styles.science}>
+          <div className={styles.fullName}>{fullName}</div>
           <button className={styles.navButton} onClick={() => navigate('/candidate-homepage')}>Home</button>
           <button className={styles.navButton} onClick={() => navigate('/candidate-dashboard')}>Dashboard</button>
           <button className={styles.navButton} onClick={() => navigate('/candidate-my-profile')}>My Profile</button>

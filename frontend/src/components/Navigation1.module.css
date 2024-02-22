@@ -216,19 +216,23 @@
   flex-direction: row;
   align-items: center;
   max-width: 100%;
+  justify-content: flex-end; /* Align to the right */
+  flex: 0 1 auto; /* Don't grow, but allow shrinking and base the size on content */
 }
 .navigation1 {
-  flex: 1;
-  background-color: var(--gray-scale-white);
-  justify-content: flex-start;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%; /* Ensure it spans the full width of the header */
   padding: var(--padding-xl) var(--padding-9xl);
   box-sizing: border-box;
-  gap: var(--gap-12xl);
 }
 .navigation {
+  display: flex;
   align-self: stretch;
   box-shadow: 0-1px 0#e4e5e8 inset;
-  justify-content: center;
+  justify-content: space-between;
+  align-items: center;
   text-align: left;
   font-size: var(--font-size-3xl);
   color: var(--color-black);

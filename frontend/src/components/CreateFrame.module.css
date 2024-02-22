@@ -166,6 +166,31 @@
   justify-content: flex-start;
   padding: var(--padding-xs) var(--padding-lg);
 }
+.phoneNumber {
+  width: 100%;
+  border: 0;
+  outline: 0;
+  font-family: var(--button-button);
+  font-size: var(--button-button-size);
+  background-color: transparent;
+  height: 24px;
+  position: relative;
+  line-height: 24px;
+  color: var(--gray-500);
+  text-align: left;
+  display: inline-block;
+}
+.inputField5 {
+  align-self: stretch;
+  border-radius: var(--br-8xs);
+  background-color: var(--gray-scale-white);
+  border: 1px solid var(--gray-100);
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  padding: var(--padding-xs) var(--padding-lg);
+}
 .password {
   width: 100%;
   border: 0;
@@ -187,6 +212,7 @@
   overflow: hidden;
   flex-shrink: 0;
 }
+
 .inputField3 {
   align-self: stretch;
   border-radius: var(--br-8xs);
@@ -237,6 +263,7 @@
   padding: var(--padding-xs) var(--padding-lgi) var(--padding-xs)
     var(--padding-mid);
 }
+
 .emailInputField {
   flex-direction: column;
   align-items: flex-start;

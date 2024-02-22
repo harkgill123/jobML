@@ -4,11 +4,14 @@ import FunFacts from "../components/FunFacts";
 import FeaturedBadgeFrame from "../components/FeaturedBadgeFrame";
 import Job4 from "../components/Job4";
 import styles from "./CandidateDashboard.module.css";
+import { useEffect, useState } from "react";
 
-const CandidateDashboard: FunctionComponent = () => {
+const CandidateDashboard = () => {
+
+  const [fullName, setFullName] = useState("default");
   return (
     <div className={styles.candidateDashboard}>
-      <Navigation1  />
+      <Navigation1 fullName={fullName} />
       <section className={styles.sidebarContainer}>
         <div className={styles.sidebar}>
           <div className={styles.links}>

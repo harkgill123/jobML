@@ -1,0 +1,131 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Centers items horizontally in a flex column context */
+    justify-content: center; /* Centers items vertically if the container has a specific height */
+    width: 100%; /* Full width */
+    max-width: 960px; /* Or whatever maximum width you prefer */
+    margin: 0 auto; /* Centers the container in the middle of the screen */
+    padding: 20px;
+  }
+  
+  .fileUploadContainer {
+    display: flex;
+    flex-direction: row; /* Align items in a row */
+    align-items: center; /* Center items vertically */
+    justify-content: center; /* Center items horizontally */
+    gap: 10px; /* Adds space between the file input and the submit button */
+    margin-bottom: 0px; /* Adds some space below the container */
+  }
+  
+  
+  .fileInput {
+    margin-right: 10px;
+  }
+  
+  .submitButton {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    border: 2px solid #000000;
+    cursor: pointer;
+  }
+  
+  .submitButton:hover {
+    background-color: #0056b3;
+  }
+  
+  .textBoxes {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+  }
+  
+  textarea {
+    width: 100%; /* Full width for textarea */
+    max-width: 800px; /* Maximum width of the textarea */
+    margin-bottom: 10px;
+    height: 150px; /* Default height for textareas */
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    resize: vertical;
+  }
+
+  .uploadTitle {
+    font-size: 1.5rem; /* Example size, adjust as needed */
+    text-align: center;
+    margin: 0px 0;
+    color: #333; /* Example color, adjust as needed */
+    font-family: var(--font-roboto);
+    position: relative;
+    line-height: 40px;
+    font-weight: 300;
+  }
+
+  .inputGroup {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start; /* Aligns children (title and inputs) to the start of the flex container */
+    width: 100%; /* Adjust width as necessary */
+    max-width: 600px; /* Or whatever maximum width you prefer */
+    margin: 0 auto; /* Keeps the entire group centered */
+  }
+  .inputGroup input, .inputGroup select, .inputGroup textarea {
+    width: 100%; /* Full width within the .inputGroup */
+    padding: 8px 10px;
+    margin-bottom: 10px;
+    display: block; /* Ensures the input takes up the full width of its parent */
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+  }
+  
+  .addressInput {
+    height: 100px; /* Adjust this value to make the textarea shorter */
+  }
+
+  .inputTitle {
+    align-self: flex-start;
+    margin-left: 0; /* Make sure this is set to 0 or an appropriate value to align with the text boxes */
+    width: 100%;
+    font-family: var(--font-roboto);
+    font-weight: 300;
+    margin-bottom: 5px;
+  }
+  /* Include media queries and other styles as needed */
+  form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+  }
+  .submitFinalButton {
+    /* Center the submit button as well */
+    display: block; /* Block display to fill width of parent */
+    width: 50%;
+    height: 30px; /* Adjust to your preference */
+    margin: 10px auto; /* Auto margins on the sides to center horizontally */
+    color: #333;
+    background-color: #62b800;
+  }
+  
+  .submitFinalButton:hover {
+    background-color: #218f00;
+  }
+  .resumeForm {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+  }
+  .formTitle {
+    text-align: center;
+    width: 100%;
+    margin-bottom: 1x;
+    font-size: 24px;
+    color: #333;
+    font-family: var(--font-roboto);
+    font-weight: 300;
+  }
