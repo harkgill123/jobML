@@ -18,6 +18,7 @@ import json
 from django.conf import settings
 import django
 import os
+from django.db.models import Q
 
 
 
@@ -222,13 +223,21 @@ class scrapejob:
                     "creator": None,
                 }
 
-                job_posting = JobPosting.objects.create(**job_posting_data)
+                existing_job_posting = JobPosting.objects.filter(
+                Q(title=job_posting_data["title"]) &
+                Q(company_name=job_posting_data["company_name"]) &
+                Q(location=job_posting_data["location"]) &
+                Q(job_description=job_posting_data["job_description"])
+                ).first()
 
-                skills_list = current_job_data.get("skills", [])
+                if existing_job_posting is None:
+                    job_posting = JobPosting.objects.create(**job_posting_data)
 
-                for skill_name in skills_list:
-                    skill, created = ListOfSkills.objects.get_or_create(skill_name=skill_name)
-                    job_posting.skills.add(skill)
+                    skills_list = current_job_data.get("skills", [])
+
+                    for skill_name in skills_list:
+                        skill, created = ListOfSkills.objects.get_or_create(skill_name=skill_name)
+                        job_posting.skills.add(skill)
 
                 time.sleep(5)
                 pp.pprint(current_job_data) 
