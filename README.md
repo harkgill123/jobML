@@ -1,7 +1,21 @@
 # Machine Learning Job Recommender
-This is our capstone project which allows job searchers/recruiters to find jobs/applicants using machine learning algorithms.
+Welcome to our Capstone Project repository, an innovative platform designed to revolutionize the way job searchers and recruiters find jobs and applicants, respectively. Utilizing cutting-edge machine learning algorithms, our platform aims to streamline the job-matching process, making it more efficient, accurate, and tailored to the needs and qualifications of users.
+
+## Project Overview
+
+This AI-Enhanced Job Matching Platform leverages advanced algorithms to analyze job descriptions, applicant resumes, and other relevant data to create highly accurate matches between job seekers and open positions. Our goal is to simplify the recruitment process, reduce the time spent on job searches, and improve the overall fit between companies and candidates.
+
+### Features
+
+- **Intelligent Job Matching**: Utilizes machine learning algorithms to match job seekers with job listings based on their resumes, experience, skills, and preferences.
+- **Resume Analysis**: Automatically parses and analyzes resumes, extracting key information to assist in the matching process.
+- **Job Recommendation**: Provides personalized job recommendations to job seekers based on their profile and past application history.
+- **Recruiter Dashboard**: Offers recruiters tools to find the most suitable candidates for their job postings quickly.
 
 # Getting Started 
+
+Follow these instructions to get a copy of the project up and running on your local machine for development and testing purposes.
+
 ## Installing
 Clone the Repository:
   ```sh
