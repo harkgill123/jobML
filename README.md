@@ -1,4 +1,4 @@
-# Machine Learning Job Reccomender
+# Machine Learning Job Recommender
 This is our capstone project which allows job searchers/recruiters to find jobs/applicants using machine learning algorithms.
 
 # Getting Started 
