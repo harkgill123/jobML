@@ -9,7 +9,7 @@ import spacy
 
 class ResumeExtractor:
     def __init__(self):
-        with open("skills.csv") as fp:
+        with open("coreApp/ResumeScraper/skills.csv") as fp:
             render = csv.reader(fp,delimiter=",")
 
             data_read= [row for row in render]

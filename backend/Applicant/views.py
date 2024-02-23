@@ -8,7 +8,7 @@ from rest_framework.permissions import IsAuthenticated
 from UserAuth.models import Resume
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
-from CoreApp.ResumeScraper.resume import ResumeExtractor
+from coreApp.ResumeScraper.resume import ResumeExtractor
 
 class ResumeUploadView(APIView):
     parser_classes = [MultiPartParser]
