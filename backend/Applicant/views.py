@@ -5,8 +5,11 @@ from rest_framework import status
 from django.core.files.storage import default_storage
 from .serializers import ResumeSerializer
 from rest_framework.permissions import IsAuthenticated
-
-
+from UserAuth.models import Resume,JobPosting
+from django.contrib.auth.decorators import login_required
+from django.http import JsonResponse
+from django.db.models import CharField, Value as V
+from django.db.models.functions import Concat
 
 class ResumeUploadView(APIView):
     parser_classes = [MultiPartParser]
@@ -62,3 +65,32 @@ class ResumeCreateView(APIView):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         print(serializer.errors)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+def create_model():
+    jobpostings = JobPosting.objects.annotate(
+    skills_string = Concat(
+            'skills__skill_name', V(', '), output_field=CharField()
+        )
+        ).values('id', 'title', 'skills_string', 'job_description')
+    return jobpostings
+
+@login_required
+def recommended_jobs_view(request):
+    try:
+        
+            
+        user_resume = Resume.objects.get(user=request.user)
+        user_skills = user_resume.resume_skills.all()
+        
+        skill_ids = [skill.skillID for skill in user_skills]
+
+        matching_jobs = Job.objects.filter(required_skillsskillIDin=skill_ids).distinct()
+
+        jobs_data = [
+            {"jobID": job.jobID, "job_title": job.job_title, "company_name": job.company_name, "job_description": job.job_description}
+            for job in matching_jobs
+        ]
+        
+        return JsonResponse({"recommended_jobs": jobs_data})
+    except Resume.DoesNotExist:
+        return JsonResponse({"error": "User does not have a resume"}, status=400)

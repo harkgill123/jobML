@@ -2,10 +2,7 @@ import pandas as pd
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.cluster import AgglomerativeClustering
 from sklearn.decomposition import PCA
-import matplotlib.pyplot as plt
 import numpy as np
-from sklearn.cluster import AgglomerativeClustering
-import seaborn as sns
 from sklearn.linear_model import LogisticRegression
 from sklearn.model_selection import train_test_split
 from sklearn.feature_extraction import text
@@ -20,6 +17,7 @@ nltk.download('stopwords')
 import warnings; warnings.simplefilter('ignore')
 import pandas as pd
 from joblib import dump
+
 
 # Functions to clean skills data and make a vocabulary for skills vectorization
 common_placeholders = [
@@ -80,6 +78,10 @@ def tokenizer(df):
     return result_df
 
 df = pd.read_json("../karim/jobs.json")
+
+# Fetch job data from the database
+jobs = 
+df = pd.DataFrame(jobs)
 #print(df)
 
 df['skills'] = text_scrubber(df['skills'])
@@ -153,4 +155,5 @@ dump(vec2, 'vec2.joblib')
 dump(pca, 'pca.joblib')
 dump(lr, 'lr.joblib')
 dump(comps, 'comps.joblib')
+
 df.to_json('df.json')
