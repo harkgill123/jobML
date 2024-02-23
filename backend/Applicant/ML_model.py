@@ -1,11 +1,16 @@
+import sys, os, django
+from pathlib import Path
+sys.path.append(Path(__file__).resolve().parent.parent.__str__())
+
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'coreApp.settings')
+django.setup()
+
+
 import pandas as pd
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.cluster import AgglomerativeClustering
 from sklearn.decomposition import PCA
-import matplotlib.pyplot as plt
 import numpy as np
-from sklearn.cluster import AgglomerativeClustering
-import seaborn as sns
 from sklearn.linear_model import LogisticRegression
 from sklearn.model_selection import train_test_split
 from sklearn.feature_extraction import text
@@ -20,6 +25,9 @@ nltk.download('stopwords')
 import warnings; warnings.simplefilter('ignore')
 import pandas as pd
 from joblib import dump
+from django.conf import settings
+from views import create_model
+
 
 # Functions to clean skills data and make a vocabulary for skills vectorization
 common_placeholders = [
@@ -79,11 +87,17 @@ def tokenizer(df):
     #print(result_df)
     return result_df
 
-df = pd.read_json("../karim/jobs.json")
-#print(df)
+#df = pd.read_json("../karim/jobs.json")
 
-df['skills'] = text_scrubber(df['skills'])
-#print(df['skills'])
+# Fetch job data from the database
+
+jobs = create_model()
+df = pd.DataFrame(jobs)
+
+
+df['skills'] = text_scrubber(df['skills_string'])
+df.drop('skills_string', axis=1, inplace=True)
+print(df)
 
 test_df = tokenizer(df)
 
@@ -99,7 +113,7 @@ def clean_text(text):
     return cleaned_text
 
 # Apply the clean_text function to each element in the 'jobdescription' column
-df['desc'] = df['desc'].apply(clean_text)
+df['desc'] = df['job_description'].apply(clean_text)
 print(df['desc'])
 df['desc'].to_csv("jobdesc_test.csv", index=False)
 
@@ -124,7 +138,7 @@ jobtitle_matrix = pd.concat([skills_matrix2, description_matrix2], axis=1)
 jobtitle_matrix
 
 # Run PCA to reduce number of features
-pca = PCA(n_components=600, random_state=42)
+pca = PCA(n_components=20, random_state=42)
 comps = pca.fit_transform(jobtitle_matrix)
 print(comps)
 
@@ -132,7 +146,7 @@ comps = pd.DataFrame(comps)
 
 # -------------- K Means --------------
 from sklearn.cluster import KMeans
-cltr = KMeans(n_clusters=12)
+cltr = KMeans(n_clusters=2)
 cltr.fit(comps)
 df['cluster_no'] = cltr.labels_
 X = comps
@@ -153,4 +167,6 @@ dump(vec2, 'vec2.joblib')
 dump(pca, 'pca.joblib')
 dump(lr, 'lr.joblib')
 dump(comps, 'comps.joblib')
+
 df.to_json('df.json')
+print(df.to_json('df.json'))
