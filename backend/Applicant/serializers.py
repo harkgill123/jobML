@@ -32,3 +32,6 @@ class ResumeSerializer(serializers.ModelSerializer):
             WorkExperience.objects.create(resume=resume, **work_experience_data)
         
         return resume
+    
+
+
