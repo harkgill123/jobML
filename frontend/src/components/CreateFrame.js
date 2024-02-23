@@ -10,8 +10,6 @@ const CreateFrame = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
 
-  const [cvFile, setCvFile] = useState(null);
-  const navigate = useNavigate();
 
   const handleFormSubmit = async (event) => {
     event.preventDefault();
@@ -74,9 +72,6 @@ const CreateFrame = () => {
     }
   };
 
-  const handleCvFileChange = (event) => {
-    setCvFile(event.target.files[0]);
-  };
 
   const handleLogInClick = () => {
     navigate('/');
@@ -170,16 +165,6 @@ const CreateFrame = () => {
             onChange={(e) => setConfirmPassword(e.target.value)}
           />
           {/* Password visibility toggle */}
-        </div>
-      </div>
-      <div className={styles.cvResume}>
-        <div className={styles.frameSelect}>
-          <div className={styles.addCvresume}>Add CV/Resume</div>
-          <input
-            className={styles.browseFileOr}
-            type="file"
-            onChange={handleCvFileChange}
-          />
         </div>
       </div>
       <button className={styles.button} type="submit">
