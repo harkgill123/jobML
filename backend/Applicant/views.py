@@ -8,7 +8,7 @@ from rest_framework.permissions import IsAuthenticated
 from UserAuth.models import Resume
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
-from CoreApp.ResumeScraper.resume import ResumeExtractor
+from coreApp.ResumeScraper.resume import ResumeExtractor
 
 class ResumeUploadView(APIView):
     parser_classes = [MultiPartParser]
@@ -19,12 +19,14 @@ class ResumeUploadView(APIView):
         full_file_path = default_storage.path(file_path)
 
         # scraped_data = scrape_resume_data(full_file_path)  # This needs to be implemented
-        scraped_data = ResumeExtractor.extract_all(full_file_path)
+        extractor = ResumeExtractor()
+        scraped_data = extractor.extract_all(filename=full_file_path)
         return Response(scraped_data, status=status.HTTP_200_OK)
 
 class ResumeCreateView(APIView):
 
-   def post(self, request, *args, **kwargs):
+    def post(self, request, *args, **kwargs):
+        print(request.user)
         serializer = ResumeSerializer(data=request.data, context={'user': request.user})
         if serializer.is_valid():
             serializer.save(user=request.user)  
