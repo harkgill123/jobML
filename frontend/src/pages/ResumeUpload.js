@@ -129,11 +129,12 @@ const ResumeUpload = () => {
     const token = localStorage.getItem('token'); // Assume the token is stored with the key 'token'
   
     try {
+      console.log('Token:', token)
       // Send the POST request with the payload
       const response = await fetch('http://localhost:8000/Applicant/create-resume/', {
         method: 'POST',
         headers: {
-          Authorization: `Bearer ${token}`,
+          'Authorization': `Bearer ${token}`,
 
           'Content-Type': 'application/json',
       

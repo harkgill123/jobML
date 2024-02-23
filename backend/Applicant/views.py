@@ -9,6 +9,13 @@ from UserAuth.models import Resume
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from coreApp.ResumeScraper.resume import ResumeExtractor
+import logging
+from rest_framework.authentication import TokenAuthentication
+import jwt,os
+from django.contrib.auth import get_user_model
+
+
+
 
 class ResumeUploadView(APIView):
     parser_classes = [MultiPartParser]
@@ -24,15 +31,28 @@ class ResumeUploadView(APIView):
         scraped_data = extractor.extract_all(filename=full_file_path)
         return Response(scraped_data, status=status.HTTP_200_OK)
 
+logger = logging.getLogger(__name__)
+
 class ResumeCreateView(APIView):
 
     def post(self, request, *args, **kwargs):
-        serializer = ResumeSerializer(data=request.data, context={'user': request.user})
+        auth_header = request.META.get('HTTP_AUTHORIZATION')
+        token = auth_header.split(" ")[1]
+        decoded_token = jwt.decode(token, os.environ.get('JWT_SECRET_KEY'), algorithms=["HS256"])
+        user_id = decoded_token['id']
+        user = get_user_model().objects.get(id=user_id)
+        print(request.data)
+
+        serializer = ResumeSerializer(data=request.data, context={'user': user})
         if serializer.is_valid():
-            serializer.save(user=request.user)  # Pass the user to the save method
+            serializer.save(user=user)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    
+        else:
+            # Log the errors
+            logger.error("ResumeCreateView: Validation failed with errors: %s", serializer.errors)
+            
+            # Respond with the error details
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 # @login_required
 # def recommended_jobs_view(request):

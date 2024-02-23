@@ -44,11 +44,11 @@ class User(AbstractUser):
     REQUIRED_FIELDS = ['username']
     
 class Resume(models.Model):
-    resumeID = models.CharField(max_length=255, unique=True, default='DefaultResumeID')
+    #resumeID = models.CharField(max_length=255, unique=True, default='DefaultResumeID')
     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name='resumes')
 
 class Education(models.Model):
-    educationID = models.CharField(max_length=255, unique=True, default='DefaultEduID')
+    #educationID = models.CharField(max_length=255, unique=True, default='DefaultEduID')
     resume = models.ForeignKey(Resume, on_delete=models.CASCADE, related_name='educations')
     school_name = models.CharField(max_length=200, default='Default School')
     degree = models.CharField(max_length=200, default='Default Degree')
@@ -57,7 +57,7 @@ class Education(models.Model):
     gpa = models.FloatField(max_length=100, blank=True, null=True, default=0.0)
 
 class WorkExperience(models.Model):
-    experienceID = models.CharField(max_length=255, unique=True, default='DefaultExpID')
+   # experienceID = models.CharField(max_length=255, unique=True, default='DefaultExpID')
     resume = models.ForeignKey(Resume, on_delete=models.CASCADE, related_name='work_experiences')
     company_name = models.CharField(max_length=200, default='Default Company')
     job_title = models.CharField(max_length=200, default='Default Job Title')
