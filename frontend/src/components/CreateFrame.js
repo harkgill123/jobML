@@ -10,7 +10,7 @@ const CreateFrame = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
 
-
+  const navigate = useNavigate(); // useNavigate hook for navigation
   const handleFormSubmit = async (event) => {
     event.preventDefault();
 
