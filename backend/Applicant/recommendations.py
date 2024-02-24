@@ -58,15 +58,13 @@ def adjust_scores_based_on_feedback(cos_sim, feedback_data):
         user_feedback = feedback["feedback"]
         # Adjust score based on feedback
         if job_title in cos_sim.index:
-            print(f"job title: {job_title}, user feedback: {user_feedback}")
+            print(f"job title: {job_title}, user feedback: {user_feedback}, score before: {cos_sim.at[job_title, 'score']}")
             if user_feedback == '1':
                 # Increase score for positive feedback
-                print(f"value:{cos_sim.at[job_title, 'score']}")
                 cos_sim.loc[job_title, 'score'] *= 1.3  # Adjust multiplier as needed
                 print(f"value after:{cos_sim.at[job_title, 'score']}")
             elif user_feedback == '-1':
                 # Decrease score for negative feedback
-                print(f"value:{cos_sim.at[job_title, 'score']}")
                 cos_sim.loc[job_title, 'score'] *= 0.7  # Adjust multiplier as needed
                 print(f"value after:{cos_sim.at[job_title, 'score']}")
 
@@ -153,7 +151,7 @@ def update_user_feedback(user_id, job_id, feedback):
     # Update the feedback value
     feedback_entry.feedback = feedback
     feedback_entry.save()
-    
+
 # user_id=1
 # job_id='17'
 # feedback=-1
