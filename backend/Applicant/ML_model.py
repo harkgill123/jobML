@@ -131,7 +131,7 @@ jobtitle_matrix = pd.concat([skills_matrix2, description_matrix2], axis=1)
 jobtitle_matrix
 
 # Run PCA to reduce number of features
-pca = PCA(n_components=20, random_state=42)
+pca = PCA(n_components=575, random_state=42)
 comps = pca.fit_transform(jobtitle_matrix)
 #print(comps)
 
@@ -139,7 +139,7 @@ comps = pd.DataFrame(comps)
 
 # -------------- K Means --------------
 from sklearn.cluster import KMeans
-cltr = KMeans(n_clusters=2)
+cltr = KMeans(n_clusters=10)
 cltr.fit(comps)
 df['cluster_no'] = cltr.labels_
 X = comps
@@ -163,15 +163,9 @@ dump(comps, 'model_settings/comps.joblib')
 
 def populate_job_clusters():
     for index, row in df.iterrows():
-        print("Debug")
         job_id = row['id']
-        print(job_id)
         cluster_no = row['cluster_no']
-        print(cluster_no)
-        
-        # Assuming you have a Job model that corresponds to the JobToClusters
         job, created = JobToClusters.objects.get_or_create(job_posting_id=job_id,cluster=cluster_no)
-        print(job)
 
     return job
 

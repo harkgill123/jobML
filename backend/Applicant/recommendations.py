@@ -57,16 +57,16 @@ def adjust_scores_based_on_feedback(cos_sim, feedback_data):
         job_title = feedback["job_title"]
         user_feedback = feedback["feedback"]
         # Adjust score based on feedback
-        if job_title in cos_sim.index:
-            print(f"job title: {job_title}, user feedback: {user_feedback}, score before: {cos_sim.at[job_title, 'score']}")
+        if job_id in cos_sim.index:
+            print(f"job title: {job_title}, user feedback: {user_feedback}, score before: {cos_sim.at[job_id, 'score']}")
             if user_feedback == '1':
                 # Increase score for positive feedback
-                cos_sim.loc[job_title, 'score'] *= 1.3  # Adjust multiplier as needed
-                print(f"value after:{cos_sim.at[job_title, 'score']}")
+                cos_sim.loc[job_id, 'score'] *= 1.3  # Adjust multiplier as needed
+                print(f"value after:{cos_sim.at[job_id, 'score']}")
             elif user_feedback == '-1':
                 # Decrease score for negative feedback
-                cos_sim.loc[job_title, 'score'] *= 0.7  # Adjust multiplier as needed
-                print(f"value after:{cos_sim.at[job_title, 'score']}")
+                cos_sim.loc[job_id, 'score'] *= 0.7  # Adjust multiplier as needed
+                print(f"value after:{cos_sim.at[job_id, 'score']}")
 
     return cos_sim
 
@@ -97,7 +97,7 @@ def give_suggestions(user_id, resume_text):
     df['cluster_no'] = pd.to_numeric(df['cluster_no'], errors='coerce')
 
     samp_for_cluster = df[df['cluster_no'] == cluster]
-    cos_sim = cos_sim.T.set_index(samp_for_cluster['title'])
+    cos_sim = cos_sim.T.set_index(samp_for_cluster['id'])
     cos_sim.columns = ['score']
 
     # Adjust scores based on feedback
@@ -109,8 +109,8 @@ def give_suggestions(user_id, resume_text):
     # print('Top ten suggested for your cluster', '\n', top_cos_sim, '\n\n')
     
     new_suggestions_list = []
-    for job_title, score in top_cos_sim.to_dict()['score'].items():
-        job_id = samp_for_cluster[samp_for_cluster['title'] == job_title]['id'].values[0]
+    for job_id, score in top_cos_sim.to_dict()['score'].items():
+        job_title = samp_for_cluster[samp_for_cluster['id'] == job_id]['title'].values[0]
         new_suggestions_list.append({
             "user_id": user_id,
             "job_id": job_id,
@@ -119,8 +119,7 @@ def give_suggestions(user_id, resume_text):
             "feedback": 0  # Initial feedback value
         })
     update_suggestions_json(user_id, new_suggestions_list)
-    print(f"--- Reccomendations: {new_suggestions_list} ---")
-    return top_cos_sim
+    return new_suggestions_list
 
 
 # user_data = pd.read_json("../hybrid/user_data.json")
@@ -139,6 +138,8 @@ print(f"Resume input: {resume_text}")
 # ------------- reccomendations -------------
 #Todo: upload these results to matching_jobs in views.py
 cos_sim_result = give_suggestions(sel_user_id, resume_text)
+print(f"--- Reccomendations: {cos_sim_result} ---")
+
 
 # ------------- feedback -------------
 #Todo: have jasdeep update these values in the database
