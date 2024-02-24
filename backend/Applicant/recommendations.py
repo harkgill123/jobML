@@ -1,24 +1,37 @@
-import pandas as pd
+import sys, os, django
+from pathlib import Path
+sys.path.append(Path(__file__).resolve().parent.parent.__str__())
+
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'coreApp.settings')
+django.setup()
+from UserAuth.models import JobPosting,JobToClusters
+
+from joblib import load
 from sklearn.metrics.pairwise import cosine_similarity
 from pylab import rcParams
-rcParams['figure.figsize'] = 50, 20
+
 import nltk
 import time
-start=time.time()
-nltk.download('stopwords')
+import pandas as pd
 import warnings; warnings.simplefilter('ignore')
 import os
 import json
 import pandas as pd
-from joblib import load
+from views import create_clustered_model
+
+
+rcParams['figure.figsize'] = 50, 20
+start=time.time()
+nltk.download('stopwords')
 
 # Load your model components
-vec = load('vec.joblib')
-vec2 = load('vec2.joblib')
-pca = load('pca.joblib')
-lr = load('lr.joblib')
-comps = load('comps.joblib')
-df = pd.read_json('df.json')
+vec = load('model_settings/vec.joblib')
+vec2 = load('model_settings/vec2.joblib')
+pca = load('model_settings/pca.joblib')
+lr = load('model_settings/lr.joblib')
+comps = load('model_settings/comps.joblib')
+
+# df = pd.read_json('model_settings/df.json')
 
 def update_user_feedback(user_id, job_id, feedback):
     # Path to the suggestions JSON file
@@ -120,6 +133,8 @@ def give_suggestions(user_id, resume_text):
     user_feedback = [item for item in feedback_data if item["user_id"] == user_id]
     
     # Get job titles from df to associate cosine similarity scores with jobs
+    df['cluster_no'] = pd.to_numeric(df['cluster_no'], errors='coerce')
+
     samp_for_cluster = df[df['cluster_no'] == cluster]
     cos_sim = cos_sim.T.set_index(samp_for_cluster['title'])
     cos_sim.columns = ['score']
@@ -129,11 +144,11 @@ def give_suggestions(user_id, resume_text):
   
     # Print the top ten suggested jobs for the user's cluster after adjustment
     top_cos_sim = cos_sim.sort_values('score', ascending=False)[:15]
-    print('Top ten suggested for your cluster', '\n', top_cos_sim, '\n\n')
+    # print('Top ten suggested for your cluster', '\n', top_cos_sim, '\n\n')
     
     new_suggestions_list = []
     for job_title, score in top_cos_sim.to_dict()['score'].items():
-        job_id = samp_for_cluster[samp_for_cluster['title'] == job_title]['uid'].values[0]
+        job_id = samp_for_cluster[samp_for_cluster['title'] == job_title]['id'].values[0]
         new_suggestions_list.append({
             "user_id": user_id,
             "job_id": job_id,
@@ -141,19 +156,26 @@ def give_suggestions(user_id, resume_text):
             "score": score,
             "feedback": 0  # Initial feedback value
         })
-    
-    update_suggestions_json(user_id, new_suggestions_list)
+    print(new_suggestions_list)
+    # update_suggestions_json(user_id, new_suggestions_list)
     return top_cos_sim
 
 
-user_data = pd.read_json("../hybrid/user_data.json")
+# user_data = pd.read_json("../hybrid/user_data.json")
+# sel_user_id = 1
+# resume_text_row = user_data.loc[user_data['user_id'] == sel_user_id, 'user_data']
+# resume_text = resume_text_row.iloc[0]
+
+jobs = create_clustered_model()
+df = pd.DataFrame(jobs)
+
+# placeholder
 sel_user_id = 1
-resume_text_row = user_data.loc[user_data['user_id'] == sel_user_id, 'user_data']
-resume_text = resume_text_row.iloc[0]
+resume_text = '''sql,java,javascript,perl,postscript,play,powershell''' #from job entry 18
 print(resume_text)
 
 # ------------- reccomendations -------------
 cos_sim_result = give_suggestions(sel_user_id, resume_text)
 
 # ------------- feedback -------------
-update_user_feedback(user_id=2, job_id='222d8da33f324a7b836368cdada0a053', feedback=1)
+# update_user_feedback(user_id=2, job_id='222d8da33f324a7b836368cdada0a053', feedback=1)

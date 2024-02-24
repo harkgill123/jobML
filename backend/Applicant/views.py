@@ -10,13 +10,12 @@ from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from coreApp.ResumeScraper.resume import ResumeExtractor
 import logging
-from rest_framework.authentication import TokenAuthentication
+from django.contrib.postgres.aggregates import ArrayAgg
 import jwt,os
 from django.contrib.auth import get_user_model
+from django.db.models import Prefetch
 
-
-
-from UserAuth.models import Resume,JobPosting
+from UserAuth.models import Resume,JobPosting,ListOfSkills
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from django.db.models import CharField, Value as V
@@ -78,22 +77,49 @@ class ResumeCreateView(APIView):
 #         return JsonResponse({"recommended_jobs": jobs_data})
 #     except Resume.DoesNotExist:
 #         return JsonResponse({"error": "User does not have a resume"}, status=400)
-        print(serializer.errors)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        # print(serializer.errors)
+        # return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 def create_model():
-    jobpostings = JobPosting.objects.annotate(
-    skills_string = Concat(
-            'skills__skill_name', V(', '), output_field=CharField()
-        )
-        ).values('id', 'title', 'skills_string', 'job_description')
-    return jobpostings
+    # Fetch the job postings and prefetch the related skills
+    jobpostings = JobPosting.objects.prefetch_related('skills')
+
+    # Transform the job postings into the desired structure
+    jobpostings_list = []
+    for jp in jobpostings:
+        skills = list(jp.skills.values_list('skill_name', flat=True))
+        jobpostings_list.append({
+            'id': jp.id,
+            'title': jp.title,
+            'job_description': jp.job_description,
+            'skills': skills,
+        })
+
+    return jobpostings_list
+
+def create_clustered_model():
+    # Fetch the job postings and prefetch the related skills
+    jobpostings = JobPosting.objects.prefetch_related('skills')
+
+    # Transform the job postings into the desired structure
+    jobpostings_list = []
+    for jp in jobpostings:
+        skills = list(jp.skills.values_list('skill_name', flat=True))
+        cluster = jp.job_cluster.first().cluster if jp.job_cluster.exists() else 'No Cluster'
+
+        jobpostings_list.append({
+            'id': jp.id,
+            'title': jp.title,
+            'job_description': jp.job_description,
+            'skills': skills,
+            'cluster_no':cluster
+        })
+
+    return jobpostings_list
 
 @login_required
 def recommended_jobs_view(request):
     try:
-        
-            
         user_resume = Resume.objects.get(user=request.user)
         user_skills = user_resume.resume_skills.all()
         

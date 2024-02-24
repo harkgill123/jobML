@@ -4,30 +4,29 @@ sys.path.append(Path(__file__).resolve().parent.parent.__str__())
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'coreApp.settings')
 django.setup()
-
+from UserAuth.models import JobPosting,JobToClusters
 
 import pandas as pd
-from sklearn.feature_extraction.text import TfidfVectorizer
-from sklearn.cluster import AgglomerativeClustering
-from sklearn.decomposition import PCA
 import numpy as np
+import re
+import time
+import nltk
+import warnings; warnings.simplefilter('ignore')
+
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.decomposition import PCA
 from sklearn.linear_model import LogisticRegression
 from sklearn.model_selection import train_test_split
 from sklearn.feature_extraction import text
 from pylab import rcParams
-rcParams['figure.figsize'] = 50, 20
-import nltk
 from nltk.corpus import stopwords
-import re
-import time
-start=time.time()
-nltk.download('stopwords')
-import warnings; warnings.simplefilter('ignore')
-import pandas as pd
 from joblib import dump
 from django.conf import settings
 from views import create_model
 
+rcParams['figure.figsize'] = 50, 20
+start=time.time()
+nltk.download('stopwords')
 
 # Functions to clean skills data and make a vocabulary for skills vectorization
 common_placeholders = [
@@ -58,7 +57,6 @@ def text_scrubber(values):
     return result
 
 def tokenizer(df):
-    
     # Custom stop words that come up very often but don't say much about the job title.
     stops = ['manager', 'nice' 'responsibilities', 'used', 'skills', 'duties', 'work', 'worked', 'daily', 'next','magic','world','interview',
              'services', 'job', 'good','using', '.com', 'end', 'prepare', 'prepared', 'lead', 'requirements','#39','see below','yes','null'] + list(stopwords.words('english'))
@@ -87,18 +85,12 @@ def tokenizer(df):
     #print(result_df)
     return result_df
 
-#df = pd.read_json("../karim/jobs.json")
-
 # Fetch job data from the database
-
 jobs = create_model()
 df = pd.DataFrame(jobs)
 
-
-df['skills'] = text_scrubber(df['skills_string'])
-df.drop('skills_string', axis=1, inplace=True)
+df['skills'] = text_scrubber(df['skills'])
 print(df)
-
 test_df = tokenizer(df)
 
 voc = test_df['skills'].unique()
@@ -114,7 +106,8 @@ def clean_text(text):
 
 # Apply the clean_text function to each element in the 'jobdescription' column
 df['desc'] = df['job_description'].apply(clean_text)
-print(df['desc'])
+df.drop('job_description', axis=1, inplace=True)
+#print(df['desc'])
 df['desc'].to_csv("jobdesc_test.csv", index=False)
 
 #min_df ignores terms that are in more than 20% of documents
@@ -140,7 +133,7 @@ jobtitle_matrix
 # Run PCA to reduce number of features
 pca = PCA(n_components=20, random_state=42)
 comps = pca.fit_transform(jobtitle_matrix)
-print(comps)
+#print(comps)
 
 comps = pd.DataFrame(comps)
 
@@ -162,11 +155,26 @@ comps['cluster_no'] = y.values
 comps.set_index('cluster_no', inplace=True)
 
 # Save your model components
-dump(vec, 'vec.joblib')
-dump(vec2, 'vec2.joblib')
-dump(pca, 'pca.joblib')
-dump(lr, 'lr.joblib')
-dump(comps, 'comps.joblib')
+dump(vec, 'model_settings/vec.joblib')
+dump(vec2, 'model_settings/vec2.joblib')
+dump(pca, 'model_settings/pca.joblib')
+dump(lr, 'model_settings/lr.joblib')
+dump(comps, 'model_settings/comps.joblib')
 
-df.to_json('df.json')
-print(df.to_json('df.json'))
+def populate_job_clusters():
+    for index, row in df.iterrows():
+        print("Debug")
+        job_id = row['id']
+        print(job_id)
+        cluster_no = row['cluster_no']
+        print(cluster_no)
+        
+        # Assuming you have a Job model that corresponds to the JobToClusters
+        job, created = JobToClusters.objects.get_or_create(job_posting_id=job_id,cluster=cluster_no)
+        print(job)
+
+    return job
+JobToClusters.objects.all().delete()
+
+populate_job_clusters()
+df.to_json('model_settings/df.json')
