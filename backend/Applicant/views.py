@@ -15,7 +15,7 @@ import jwt,os
 from django.contrib.auth import get_user_model
 from django.db.models import Prefetch
 
-from UserAuth.models import Resume,JobPosting,ListOfSkills
+from UserAuth.models import Resume,JobPosting,ListOfSkills,Feedback
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from django.db.models import CharField, Value as V
@@ -116,6 +116,22 @@ def create_clustered_model():
         })
 
     return jobpostings_list
+
+def feedback_model():
+    # Fetch all feedback entries and prefetch the related job postings
+    feedback_entries = Feedback.objects.select_related('job_posting')
+
+    # Transform the feedback entries into the desired structure
+    feedback_list = []
+    for feedback in feedback_entries:
+        feedback_list.append({
+            'feedback': feedback.feedback,
+            'job_id': feedback.job_posting.id,
+            'user_id': feedback.user.id,
+            'job_title': feedback.job_posting.title,  # Assumes job_posting has a 'title' field
+        })
+
+    return feedback_list
 
 @login_required
 def recommended_jobs_view(request):

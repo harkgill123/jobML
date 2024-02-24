@@ -123,3 +123,7 @@ class JobToClusters(models.Model):
     job_posting = models.ForeignKey(JobPosting, on_delete=models.CASCADE, related_name='job_cluster')
     cluster = models.CharField(max_length=255, default='defaultcluster')
 
+class Feedback(models.Model):
+    job_posting = models.ForeignKey(JobPosting, on_delete=models.CASCADE, related_name='feedback')
+    user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name='feedback')
+    feedback = models.CharField(max_length=255, default='0')

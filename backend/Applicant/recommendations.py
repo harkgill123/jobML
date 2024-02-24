@@ -1,10 +1,12 @@
 import sys, os, django
 from pathlib import Path
+
+from django.shortcuts import get_object_or_404
 sys.path.append(Path(__file__).resolve().parent.parent.__str__())
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'coreApp.settings')
 django.setup()
-from UserAuth.models import JobPosting,JobToClusters
+from UserAuth.models import JobPosting,Feedback
 
 from joblib import load
 from sklearn.metrics.pairwise import cosine_similarity
@@ -17,7 +19,7 @@ import warnings; warnings.simplefilter('ignore')
 import os
 import json
 import pandas as pd
-from views import create_clustered_model
+from views import create_clustered_model,feedback_model
 
 
 rcParams['figure.figsize'] = 50, 20
@@ -33,76 +35,37 @@ comps = load('model_settings/comps.joblib')
 
 # df = pd.read_json('model_settings/df.json')
 
-def update_user_feedback(user_id, job_id, feedback):
-    # Path to the suggestions JSON file
-    suggestions_file_path = 'suggestions_user.json'
-    
-    if not os.path.isfile(suggestions_file_path):
-        print("File not found!")
-        return
-    
-    with open(suggestions_file_path, 'r') as file:
-        suggestions_data = json.load(file)
-    
-    # Update the feedback for the specific user_id and job_id
-    for entry in suggestions_data:
-        if entry['user_id'] == user_id and entry['job_id'] == job_id:
-            entry['feedback'] = feedback
-            break
-    
-    # Write the updated suggestions back to the JSON file
-    with open(suggestions_file_path, 'w') as file:
-        json.dump(suggestions_data, file, indent=4)
-
 def update_suggestions_json(user_id, new_suggestions_list):
-    # Path to the suggestions JSON file
-    suggestions_file_path = 'suggestions_user3.json'
-    
-    # Check if the suggestions file already exists
-    if os.path.isfile(suggestions_file_path):
-        # Read the existing data
-        with open(suggestions_file_path, 'r') as file:
-            suggestions_data = json.load(file)
-    else:
-        # Initialize an empty list if the file does not exist
-        suggestions_data = []
-    
-    # Remove any existing suggestions for this user
-    suggestions_data = [entry for entry in suggestions_data if entry['user_id'] != user_id]
-    
-    # Add new suggestions for this user
-    suggestions_data.extend(new_suggestions_list)
-    
-    # Write the updated suggestions back to the JSON file
-    with open(suggestions_file_path, 'w') as file:
-        json.dump(suggestions_data, file, indent=4)
+    for entry in new_suggestions_list:
+        job_id = entry["job_id"]
+        user_id = entry["user_id"]
+        feedback = entry["feedback"]
+        
+        # Assuming you have a Job model that corresponds to the JobToClusters
+        Feedback.objects.filter(job_posting_id=job_id,user_id=user_id).delete()
+        rec, created = Feedback.objects.get_or_create(job_posting_id=job_id,user_id=user_id,feedback=feedback)
 
 def load_feedback():
-    feedback_file_path = 'suggestions_user.json'
-    if os.path.isfile(feedback_file_path):
-        with open(feedback_file_path, 'r') as file:
-            feedback_data = json.load(file)
-        return feedback_data
-    else:
-        return []
+    feedback = feedback_model()
+    # df = pd.DataFrame(feedback)
+    return feedback
     
 def adjust_scores_based_on_feedback(cos_sim, feedback_data):
+    print("--- Adjusting Scores ---")
     for feedback in feedback_data:
         job_id = feedback["job_id"]
-        job_title = feedback["suggestions"]
+        job_title = feedback["job_title"]
         user_feedback = feedback["feedback"]
         # Adjust score based on feedback
         if job_title in cos_sim.index:
-            print(f"job title: {job_title}")
-            if user_feedback == 1:
+            print(f"job title: {job_title}, user feedback: {user_feedback}")
+            if user_feedback == '1':
                 # Increase score for positive feedback
-                print("userfeedback = 1")
                 print(f"value:{cos_sim.at[job_title, 'score']}")
                 cos_sim.loc[job_title, 'score'] *= 1.3  # Adjust multiplier as needed
                 print(f"value after:{cos_sim.at[job_title, 'score']}")
-            elif user_feedback == -1:
+            elif user_feedback == '-1':
                 # Decrease score for negative feedback
-                print("userfeedback = -1")
                 print(f"value:{cos_sim.at[job_title, 'score']}")
                 cos_sim.loc[job_title, 'score'] *= 0.7  # Adjust multiplier as needed
                 print(f"value after:{cos_sim.at[job_title, 'score']}")
@@ -124,7 +87,7 @@ def give_suggestions(user_id, resume_text):
 
     # Predict cluster for user and print cluster number
     cluster = lr.predict(user_comps)[0]
-    print('CLUSTER NUMBER', cluster, '\n\n')
+    print(f"Users CLUSTER NUMBER: {cluster}")
 
     # Calculate cosine similarity
     cos_sim = pd.DataFrame(cosine_similarity(user_comps, comps[comps.index == cluster]))
@@ -140,6 +103,7 @@ def give_suggestions(user_id, resume_text):
     cos_sim.columns = ['score']
 
     # Adjust scores based on feedback
+    print(f"Current user feedback:{user_feedback}")
     cos_sim = adjust_scores_based_on_feedback(cos_sim, user_feedback)
   
     # Print the top ten suggested jobs for the user's cluster after adjustment
@@ -156,8 +120,8 @@ def give_suggestions(user_id, resume_text):
             "score": score,
             "feedback": 0  # Initial feedback value
         })
-    print(new_suggestions_list)
-    # update_suggestions_json(user_id, new_suggestions_list)
+    update_suggestions_json(user_id, new_suggestions_list)
+    print(f"--- Reccomendations: {new_suggestions_list} ---")
     return top_cos_sim
 
 
@@ -171,11 +135,34 @@ df = pd.DataFrame(jobs)
 
 # placeholder
 sel_user_id = 1
-resume_text = '''sql,java,javascript,perl,postscript,play,powershell''' #from job entry 18
-print(resume_text)
+resume_text = '''sql,java,javascript,perl''' #from job entry 18
+print(f"Resume input: {resume_text}")
 
 # ------------- reccomendations -------------
+#Todo: upload these results to matching_jobs in views.py
 cos_sim_result = give_suggestions(sel_user_id, resume_text)
 
 # ------------- feedback -------------
-# update_user_feedback(user_id=2, job_id='222d8da33f324a7b836368cdada0a053', feedback=1)
+#Todo: have jasdeep update these values in the database
+
+def update_user_feedback(user_id, job_id, feedback):
+    print(f"--- Changing feedback for user {user_id}, job {job_id} to feedback value {feedback} ---")
+    # Attempt to retrieve the specific feedback entry
+    feedback_entry = get_object_or_404(Feedback, job_posting_id=job_id, user_id=user_id)
+    
+    # Update the feedback value
+    feedback_entry.feedback = feedback
+    feedback_entry.save()
+    
+# user_id=1
+# job_id='17'
+# feedback=-1
+# update_user_feedback(user_id, job_id, feedback)
+# user_id=1
+# job_id='7'
+# feedback=1
+# update_user_feedback(user_id, job_id, feedback)
+# user_id=1
+# job_id='19'
+# feedback=1
+# update_user_feedback(user_id, job_id, feedback)

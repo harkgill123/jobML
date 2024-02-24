@@ -174,7 +174,8 @@ def populate_job_clusters():
         print(job)
 
     return job
-JobToClusters.objects.all().delete()
 
+JobToClusters.objects.all().delete()
 populate_job_clusters()
+
 df.to_json('model_settings/df.json')
