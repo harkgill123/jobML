@@ -67,7 +67,7 @@ class WorkExperience(models.Model):
 
 class ResumeToSkills(models.Model):
     resume = models.ForeignKey(Resume, on_delete=models.CASCADE, related_name='resume_skills')
-    skillID = models.CharField(max_length=255, unique=True, default='DefaultSkillID')
+    skill_name = models.CharField(max_length=255, default='DefaultSkillID')
 
 
 class Project(models.Model):
@@ -76,7 +76,7 @@ class Project(models.Model):
     description = models.TextField(default='Default Project Description')
 
 class ListOfSkills(models.Model):
-    #skillID = models.AutoField(max_length=255, unique=True)
+    
     skill_name = models.CharField(max_length=200, default='Default Skill')
 
     def __str__(self):
