@@ -13,13 +13,16 @@ import logging
 from django.contrib.postgres.aggregates import ArrayAgg
 import jwt,os
 from django.contrib.auth import get_user_model
-from django.db.models import Prefetch
+from django.db.models import Q
+from django.utils import timezone
 
 from UserAuth.models import Resume,JobPosting,ListOfSkills,Feedback
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from django.db.models import CharField, Value as V
 from django.db.models.functions import Concat
+
+from recommendations import give_suggestions
 
 class ResumeUploadView(APIView):
     parser_classes = [MultiPartParser]
@@ -58,27 +61,6 @@ class ResumeCreateView(APIView):
             # Respond with the error details
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-# @login_required
-# def recommended_jobs_view(request):
-#     try:
-#         user_resume = Resume.objects.get(user=request.user)
-#         user_skills = user_resume.resume_skills.all()
-        
-#         skill_ids = [skill.skillID for skill in user_skills]
-        
-
-#         matching_jobs = Job.objects.filter(required_skills__skillID__in=skill_ids).distinct()
-        
-#         jobs_data = [
-#             {"jobID": job.jobID, "job_title": job.job_title, "company_name": job.company_name, "job_description": job.job_description}
-#             for job in matching_jobs
-#         ]
-        
-#         return JsonResponse({"recommended_jobs": jobs_data})
-#     except Resume.DoesNotExist:
-#         return JsonResponse({"error": "User does not have a resume"}, status=400)
-        # print(serializer.errors)
-        # return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 def create_model():
     # Fetch the job postings and prefetch the related skills
@@ -133,21 +115,40 @@ def feedback_model():
 
     return feedback_list
 
-@login_required
-def recommended_jobs_view(request):
+
+def recommended_jobs(request):
     try:
         user_resume = Resume.objects.get(user=request.user)
         user_skills = user_resume.resume_skills.all()
         
-        skill_ids = [skill.skillID for skill in user_skills]
+        suggestions_list = give_suggestions(request.user, user_skills)
 
-       # matching_jobs = Job.objects.filter(required_skillsskillIDin=skill_ids).distinct()
-
-        jobs_data = [
-            {"jobID": job.jobID, "job_title": job.job_title, "company_name": job.company_name, "job_description": job.job_description}
-            for job in matching_jobs
-        ]
+        job_ids = [suggestion['job_id'] for suggestion in suggestions_list]
+        jobs = JobPosting.objects.filter(id__in=job_ids)
+        job_mapping = {job.id: job for job in jobs}
+        ordered_jobs = [job_mapping[job_id] for job_id in job_ids if job_id in job_mapping]   
         
-        return JsonResponse({"recommended_jobs": jobs_data})
+        return JsonResponse({"recommended_jobs": ordered_jobs})
     except Resume.DoesNotExist:
         return JsonResponse({"error": "User does not have a resume"}, status=400)
+
+
+def search_jobs(request):
+    query = request.GET.get('q', '')
+    if query:
+        jobs = JobPosting.objects.filter(
+            Q(title__icontains=query) | 
+            Q(company_name__icontains=query) | 
+            Q(location__icontains=query) | 
+            Q(job_description__icontains=query),
+            application_deadline__gte=timezone.now()
+        )
+    else:
+        jobs = JobPosting.objects.none()
+
+    jobs_list = list(jobs.values(
+        'id', 'title', 'company_name', 'location', 'posted_date', 
+        'application_deadline', 'experience_required'
+    ))
+
+    return JsonResponse({'jobs': jobs_list})
