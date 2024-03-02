@@ -22,7 +22,7 @@ from django.http import JsonResponse
 from django.db.models import CharField, Value as V
 from django.db.models.functions import Concat
 
-from recommendations import give_suggestions
+from recommendations import give_suggestions, update_user_feedback
 
 class ResumeUploadView(APIView):
     parser_classes = [MultiPartParser]
@@ -132,6 +132,8 @@ def recommended_jobs(request):
     except Resume.DoesNotExist:
         return JsonResponse({"error": "User does not have a resume"}, status=400)
 
+def update_feedback(request):
+    update_user_feedback(user_id=request.user, job_id=request.job_id, feedback = request.feedback)
 
 def search_jobs(request):
     query = request.GET.get('q', '')
