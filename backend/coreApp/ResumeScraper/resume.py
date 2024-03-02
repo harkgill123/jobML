@@ -159,7 +159,7 @@ class ResumeExtractor:
 
         # model="gpt-4-turbo-preview",
         get_job_titles = self.client.chat.completions.create(
-            model="gpt-3.5-turbo",
+            model="gpt-4-turbo-preview",
             messages=[
                 {"role": "system", "content": "You are a helpful assistant."},
                 {"role": "user", "content": "what are the different job titles the person has? Only list the job titles separated by comma if needed"},
@@ -327,12 +327,12 @@ class ResumeExtractor:
         return data
 if __name__ == "__main__":
     resextractor = ResumeExtractor()
+    print(resextractor.extract_all("./karim_soubra_resume.pdf"))
+
+    # text = resextractor.read_pdf("./karim_soubra_resume.pdf")
 
 
-    text = resextractor.read_pdf("./karim_soubra_resume.pdf")
 
+    # skills = resextractor.extract_skills(text)
 
-
-    skills = resextractor.extract_skills(text)
-
-    print(skills)
+    # print(skills)
