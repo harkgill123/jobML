@@ -1,25 +1,32 @@
+import sys, os, django
+from pathlib import Path
+sys.path.append(Path(__file__).resolve().parent.parent.__str__())
+
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'coreApp.settings')
+django.setup()
+from UserAuth.models import JobPosting,JobToClusters
+
 import pandas as pd
-from sklearn.feature_extraction.text import TfidfVectorizer
-from sklearn.cluster import AgglomerativeClustering
-from sklearn.decomposition import PCA
-import matplotlib.pyplot as plt
 import numpy as np
-from sklearn.cluster import AgglomerativeClustering
-import seaborn as sns
+import re
+import time
+import nltk
+import warnings; warnings.simplefilter('ignore')
+
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.decomposition import PCA
 from sklearn.linear_model import LogisticRegression
 from sklearn.model_selection import train_test_split
 from sklearn.feature_extraction import text
 from pylab import rcParams
-rcParams['figure.figsize'] = 50, 20
-import nltk
 from nltk.corpus import stopwords
-import re
-import time
+from joblib import dump
+from django.conf import settings
+from views import create_model
+
+rcParams['figure.figsize'] = 50, 20
 start=time.time()
 nltk.download('stopwords')
-import warnings; warnings.simplefilter('ignore')
-import pandas as pd
-from joblib import dump
 
 # Functions to clean skills data and make a vocabulary for skills vectorization
 common_placeholders = [
@@ -50,7 +57,6 @@ def text_scrubber(values):
     return result
 
 def tokenizer(df):
-    
     # Custom stop words that come up very often but don't say much about the job title.
     stops = ['manager', 'nice' 'responsibilities', 'used', 'skills', 'duties', 'work', 'worked', 'daily', 'next','magic','world','interview',
              'services', 'job', 'good','using', '.com', 'end', 'prepare', 'prepared', 'lead', 'requirements','#39','see below','yes','null'] + list(stopwords.words('english'))
@@ -79,12 +85,12 @@ def tokenizer(df):
     #print(result_df)
     return result_df
 
-df = pd.read_json("../karim/jobs.json")
-#print(df)
+# Fetch job data from the database
+jobs = create_model()
+df = pd.DataFrame(jobs)
 
 df['skills'] = text_scrubber(df['skills'])
-#print(df['skills'])
-
+print(df)
 test_df = tokenizer(df)
 
 voc = test_df['skills'].unique()
@@ -99,8 +105,9 @@ def clean_text(text):
     return cleaned_text
 
 # Apply the clean_text function to each element in the 'jobdescription' column
-df['desc'] = df['desc'].apply(clean_text)
-print(df['desc'])
+df['desc'] = df['job_description'].apply(clean_text)
+df.drop('job_description', axis=1, inplace=True)
+#print(df['desc'])
 df['desc'].to_csv("jobdesc_test.csv", index=False)
 
 #min_df ignores terms that are in more than 20% of documents
@@ -124,15 +131,15 @@ jobtitle_matrix = pd.concat([skills_matrix2, description_matrix2], axis=1)
 jobtitle_matrix
 
 # Run PCA to reduce number of features
-pca = PCA(n_components=600, random_state=42)
+pca = PCA(n_components=575, random_state=42)
 comps = pca.fit_transform(jobtitle_matrix)
-print(comps)
+#print(comps)
 
 comps = pd.DataFrame(comps)
 
 # -------------- K Means --------------
 from sklearn.cluster import KMeans
-cltr = KMeans(n_clusters=12)
+cltr = KMeans(n_clusters=10)
 cltr.fit(comps)
 df['cluster_no'] = cltr.labels_
 X = comps
@@ -148,9 +155,21 @@ comps['cluster_no'] = y.values
 comps.set_index('cluster_no', inplace=True)
 
 # Save your model components
-dump(vec, 'vec.joblib')
-dump(vec2, 'vec2.joblib')
-dump(pca, 'pca.joblib')
-dump(lr, 'lr.joblib')
-dump(comps, 'comps.joblib')
-df.to_json('df.json')
+dump(vec, 'model_settings/vec.joblib')
+dump(vec2, 'model_settings/vec2.joblib')
+dump(pca, 'model_settings/pca.joblib')
+dump(lr, 'model_settings/lr.joblib')
+dump(comps, 'model_settings/comps.joblib')
+
+def populate_job_clusters():
+    for index, row in df.iterrows():
+        job_id = row['id']
+        cluster_no = row['cluster_no']
+        job, created = JobToClusters.objects.get_or_create(job_posting_id=job_id,cluster=cluster_no)
+
+    return job
+
+JobToClusters.objects.all().delete()
+populate_job_clusters()
+
+df.to_json('model_settings/df.json')

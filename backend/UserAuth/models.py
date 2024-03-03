@@ -4,8 +4,6 @@ from django.db import models
 from django.utils import timezone
 from django.conf import settings
 
-
-
 class User(AbstractUser):
     class UserType(models.TextChoices):
         RECRUITER = 'Recruiter', ('Recruiter')
@@ -69,7 +67,6 @@ class ResumeToSkills(models.Model):
     resume = models.ForeignKey(Resume, on_delete=models.CASCADE, related_name='resume_skills')
     skill_name = models.CharField(max_length=255, default='DefaultSkillID')
 
-
 class Project(models.Model):
     resume = models.ForeignKey(Resume, on_delete=models.CASCADE, related_name='projects')
     title = models.CharField(max_length=200, default='Default Project Title')
@@ -121,3 +118,12 @@ class EmploymentType(models.Model):
     #typeID = models.AutoField(max_length=255, unique=True)
     job_posting = models.ForeignKey(JobPosting, on_delete=models.CASCADE, related_name='employment_type')
     type_name = models.CharField(max_length=200, default='Default Employment Type')
+
+class JobToClusters(models.Model):
+    job_posting = models.ForeignKey(JobPosting, on_delete=models.CASCADE, related_name='job_cluster')
+    cluster = models.CharField(max_length=255, default='defaultcluster')
+
+class Feedback(models.Model):
+    job_posting = models.ForeignKey(JobPosting, on_delete=models.CASCADE, related_name='feedback')
+    user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name='feedback')
+    feedback = models.CharField(max_length=255, default='0')
