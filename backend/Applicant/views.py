@@ -24,6 +24,15 @@ from django.db.models.functions import Concat
 
 from recommendations import give_suggestions, update_user_feedback
 
+
+def getUserFromRequest(request):
+    auth_header = request.META.get('HTTP_AUTHORIZATION')
+    token = auth_header.split(" ")[1]
+    decoded_token = jwt.decode(token, os.environ.get('JWT_SECRET_KEY'), algorithms=["HS256"])
+    user_id = decoded_token['id']
+    user = get_user_model().objects.get(id=user_id)
+    return user
+
 class ResumeUploadView(APIView):
     parser_classes = [MultiPartParser]
 
@@ -43,11 +52,7 @@ logger = logging.getLogger(__name__)
 class ResumeCreateView(APIView):
 
     def post(self, request, *args, **kwargs):
-        auth_header = request.META.get('HTTP_AUTHORIZATION')
-        token = auth_header.split(" ")[1]
-        decoded_token = jwt.decode(token, os.environ.get('JWT_SECRET_KEY'), algorithms=["HS256"])
-        user_id = decoded_token['id']
-        user = get_user_model().objects.get(id=user_id)
+        user = getUserFromRequest(request=request)
         print(request.data)
 
         serializer = ResumeSerializer(data=request.data, context={'user': user})
@@ -117,11 +122,12 @@ def feedback_model():
 
 
 def recommended_jobs(request):
+    user = getUserFromRequest(request=request)
     try:
-        user_resume = Resume.objects.get(user=request.user)
+        user_resume = Resume.objects.get(user=user)
         user_skills = user_resume.resume_skills.all()
         
-        suggestions_list = give_suggestions(request.user, user_skills)
+        suggestions_list = give_suggestions(user.id, user_skills)
 
         job_ids = [suggestion['job_id'] for suggestion in suggestions_list]
         jobs = JobPosting.objects.filter(id__in=job_ids)
@@ -133,7 +139,8 @@ def recommended_jobs(request):
         return JsonResponse({"error": "User does not have a resume"}, status=400)
 
 def update_feedback(request):
-    update_user_feedback(user_id=request.user, job_id=request.job_id, feedback = request.feedback)
+    user = getUserFromRequest(request=request)
+    update_user_feedback(user_id=user.id, job_id=request.job_id, feedback = request.feedback)
 
 def search_jobs(request):
     query = request.GET.get('q', '')
