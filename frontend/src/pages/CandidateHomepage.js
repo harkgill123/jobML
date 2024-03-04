@@ -14,32 +14,62 @@ const CandidateHomepage = () => {
   const token = localStorage.getItem('token');
 
   useEffect(() => {
-    // This effect runs once on component mount to fetch recommended jobs
     const fetchRecommendedJobs = async () => {
       try {
-        console.log('Token:', token)
-        const response = await fetch('http://localhost:8000/Applicant/recommend-jobs/',{
+        console.log('Token:', token);
+        const response = await fetch('http://localhost:8000/Applicant/recommend-jobs/', {
           headers: {
             'Authorization': `Bearer ${token}`,
-  
             'Content-Type': 'application/json',
-        
           },
         });
-        
+  
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
-        const data = await response.json();
-        setFeaturedJobs(data.recommended_jobs);
-        console.log('Job data:', featuredJobs)
+        const json = await response.json(); // This will parse the JSON response body content.
+        console.log('Received jobs:', json); // Debug: log the raw received data
+        
+        // Parse the recommended_jobs string into an array
+        if (json.hasOwnProperty('recommended_jobs')) {
+          let jobsArray;
+          try {
+            jobsArray = JSON.parse(json.recommended_jobs);
+          } catch (e) {
+            console.error('Parsing error on recommended_jobs:', e);
+            // Handle parsing error if json.recommended_jobs is not a valid JSON string
+            jobsArray = []; // Fallback to an empty array
+          }
+  
+          if (Array.isArray(jobsArray)) {
+            // Map the received jobs to the expected format
+            const mappedJobs = jobsArray.map(item => {
+              const job = item.fields;
+              return {
+                id: item.pk,
+                title: job.title,
+                company: job.company,
+                location: job.location
+              };
+            });
+            setFeaturedJobs(mappedJobs);
+          } else {
+            console.error('recommended_jobs is not an array:', jobsArray);
+          }
+        } else {
+          console.error('Expected an array of jobs, but received:', json);
+        }
       } catch (error) {
         console.error('Error fetching recommended jobs:', error.message);
       }
     };
-
+  
     fetchRecommendedJobs();
-  }, []); // Empty dependency array ensures this effect runs only once
+  }, [token]); // Dependency array includes token to refetch if it changes
+  
+  
+  
+  
 
   return (
     <div className={styles.candidateHomepage}>
