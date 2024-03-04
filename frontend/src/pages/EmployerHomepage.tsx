@@ -75,21 +75,7 @@ const EmployerHomepage: FunctionComponent = () => {
         propMinWidth="63px"
         propWidth="39px"
       />
-      <FeaturedJob
-        jobsYouMightLike="Potential candidates"
-        googleInc="John Ford"
-        googleInc1="Tom Smith"
-        googleInc2="Mary Blake"
-        googleInc3="Sarah Flint"
-        googleInc4="Tim Cook"
-        googleInc5="Lisa Su"
-        googleInc6="Kevin Brown"
-        googleInc7="Cassie Campbell"
-        googleInc8="Mike Malone"
-        googleInc9="Joanna White"
-        googleInc10="Jerry French"
-        googleInc11="Stanley Hudson"
-      />
+
       <Footer propMargin="unset" propMargin1="unset" propMargin2="unset" />
     </div>
   );
