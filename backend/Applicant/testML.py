@@ -80,10 +80,9 @@ def clean_text(text):
 print("---- Starting to train model ----")
 jobs = create_model()
 df = pd.DataFrame(jobs)
-# df = df.head(40)
 
 df['skills'] = text_scrubber(df['skills'])
-voc = vocab(df)
+c
 
 # Apply the clean_text function to each element in the 'jobdescription' column
 df['desc'] = df['job_description'].apply(clean_text)
