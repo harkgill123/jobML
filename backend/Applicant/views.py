@@ -79,13 +79,8 @@ def recommended_jobs(request):
         for suggestion in suggestions_list:
             job_ids.append(suggestion['job_id'])
 
-        # Retrieve JobPosting objects using the job_ids list
         jobs_query_set = JobPosting.objects.filter(id__in=job_ids)
-
-        # Convert QuerySet to list to be able to reorder them
         jobs_list = list(jobs_query_set)
-
-        # Reorder jobs_list to match the order of job_ids
         jobs_ordered = sorted(jobs_list, key=lambda job: job_ids.index(job.id))
 
         serialized_jobs = serializers.serialize('json', jobs_ordered)
