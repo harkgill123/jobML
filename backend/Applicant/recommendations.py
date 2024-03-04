@@ -19,7 +19,7 @@ import warnings; warnings.simplefilter('ignore')
 import os
 import json
 import pandas as pd
-from views import create_clustered_model,feedback_model
+from Applicant.views import create_clustered_model,feedback_model
 
 
 rcParams['figure.figsize'] = 50, 20
@@ -27,11 +27,11 @@ start=time.time()
 nltk.download('stopwords')
 
 # Load your model components
-vec = load('model_settings/vec.joblib')
-vec2 = load('model_settings/vec2.joblib')
-pca = load('model_settings/pca.joblib')
-lr = load('model_settings/lr.joblib')
-comps = load('model_settings/comps.joblib')
+vec = load('Applicant/model_settings/vec.joblib')
+vec2 = load('Applicant/model_settings/vec2.joblib')
+pca = load('Applicant/model_settings/pca.joblib')
+lr = load('Applicant/model_settings/lr.joblib')
+comps = load('Applicant/model_settings/comps.joblib')
 
 # df = pd.read_json('model_settings/df.json')
 

@@ -15,14 +15,13 @@ import jwt,os
 from django.contrib.auth import get_user_model
 from django.db.models import Q
 from django.utils import timezone
-
+from django.core import serializers
 from UserAuth.models import Resume,JobPosting,ListOfSkills,Feedback
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from django.db.models import CharField, Value as V
 from django.db.models.functions import Concat
 
-from recommendations import give_suggestions, update_user_feedback
 
 
 def getUserFromRequest(request):
@@ -122,23 +121,29 @@ def feedback_model():
 
 
 def recommended_jobs(request):
+    from Applicant.recommendations import give_suggestions
+
     user = getUserFromRequest(request=request)
     try:
         user_resume = Resume.objects.get(user=user)
         user_skills = user_resume.resume_skills.all()
-        
-        suggestions_list = give_suggestions(user.id, user_skills)
+        user_skills_texts = [skill.skill_name for skill in user_skills]
+        suggestions_list = give_suggestions(user.id, ' '.join(user_skills_texts))
 
         job_ids = [suggestion['job_id'] for suggestion in suggestions_list]
         jobs = JobPosting.objects.filter(id__in=job_ids)
         job_mapping = {job.id: job for job in jobs}
         ordered_jobs = [job_mapping[job_id] for job_id in job_ids if job_id in job_mapping]   
         
-        return JsonResponse({"recommended_jobs": ordered_jobs})
+        serialized_jobs = serializers.serialize('json', ordered_jobs)
+        print(serialized_jobs)
+        return JsonResponse({"recommended_jobs": serialized_jobs})     
     except Resume.DoesNotExist:
         return JsonResponse({"error": "User does not have a resume"}, status=400)
 
 def update_feedback(request):
+    from Applicant.recommendations import update_user_feedback
+
     user = getUserFromRequest(request=request)
     update_user_feedback(user_id=user.id, job_id=request.job_id, feedback = request.feedback)
 
