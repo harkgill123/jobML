@@ -6,7 +6,7 @@ sys.path.append(Path(__file__).resolve().parent.parent.__str__())
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'coreApp.settings')
 django.setup()
-from UserAuth.models import JobPosting,FeedbackforJob
+from UserAuth.models import JobPosting,FeedbackforJob,ModelVersion
 
 from joblib import load
 from sklearn.metrics.pairwise import cosine_similarity
@@ -23,13 +23,6 @@ import pandas as pd
 rcParams['figure.figsize'] = 50, 20
 start=time.time()
 nltk.download('stopwords')
-
-# Load your model components
-vec_title = load('Applicant/model_settings/vectorizer_title.joblib')
-vec_desc = load('Applicant/model_settings/vectorizer_description.joblib')
-vec_skills = load('Applicant/model_settings/vectorizer_skills.joblib')
-lr = load('Applicant/model_settings/lr.joblib')
-comps = load('Applicant/model_settings/comps.joblib')
 
 def create_clustered_model():
     # Fetch the job postings and prefetch the related skills
@@ -98,9 +91,33 @@ def update_feedback_database(user_id, new_suggestions_list):
             score=score
         )
 
+def update_model_version_database(user_id, Model_Version):
+    model_version_str = str(Model_Version)
+    ModelVersion.objects.update_or_create(
+            user=user_id,
+            defaults={
+                'model_version': model_version_str  # Update the latest model version
+            }
+        )
+
 def give_suggestions(user_id, user_job_title, user_job_description, user_skills):
     jobs = create_clustered_model()
     df = pd.DataFrame(jobs)
+
+    Model_Version = get_object_or_404(ModelVersion, user_id=user_id)
+    Model_Version = Model_Version.latest_version
+
+    # Load your model components
+    # vec_title = load(f'Applicant/model_settings_ver{Model_Version}/vectorizer_title.joblib')
+    # vec_desc = load(f'Applicant/model_settings_ver{Model_Version}/vectorizer_description.joblib')
+    # vec_skills = load(f'Applicant/model_settings_ver{Model_Version}/vectorizer_skills.joblib')
+    # lr = load(f'Applicant/model_settings_ver{Model_Version}/lr.joblib')
+    # comps = load(f'Applicant/model_settings_ver{Model_Version}/comps.joblib')
+    vec_title = load(f'Applicant/model_settings/vectorizer_title.joblib')
+    vec_desc = load(f'Applicant/model_settings/vectorizer_description.joblib')
+    vec_skills = load(f'Applicant/model_settings/vectorizer_skills.joblib')
+    lr = load(f'Applicant/model_settings/lr.joblib')
+    comps = load(f'Applicant/model_settings/comps.joblib')
 
     # Vectorize user's skills and job descriptions
     user_description = pd.DataFrame(vec_desc.transform([user_job_description]).todense())
@@ -141,6 +158,7 @@ def give_suggestions(user_id, user_job_title, user_job_description, user_skills)
             "feedback": 0  # Initial feedback value
         })
     update_feedback_database(user_id, new_suggestions_list)
+    update_model_version_database(user_id, Model_Version)
     return new_suggestions_list
 
 #Todo: have jasdeep update these values in the database
@@ -159,27 +177,25 @@ def top_recommendations(user_id):
         user_id = user_id, 
         feedback = 0,
     ).order_by('-score')[:10]  # Order by score descending, limit to top 10
-    
     # Create a list of tuples with user_id and job_id for the top entries
     top_entries_list = [{'user_id': entry.user_id,'job_id': entry.job_posting_id} for entry in top_feedback_entries]
-    
     return top_entries_list
 
 # ------------- initial rec -------------
 # placeholder
-# sel_user_id = 4
-# user_skills = "python, css, html"
-# user_job_title = "Frontend Developer"
-# user_job_description = "Wrote code in css and hrml"
-# print(f"Resume input: {user_skills}, {user_job_title}, {user_job_description}")
+sel_user_id = 4
+user_skills = "python, css, html"
+user_job_title = "Frontend Developer"
+user_job_description = "Wrote code in css and hrml"
+print(f"Resume input: {user_skills}, {user_job_title}, {user_job_description}")
 
-# cos_sim_result = give_suggestions(sel_user_id, user_skills, user_job_description, user_job_title)
-# print(f"--- Reccomendations: {cos_sim_result} ---")
+cos_sim_result = give_suggestions(sel_user_id, user_skills, user_job_description, user_job_title)
+print(f"--- Reccomendations: {cos_sim_result} ---")
 
 # ------------- getting top rec -------------
-user_id = 4  # Replace with the actual user_id you want to query
-top_entries = top_recommendations(user_id)
-print(top_entries)
+# user_id = 4  # Replace with the actual user_id you want to query
+# top_entries = top_recommendations(user_id)
+# print(top_entries)
 
 # ------------- updating feedback -------------
 # user_id=2

@@ -4,7 +4,7 @@ sys.path.append(Path(__file__).resolve().parent.parent.__str__())
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'coreApp.settings')
 django.setup()
-from UserAuth.models import JobPosting,JobToClusters
+from UserAuth.models import JobPosting,JobToClusters,ModelVersion,User
 
 import pandas as pd
 import numpy as np
@@ -26,6 +26,8 @@ from django.conf import settings
 rcParams['figure.figsize'] = 50, 20
 start=time.time()
 nltk.download('stopwords')
+
+Model_Version = 0
 
 # Functions to clean skills data and make a vocabulary for skills vectorization
 common_placeholders = [
@@ -152,11 +154,11 @@ comps['cluster_no'] = y.values
 comps.set_index('cluster_no', inplace=True)
 
 # -------------- Save Model Components --------------
-dump(vectorizer_title, 'model_settings/vectorizer_title.joblib')
-dump(vectorizer_skills, 'model_settings/vectorizer_skills.joblib')
-dump(vectorizer_description, 'model_settings/vectorizer_description.joblib')
-dump(lr, 'model_settings/lr.joblib')
-dump(comps, 'model_settings/comps.joblib')
+dump(vectorizer_title, f'model_settings_ver{Model_Version}/vectorizer_title.joblib')
+dump(vectorizer_skills,f'model_settings_ver{Model_Version}/vectorizer_skills.joblib')
+dump(vectorizer_description, f'model_settings_ver{Model_Version}/vectorizer_description.joblib')
+dump(lr, f'model_settings_ver{Model_Version}/lr.joblib')
+dump(comps, f'model_settings_ver{Model_Version}/comps.joblib')
 
 # -------------- Update cluster table in database --------------
 def populate_job_clusters():
@@ -167,7 +169,24 @@ def populate_job_clusters():
 
     return job
 
+def update_model_version_database(Model_Version):
+    # Convert the Model_Version number to a string, as the model fields are CharFields
+    model_version_str = str(Model_Version)
+
+    # Get all user instances from the User table
+    users = User.objects.all()
+
+    # Now create or update ModelVersion entries for each user
+    for user in users:
+        ModelVersion.objects.update_or_create(
+            user=user,
+            defaults={
+                'latest_version': model_version_str  # Update the latest model version
+            }
+        )
+
+
 JobToClusters.objects.all().delete()
 populate_job_clusters()
-
-df.to_json('model_settings/df.json')
+update_model_version_database(Model_Version)
+# df.to_json('model_settings/df.json')
