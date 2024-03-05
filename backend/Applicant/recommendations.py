@@ -20,35 +20,73 @@ import os
 import json
 import pandas as pd
 
-
-
 rcParams['figure.figsize'] = 50, 20
 start=time.time()
 nltk.download('stopwords')
 
 # Load your model components
-vec = load('Applicant/model_settings/vec.joblib')
-vec2 = load('Applicant/model_settings/vec2.joblib')
-pca = load('Applicant/model_settings/pca.joblib')
+vec_title = load('Applicant/model_settings/vectorizer_title.joblib')
+vec_desc = load('Applicant/model_settings/vectorizer_description.joblib')
+vec_skills = load('Applicant/model_settings/vectorizer_skills.joblib')
 lr = load('Applicant/model_settings/lr.joblib')
 comps = load('Applicant/model_settings/comps.joblib')
 
-# df = pd.read_json('model_settings/df.json')
+def create_clustered_model():
+    # Fetch the job postings and prefetch the related skills
+    jobpostings = JobPosting.objects.prefetch_related('skills')
 
-def update_suggestions_json(user_id, new_suggestions_list):
+    # Transform the job postings into the desired structure
+    jobpostings_list = []
+    for jp in jobpostings:
+        skills = list(jp.skills.values_list('skill_name', flat=True))
+        cluster = jp.job_cluster.first().cluster if jp.job_cluster.exists() else 'No Cluster'
+
+        jobpostings_list.append({
+            'id': jp.id,
+            'title': jp.title,
+            'job_description': jp.job_description,
+            'skills': skills,
+            'cluster_no':cluster
+        })
+    return jobpostings_list
+
+def feedback_model():
+    # Fetch all feedback entries and prefetch the related job postings
+    feedback_entries = Feedback.objects.select_related('job_posting')
+
+    # Transform the feedback entries into the desired structure
+    feedback_list = []
+    for feedback in feedback_entries:
+        feedback_list.append({
+            'feedback': feedback.feedback,
+            'job_id': feedback.job_posting.id,
+            'user_id': feedback.user.id,
+            'job_title': feedback.job_posting.title,  # Assumes job_posting has a 'title' field
+        })
+    return feedback_list
+
+def user_info():
+    # Fetch all feedback entries and prefetch the related job postings
+    feedback_entries = Feedback.objects.select_related('job_posting')
+
+    # Transform the feedback entries into the desired structure
+    feedback_list = []
+    for feedback in feedback_entries:
+        feedback_list.append({
+            'feedback': feedback.feedback,
+            'job_id': feedback.job_posting.id,
+            'user_id': feedback.user.id,
+            'job_title': feedback.job_posting.title,  # Assumes job_posting has a 'title' field
+        })
+    return feedback_list
+
+def update_feedback_database(user_id, new_suggestions_list):
     for entry in new_suggestions_list:
         job_id = entry["job_id"]
         user_id = entry["user_id"]
         feedback = entry["feedback"]
-        
-        # Assuming you have a Job model that corresponds to the JobToClusters
         Feedback.objects.filter(job_posting_id=job_id,user_id=user_id).delete()
         rec, created = Feedback.objects.get_or_create(job_posting_id=job_id,user_id=user_id,feedback=feedback)
-
-def load_feedback():
-    feedback = feedback_model()
-    # df = pd.DataFrame(feedback)
-    return feedback
     
 def adjust_scores_based_on_feedback(cos_sim, feedback_data):
     print("--- Adjusting Scores ---")
@@ -70,43 +108,40 @@ def adjust_scores_based_on_feedback(cos_sim, feedback_data):
 
     return cos_sim
 
-def give_suggestions(user_id, resume_text):
-    feedback_data = load_feedback()
+def give_suggestions(user_id, user_job_title, user_job_description, user_skills):
+    feedback_data = feedback_model()
     
     # Vectorize user's skills and job descriptions
-    desc = pd.DataFrame(vec.transform([resume_text]).todense())
-    desc.columns = vec.get_feature_names_out()
-    skillz = pd.DataFrame(vec2.transform([resume_text]).todense())
-    skillz.columns = vec2.get_feature_names_out()
-    mat = pd.concat([skillz, desc], axis=1)
+    user_description = pd.DataFrame(vec_desc.transform([user_job_description]).todense())
+    user_description.columns = vec_desc.get_feature_names_out()
+    user_skills = pd.DataFrame(vec_skills.transform([user_skills]).todense())
+    user_skills.columns = vec_skills.get_feature_names_out()
+    user_title = pd.DataFrame(vec_title.transform([user_job_title]).todense())
+    user_title.columns = vec_title.get_feature_names_out()
+    mat = pd.concat([user_title, user_skills, user_description], axis=1) #, user_skills, user_description
     
     # Transform feature matrix with pca
-    user_comps = pd.DataFrame(pca.transform(mat))
+    user_comps = pd.DataFrame(mat)
 
     # Predict cluster for user and print cluster number
-    cluster = lr.predict(user_comps)[0]
-    print(f"Users CLUSTER NUMBER: {cluster}")
+    predicted_cluster = lr.predict(user_comps)[0]
+    print(f"Users CLUSTER NUMBER: {predicted_cluster}")
 
     # Calculate cosine similarity
-    cos_sim = pd.DataFrame(cosine_similarity(user_comps, comps[comps.index == cluster]))
+    cos_sim = pd.DataFrame(cosine_similarity(user_comps, comps[comps.index == predicted_cluster]))
 
-    # Filter feedback for the current user
-    user_feedback = [item for item in feedback_data if item["user_id"] == user_id]
-    
     # Get job titles from df to associate cosine similarity scores with jobs
     df['cluster_no'] = pd.to_numeric(df['cluster_no'], errors='coerce')
-
-    samp_for_cluster = df[df['cluster_no'] == cluster]
+    samp_for_cluster = df[df['cluster_no'] == predicted_cluster]
     cos_sim = cos_sim.T.set_index(samp_for_cluster['id'])
     cos_sim.columns = ['score']
 
     # Adjust scores based on feedback
-    print(f"Current user feedback:{user_feedback}")
+    user_feedback = [item for item in feedback_data if item["user_id"] == user_id]    
     cos_sim = adjust_scores_based_on_feedback(cos_sim, user_feedback)
-  
-    # Print the top ten suggested jobs for the user's cluster after adjustment
+
+    # top ten suggested jobs for the user's cluster after adjustment
     top_cos_sim = cos_sim.sort_values('score', ascending=False)[:15]
-    # print('Top ten suggested for your cluster', '\n', top_cos_sim, '\n\n')
     
     new_suggestions_list = []
     for job_id, score in top_cos_sim.to_dict()['score'].items():
@@ -118,80 +153,25 @@ def give_suggestions(user_id, resume_text):
             "score": score,
             "feedback": 0  # Initial feedback value
         })
-    update_suggestions_json(user_id, new_suggestions_list)
+    update_feedback_database(user_id, new_suggestions_list)
     return new_suggestions_list
 
-
-# user_data = pd.read_json("../hybrid/user_data.json")
-# sel_user_id = 1
-# resume_text_row = user_data.loc[user_data['user_id'] == sel_user_id, 'user_data']
-# resume_text = resume_text_row.iloc[0]
-def create_model():
-    # Fetch the job postings and prefetch the related skills
-    jobpostings = JobPosting.objects.prefetch_related('skills')
-
-    # Transform the job postings into the desired structure
-    jobpostings_list = []
-    for jp in jobpostings:
-        skills = list(jp.skills.values_list('skill_name', flat=True))
-        jobpostings_list.append({
-            'id': jp.id,
-            'title': jp.title,
-            'job_description': jp.job_description,
-            'skills': skills,
-        })
-
-    return jobpostings_list
-
-def create_clustered_model():
-    # Fetch the job postings and prefetch the related skills
-    jobpostings = JobPosting.objects.prefetch_related('skills')
-
-    # Transform the job postings into the desired structure
-    jobpostings_list = []
-    for jp in jobpostings:
-        skills = list(jp.skills.values_list('skill_name', flat=True))
-        cluster = jp.job_cluster.first().cluster if jp.job_cluster.exists() else 'No Cluster'
-
-        jobpostings_list.append({
-            'id': jp.id,
-            'title': jp.title,
-            'job_description': jp.job_description,
-            'skills': skills,
-            'cluster_no':cluster
-        })
-
-    return jobpostings_list
-
-def feedback_model():
-    # Fetch all feedback entries and prefetch the related job postings
-    feedback_entries = Feedback.objects.select_related('job_posting')
-
-    # Transform the feedback entries into the desired structure
-    feedback_list = []
-    for feedback in feedback_entries:
-        feedback_list.append({
-            'feedback': feedback.feedback,
-            'job_id': feedback.job_posting.id,
-            'user_id': feedback.user.id,
-            'job_title': feedback.job_posting.title,  # Assumes job_posting has a 'title' field
-        })
-
-    return feedback_list
 
 jobs = create_clustered_model()
 df = pd.DataFrame(jobs)
 
 # placeholder
 sel_user_id = 1
-resume_text = '''sql,java,javascript,perl''' #from job entry 18
-print(f"Resume input: {resume_text}")
+user_skills = "python, c, java"
+user_job_title = "Software Engineer"
+user_job_description = "Wrote code in java and python"
+
+print(f"Resume input: {user_skills}, {user_job_title}, {user_job_description}")
 
 # ------------- reccomendations -------------
 #Todo: upload these results to matching_jobs in views.py
-cos_sim_result = give_suggestions(sel_user_id, resume_text)
+cos_sim_result = give_suggestions(sel_user_id, user_skills, user_job_description, user_job_title)
 print(f"--- Reccomendations: {cos_sim_result} ---")
-
 
 # ------------- feedback -------------
 #Todo: have jasdeep update these values in the database
