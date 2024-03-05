@@ -16,7 +16,7 @@ from django.contrib.auth import get_user_model
 from django.db.models import Q
 from django.utils import timezone
 from django.core import serializers
-from UserAuth.models import Resume,JobPosting,ListOfSkills,Feedback
+from UserAuth.models import Resume,JobPosting,ListOfSkills,FeedbackforJob
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from django.db.models import CharField, Value as V
@@ -74,7 +74,14 @@ def recommended_jobs(request):
         user_resume = Resume.objects.get(user=user)
         user_skills = user_resume.resume_skills.all()
         user_skills_texts = [skill.skill_name for skill in user_skills]
-        suggestions_list = give_suggestions(user.id, ' '.join(user_skills_texts))
+        latest_work_experience = user_resume.work_experiences.first()
+        if latest_work_experience:
+            user_title = latest_work_experience.job_title
+            user_job_desc = latest_work_experience.job_description
+        else:
+            user_title = None
+            user_job_desc = None
+        suggestions_list = give_suggestions(user.id, user_title, user_job_desc,' '.join(user_skills_texts))
         print(f"suggestions_list: {suggestions_list}")
         for suggestion in suggestions_list:
             job_ids.append(suggestion['job_id'])
@@ -93,6 +100,19 @@ def update_feedback(request):
     user = getUserFromRequest(request=request)
     update_user_feedback(user_id=user.id, job_id=request.job_id, feedback = request.feedback)
 
+def get_recommendations(request):
+    from recommendations import top_recommendations
+    user = getUserFromRequest(request=request)
+    try:
+        top_entries = top_recommendations(user_id=user.id)
+        job_ids = [suggestion['job_id'] for suggestion in top_entries]
+        jobs = JobPosting.objects.filter(id__in=job_ids)
+        job_mapping = {job.id: job for job in jobs}
+        ordered_jobs = [job_mapping[job_id] for job_id in job_ids if job_id in job_mapping]
+        return JsonResponse({"top_recommended_jobs": ordered_jobs})
+    except Resume.DoesNotExist:
+        return JsonResponse({"error": "user couldnt be found"}, status=400)
+    
 def search_jobs(request):
     query = request.GET.get('q', '')
     if query:
