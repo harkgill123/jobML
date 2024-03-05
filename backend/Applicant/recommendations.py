@@ -6,7 +6,7 @@ sys.path.append(Path(__file__).resolve().parent.parent.__str__())
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'coreApp.settings')
 django.setup()
-from UserAuth.models import JobPosting,Feedback
+from UserAuth.models import JobPosting,FeedbackforJob
 
 from joblib import load
 from sklearn.metrics.pairwise import cosine_similarity
@@ -21,7 +21,6 @@ import json
 import pandas as pd
 from views import create_clustered_model,feedback_model
 
-
 rcParams['figure.figsize'] = 50, 20
 start=time.time()
 nltk.download('stopwords')
@@ -34,36 +33,24 @@ lr = load('model_settings/lr.joblib')
 comps = load('model_settings/comps.joblib')
 
 def update_feedback_database(user_id, new_suggestions_list):
+    # First, remove all existing feedback entries for the user
+    FeedbackforJob.objects.filter(user_id=user_id).delete()
+
+    # Now, add new feedback entries from the new_suggestions_list
     for entry in new_suggestions_list:
         job_id = entry["job_id"]
-        user_id = entry["user_id"]
         feedback = entry["feedback"]
-        Feedback.objects.filter(job_posting_id=job_id,user_id=user_id).delete()
-        rec, created = Feedback.objects.get_or_create(job_posting_id=job_id,user_id=user_id,feedback=feedback)
-    
-def adjust_scores_based_on_feedback(cos_sim, feedback_data):
-    print("--- Adjusting Scores ---")
-    for feedback in feedback_data:
-        job_id = feedback["job_id"]
-        job_title = feedback["job_title"]
-        user_feedback = feedback["feedback"]
-        # Adjust score based on feedback
-        if job_id in cos_sim.index:
-            print(f"job title: {job_title}, user feedback: {user_feedback}, score before: {cos_sim.at[job_id, 'score']}")
-            if user_feedback == '1':
-                # Increase score for positive feedback
-                cos_sim.loc[job_id, 'score'] *= 1.3  # Adjust multiplier as needed
-                print(f"value after:{cos_sim.at[job_id, 'score']}")
-            elif user_feedback == '-1':
-                # Decrease score for negative feedback
-                cos_sim.loc[job_id, 'score'] *= 0.7  # Adjust multiplier as needed
-                print(f"value after:{cos_sim.at[job_id, 'score']}")
+        score = entry["score"]
 
-    return cos_sim
+        # Create a new feedback entry
+        FeedbackforJob.objects.create(
+            job_posting_id=job_id,
+            user_id=user_id,
+            feedback=feedback,
+            score=score
+        )
 
 def give_suggestions(user_id, user_job_title, user_job_description, user_skills):
-    feedback_data = feedback_model()
-    
     # Vectorize user's skills and job descriptions
     user_description = pd.DataFrame(vec_desc.transform([user_job_description]).todense())
     user_description.columns = vec_desc.get_feature_names_out()
@@ -89,13 +76,8 @@ def give_suggestions(user_id, user_job_title, user_job_description, user_skills)
     cos_sim = cos_sim.T.set_index(samp_for_cluster['id'])
     cos_sim.columns = ['score']
 
-    # Adjust scores based on feedback
-    user_feedback = [item for item in feedback_data if item["user_id"] == user_id]    
-    cos_sim = adjust_scores_based_on_feedback(cos_sim, user_feedback)
-  
-    # 
-    # top ten suggested jobs for the user's cluster after adjustment
-    top_cos_sim = cos_sim.sort_values('score', ascending=False)[:15]
+    # top suggested jobs for the user's cluster after adjustment
+    top_cos_sim = cos_sim.sort_values('score', ascending=False)[:30]
     
     new_suggestions_list = []
     for job_id, score in top_cos_sim.to_dict()['score'].items():
@@ -110,44 +92,57 @@ def give_suggestions(user_id, user_job_title, user_job_description, user_skills)
     update_feedback_database(user_id, new_suggestions_list)
     return new_suggestions_list
 
-
-jobs = create_clustered_model()
-df = pd.DataFrame(jobs)
-
-# placeholder
-sel_user_id = 1
-user_skills = "python, c, java"
-user_job_title = "Software Engineer"
-user_job_description = "Wrote code in java and python"
-
-print(f"Resume input: {user_skills}, {user_job_title}, {user_job_description}")
-
-# ------------- reccomendations -------------
-#Todo: upload these results to matching_jobs in views.py
-cos_sim_result = give_suggestions(sel_user_id, user_skills, user_job_description, user_job_title)
-print(f"--- Reccomendations: {cos_sim_result} ---")
-
-# ------------- feedback -------------
 #Todo: have jasdeep update these values in the database
-
 def update_user_feedback(user_id, job_id, feedback):
     print(f"--- Changing feedback for user {user_id}, job {job_id} to feedback value {feedback} ---")
     # Attempt to retrieve the specific feedback entry
-    feedback_entry = get_object_or_404(Feedback, job_posting_id=job_id, user_id=user_id)
+    feedback_entry = get_object_or_404(FeedbackforJob, job_posting_id=job_id, user_id=user_id)
     
     # Update the feedback value
     feedback_entry.feedback = feedback
     feedback_entry.save()
 
-# user_id=1
-# job_id='17'
+def top_recommendations(user_id):
+    # Query the FeedbackforJob table, excluding entries with feedback of 1 or -1
+    top_feedback_entries = FeedbackforJob.objects.filter(
+        user_id = user_id, 
+        feedback = 0,
+    ).order_by('-score')[:10]  # Order by score descending, limit to top 10
+    
+    # Create a list of tuples with user_id and job_id for the top entries
+    top_entries_list = [{'user_id': entry.user_id,'job_id': entry.job_posting_id} for entry in top_feedback_entries]
+    
+    return top_entries_list
+
+# ------------- initial rec -------------
+jobs = create_clustered_model()
+df = pd.DataFrame(jobs)
+
+# placeholder
+sel_user_id = 3
+user_skills = "python, css"
+user_job_title = "Full Stack Developer"
+user_job_description = "Wrote code in css and python"
+print(f"Resume input: {user_skills}, {user_job_title}, {user_job_description}")
+
+cos_sim_result = give_suggestions(sel_user_id, user_skills, user_job_description, user_job_title)
+print(f"--- Reccomendations: {cos_sim_result} ---")
+
+# ------------- getting top rec -------------
+# user_id = 3  # Replace with the actual user_id you want to query
+# top_entries = top_recommendations(user_id)
+# print(top_entries)
+
+# ------------- updating feedback -------------
+# user_id=2
+# job_id='13'
 # feedback=-1
 # update_user_feedback(user_id, job_id, feedback)
-# user_id=1
-# job_id='7'
+# user_id=2
+# job_id='201'
 # feedback=1
 # update_user_feedback(user_id, job_id, feedback)
-# user_id=1
-# job_id='19'
+# user_id=2
+# job_id='3'
 # feedback=1
 # update_user_feedback(user_id, job_id, feedback)

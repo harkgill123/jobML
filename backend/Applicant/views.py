@@ -16,7 +16,7 @@ from django.contrib.auth import get_user_model
 from django.db.models import Q
 from django.utils import timezone
 
-from UserAuth.models import Resume,JobPosting,ListOfSkills,Feedback
+from UserAuth.models import Resume,JobPosting,ListOfSkills,FeedbackforJob
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from django.db.models import CharField, Value as V
@@ -103,13 +103,14 @@ def create_clustered_model():
 
 def feedback_model():
     # Fetch all feedback entries and prefetch the related job postings
-    feedback_entries = Feedback.objects.select_related('job_posting')
+    feedback_entries = FeedbackforJob.objects.select_related('job_posting')
 
     # Transform the feedback entries into the desired structure
     feedback_list = []
     for feedback in feedback_entries:
         feedback_list.append({
             'feedback': feedback.feedback,
+            'score': feedback.score,
             'job_id': feedback.job_posting.id,
             'user_id': feedback.user.id,
             'job_title': feedback.job_posting.title,  # Assumes job_posting has a 'title' field
@@ -140,6 +141,19 @@ def update_feedback(request):
     from recommendations import update_user_feedback
     user = getUserFromRequest(request=request)
     update_user_feedback(user_id=user.id, job_id=request.job_id, feedback = request.feedback)
+
+def get_recommendations(request):
+    from recommendations import top_recommendations
+    user = getUserFromRequest(request=request)
+    try:
+        top_entries = top_recommendations(user_id=user.id)
+        job_ids = [suggestion['job_id'] for suggestion in top_entries]
+        jobs = JobPosting.objects.filter(id__in=job_ids)
+        job_mapping = {job.id: job for job in jobs}
+        ordered_jobs = [job_mapping[job_id] for job_id in job_ids if job_id in job_mapping]
+        return JsonResponse({"top_recommended_jobs": ordered_jobs})
+    except Resume.DoesNotExist:
+        return JsonResponse({"error": "user couldnt be found"}, status=400)
 
 def search_jobs(request):
     query = request.GET.get('q', '')
