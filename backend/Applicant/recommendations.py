@@ -183,14 +183,14 @@ def top_recommendations(user_id):
 
 # ------------- initial rec -------------
 # placeholder
-sel_user_id = 4
-user_skills = "python, css, html"
-user_job_title = "Frontend Developer"
-user_job_description = "Wrote code in css and hrml"
-print(f"Resume input: {user_skills}, {user_job_title}, {user_job_description}")
+# sel_user_id = 4
+# user_skills = "python, css, html"
+# user_job_title = "Frontend Developer"
+# user_job_description = "Wrote code in css and hrml"
+# print(f"Resume input: {user_skills}, {user_job_title}, {user_job_description}")
 
-cos_sim_result = give_suggestions(sel_user_id, user_skills, user_job_description, user_job_title)
-print(f"--- Reccomendations: {cos_sim_result} ---")
+# cos_sim_result = give_suggestions(sel_user_id, user_skills, user_job_description, user_job_title)
+# print(f"--- Reccomendations: {cos_sim_result} ---")
 
 # ------------- getting top rec -------------
 # user_id = 4  # Replace with the actual user_id you want to query
