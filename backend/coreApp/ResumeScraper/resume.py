@@ -8,14 +8,7 @@ from openai import OpenAI
 from dotenv import load_dotenv
 from pathlib import Path
 import os
-"""
-        scraped_data = {
-     
-      
-            ,
-            "Address": "1234 Main St, Hometown, Country"
-        }
-"""
+
 
 class ResumeExtractor:
     def __init__(self):

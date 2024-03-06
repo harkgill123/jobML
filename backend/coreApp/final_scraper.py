@@ -39,13 +39,9 @@ from django.core.wsgi import get_wsgi_application
 
 def run():
     print('hi')
-#([a-z]|.)*@[a-z]*.(com|ca)
+
 class scrapejob:
-    #TODO: 
-    #1-parse skills using 1-gram,2-gram,3-gram -DONE
-    #2-parse experience
-    #3-separate jobs with zero matches of skills for later debug
-    #4-upload job data
+
     def __init__(self,website:str):
         """
             website(string): indeed or glassdoor
@@ -115,28 +111,7 @@ class scrapejob:
             collects job postings until limit is met.
             limit(int)= number of job posts to collect
         """
-        databases_profile_job_df=pd.DataFrame(columns=["uid","amazon dynamodb","amazon rds/aurora","amazon redshift","apache hbase","apache hive","aster data","cassandra","elasticsearch", "filemaker pro","firebird","google bigquery",
-        "google cloud storage","greenplum","hsqldb","ibm db2","informix","mariadb", "memcached","memsql","microsoft access","microsoft azure (tables, cosmosdb, sql, etc)","microsoft azure"
-        "mongodb","msql","mysql","neo4j","netezza","oracle","panorama","postgresql","redis","sap hana","sql server","sqlite","teradata","timesten","unidata","universe","vertica"])
-        domain_job_profile_df=pd.DataFrame(columns=["uid","Back End","C-suite executive","Cloud Computing","Data Scientist","Data or business analyst","business analyst","data analyst","Database Administrator(DBA)","Database Administrator"
-                 ,"designer","Devops","academic researcher","educator","Embedded applications","embedded devices developer","Engineering manager","Enterprise application","Front End"
-                 ,"Full stack","Game developer","Information Security","Mobile Developer","Network Engineer","product manager","QA","Test developer","Sales professional","software developer","java developer"
-                 ,"sudent","system administrator","web developer"])
-        frameworks_profile_job=pd.DataFrame(columns=["uid",".net core","agile","angular","asp.net mvc","aura","aurelia","bottle","cakephp","cassandra","catalyst","cloudera","codeigniter","cordova","couchdb","cuba",
-                                "django","dojo","dropwizard","durandal","elm","ember.js","express","flask","flatiron","flex","flink","google web toolkit","grails","hadoop","halcyon","hive","hpcc",
-                                "jsf","koa","laravel","lift","lithium","map reduce","mason","meteor","moustache","ninja","nitro","node.js","pentaho","phoenix","play","polymer","pyramid",
-                                "rapidminer","react","revel","riot.js","ruby on rails","rum","simplex","sinatra","solar","spark","spring","storm","struts","symfony","tapestry","tensorflow","pytorch"
-                                ,"tornado","vaadin","vanilla","vert.x","vue.js","web2py","wicket","xamarin","yarn","yii","zend","zope"])
-        languages_profile_job=pd.DataFrame(columns=["uid",".net","abap","abc","actionscript","ada","ajax","apex","apl","applescript","arc","arduino","asp","assembly","atlas","automator","avenue","awk","bash","bc","bourne shell","bro"
-                            ,"c","c shell","c#","c++","caml","ceylon","cfml","ch","clarion","clean","clojure","cobol","cobra","coffeescript","coldfusion","css","ct","d","dart"
-                            ,"dcl","pascal","e","ecl","ec","ecmascript","egl","elixir","erlang","f#","falcon","felix","forth","fortran","fortress","go","gosu","groovy","hack","haskell",
-                            "html","icon","idl","inform","informix-4gl","io","java","jade","javascript","jscript","julia","korn shell","kotlin","labview","ladder logic","lingo","lisp"
-                            ,"logo","lotusscript","lpc","lua","lustre","magic","mantis","mathematica","matlab","mercury","ml","monkry","moo","mumps",
-                            "objective-c","ocaml","occam","ooc","opa","opencl","perl","php","pilot","sql","postscript","powerscript","powershell","puppet","python","q","r","rexx","ruby","ruby on rails"
-                            ,"rust","s","s-plus","sas","scala","scilab","sed","self","shell","signal","simula","simulink","smalltalk","smarty","spark","spss","sqr","swift","tacl","tcl","tom","transact-sql"
-                            ,"typescript","vb.net","vba","vbscript","verilog","vhdl","visual basic 6","xen","xquery","xslt"])
-        platforms_profile_job=pd.DataFrame(columns=["uid","amazon echo","android","apple watch","apple tv","arduino","aws","azure","drupal","esp8266","firebase","gaming console","google cloud platform","heroku","google home","ibm cloud","watson"
-                            ,"ios","linux","mac os","mainframe","predix","raspberry pi","salesforce","serverless","sharepoint","windows desktop","windows server","windows phone","wordpress"])
+       
         while(True):
             
 
@@ -235,11 +210,7 @@ class scrapejob:
                 time.sleep(5)
                 pp.pprint(current_job_data) 
                 print("CREATED JOB POSTING ENTRY")
-                databases_profile_job_df = self.extract_databases(current_job_data['skills'],current_job_data['uid'],databases_profile_job_df)
-                domain_job_profile_df = self.extract_domains(current_job_data['skills'],current_job_data['uid'],domain_job_profile_df)
-                frameworks_profile_job = self.extract_frameworks(current_job_data['skills'],current_job_data['uid'],frameworks_profile_job)
-                languages_profile_job = self.extract_languages(current_job_data['skills'],current_job_data['uid'],languages_profile_job)
-                platforms_profile_job = self.extract_platform(current_job_data['skills'],current_job_data['uid'],platforms_profile_job)
+          
                 if len(current_job_data["skills"])>=4:
                     if existing_job_posting is None:
                         job_posting = JobPosting.objects.create(**job_posting_data)
@@ -294,44 +265,8 @@ class scrapejob:
 
     
     def extract_skills(self,description:str):
-            """
-            list_of_skills=["c","c++","python","react","react.js","next.js","reactjs","nextjs","sql","bigquery","relational database","operating systems","javascript","node","soap","rest","unit testing","project management","time management","object oriented programming","oop","databases","database design","web architecture","rest api","angular","java script","spring boot","java","selenium",
-                    "cucumber","spring security","jbdc","junit","prostgresql","rdbms","no sql","nosql","apache","kafka","apache nifi","elasticsearch","devops","database design","code reviews","azure databricks"
-                    ,"delta lake","azure storage","adf","azure analysis service","obiee","powerbi","power bi","oracle business intelligence suite enterprise edition","siebel"
-                    ,"data analysis","data modeling","data mining","siebel eim","siebel eai","siebel business layer objects","siebel web templates","siebel open ui","jquery","communication skills"
-                    ,"interpersonal relations","analytical skills","analytical skills","problem solving","ui integration","git","perforce","robot framework","software testing","test automation"
-                    ,"linux","shell scripts","windows powershell","batch scripts","relational databases","oracle","sql server","postgresql","bi","olap","atlassian","pmp","cpmg","itil"
-                    ,"project management","analytical abilities","problem solving skills","system integration","transact sql","xml modeling","xslt","xpath","xsd","wsdl","rest","soap"
-                    ,"apm tools","dynatrace","splunk","jira","confluence","jenkins","bitbucket","github","agile","agile testing","kubernetes","docker","security testing","aws","ec2","vm","s3","blob storage","elastic compute cloud","amazon s3","amazon simple storage service"
-                    ,"unit test","integration test","c#","mysql","nosql","mongo db","aws simpledb","azure cosmos","it administration","user provisioning","ux design","ux","ui design","ui","figma"
-                    ,"firebase","query language","shell scripting","sun solaris","solaris","unix","html","css","cloudbees","ci/cd","micro services architecture","microservices architecture"
-                    ,"swift","swiftui","soap nh","mvvm","model–view–viewmodel","Model view viewmodel","adivising clients","websphere","jboss","tomcat","wildfly","microsoft iis"
-                    ,"node.js","node js","redux","graphql","powerdesigner","visual paradigm","jaws","wave","chrome axe","nvda","wc3 validator","apex","visualforce","object-oriented programming"
-                    ,"pubsub","sns","sqs","stp","sftp","ms visual studio","ms sql server","supplier relationships","test","maintain"
-                ]
-            """
-            list_of_databases=["amazon dynamodb","amazon rds/aurora","amazon redshift","apache hbase","apache hive","aster data","cassandra","elasticsearch", "filemaker pro","firebird","google bigquery",
-            "google cloud storage","greenplum","hsqldb","ibm db2","informix","mariadb", "memcached","memsql","microsoft access","microsoft azure (tables, cosmosdb, sql, etc)","microsoft azure"
-            "mongodb","msql","mysql","neo4j","netezza","oracle","panorama","postgresql","redis","sap hana","sql server","sqlite","teradata","timesten","unidata","universe","vertica"]           
-            list_of_domains=["Back End","C-suite executive","Cloud Computing","Data Scientist","Data or business analyst","business analyst","data analyst","Database Administrator(DBA)","Database Administrator"
-                 ,"designer","Devops","academic researcher","educator","Embedded applications","embedded devices developer","Engineering manager","Enterprise application","Front End"
-                 ,"Full stack","Game developer","Information Security","Mobile Developer","Network Engineer","product manager","QA","Test developer","Sales professional","software developer","java developer"
-                 ,"sudent","system administrator","web developer"]
-            list_of_frameworks=[".net core","agile","angular","asp.net mvc","aura","aurelia","bottle","cakephp","cassandra","catalyst","cloudera","codeigniter","cordova","couchdb","cuba",
-                                "django","dojo","dropwizard","durandal","elm","ember.js","express","flask","flatiron","flex","flink","google web toolkit","grails","hadoop","halcyon","hive","hpcc",
-                                "jsf","koa","laravel","lift","lithium","map reduce","mason","meteor","moustache","ninja","nitro","node.js","pentaho","phoenix","play","polymer","pyramid",
-                                "rapidminer","react","revel","riot.js","ruby on rails","rum","simplex","sinatra","solar","spark","spring","storm","struts","symfony","tapestry","tensorflow","pytorch"
-                                ,"tornado","vaadin","vanilla","vert.x","vue.js","web2py","wicket","xamarin","yarn","yii","zend","zope"]
-            list_of_languages=[".net","abap","abc","actionscript","ada","ajax","apex","apl","applescript","arc","arduino","asp","assembly","atlas","automator","avenue","awk","bash","bc","bourne shell","bro"
-                            ,"c","c shell","c#","c++","caml","ceylon","cfml","ch","clarion","clean","clojure","cobol","cobra","coffeescript","coldfusion","css","ct","d","dart"
-                            ,"dcl","pascal","e","ecl","ec","ecmascript","egl","elixir","erlang","f#","falcon","felix","forth","fortran","fortress","go","gosu","groovy","hack","haskell",
-                            "html","icon","idl","inform","informix-4gl","io","java","jade","javascript","jscript","julia","korn shell","kotlin","labview","ladder logic","lingo","lisp"
-                            ,"logo","lotusscript","lpc","lua","lustre","magic","mantis","mathematica","matlab","mercury","ml","monkry","moo","mumps",
-                            "objective-c","ocaml","occam","ooc","opa","opencl","perl","php","pilot","sql","postscript","powerscript","powershell","puppet","python","q","r","rexx","ruby","ruby on rails"
-                            ,"rust","s","s-plus","sas","scala","scilab","sed","self","shell","signal","simula","simulink","smalltalk","smarty","spark","spss","sqr","swift","tacl","tcl","tom","transact-sql"
-                            ,"typescript","vb.net","vba","vbscript","verilog","vhdl","visual basic 6","xen","xquery","xslt"]
-            list_of_platforms=["amazon echo","android","apple watch","apple tv","arduino","aws","azure","drupal","esp8266","firebase","gaming console","google cloud platform","heroku","google home","ibm cloud","watson"
-                            ,"ios","linux","mac os","mainframe","predix","raspberry pi","salesforce","serverless","sharepoint","windows desktop","windows server","windows phone","wordpress"]
+         
+           
             list_of_skills=["amazon dynamodb","amazon rds/aurora","amazon redshift","apache hbase","apache hive","aster data","cassandra","elasticsearch", "filemaker pro","firebird","google bigquery",
             "google cloud storage","greenplum","hsqldb","ibm db2","informix","mariadb", "memcached","memsql","microsoft access","microsoft azure (tables, cosmosdb, sql, etc)","microsoft azure"
             "mongodb","msql","mysql","neo4j","netezza","oracle","panorama","postgresql","redis","sap hana","sql server","sqlite","teradata","timesten","unidata","universe","vertica","Back End","C-suite executive","Cloud Computing","Data Scientist","Data or business analyst","business analyst","data analyst","Database Administrator(DBA)","Database Administrator"
@@ -369,97 +304,7 @@ class scrapejob:
             return list(set(matches))
     
 
-    def extract_databases(self,job_info_skills,uid,df):
-        list_of_databases=["amazon dynamodb","amazon rds/aurora","amazon redshift","apache hbase","apache hive","aster data","cassandra","elasticsearch", "filemaker pro","firebird","google bigquery",
-            "google cloud storage","greenplum","hsqldb","ibm db2","informix","mariadb", "memcached","memsql","microsoft access","microsoft azure (tables, cosmosdb, sql, etc)","microsoft azure"
-            "mongodb","msql","mysql","neo4j","netezza","oracle","panorama","postgresql","redis","sap hana","sql server","sqlite","teradata","timesten","unidata","universe","vertica"]
-        
-
-        skills_found={}
-        if uid not in df.values:
-            skills_found['uid']=uid
-            for db_skill in job_info_skills:
-                if db_skill in list_of_databases:
-                    skills_found[db_skill]=1
-            df.loc[len(df)]=skills_found
-
-        return df
-                
-
-    def extract_domains(self,job_info_skills,uid,df):
-        list_of_domains=["Back End","C-suite executive","Cloud Computing","Data Scientist","Data or business analyst","business analyst","data analyst","Database Administrator(DBA)","Database Administrator"
-                 ,"designer","Devops","academic researcher","educator","Embedded applications","embedded devices developer","Engineering manager","Enterprise application","Front End"
-                 ,"Full stack","Game developer","Information Security","Mobile Developer","Network Engineer","product manager","QA","Test developer","Sales professional","software developer","java developer"
-                 ,"sudent","system administrator","web developer"]
-        
-
-        domains_found={}
-        if uid not in df.values:
-            domains_found['uid']=uid
-            for db_skill in job_info_skills:
-                if db_skill in list_of_domains:
-                    domains_found[db_skill]=1
-            
-            df.loc[len(df)]=domains_found
-
-        return df
-
-    def extract_languages(self,job_info_skills,uid,df):
-        list_of_languages=[".net","abap","abc","actionscript","ada","ajax","apex","apl","applescript","arc","arduino","asp","assembly","atlas","automator","avenue","awk","bash","bc","bourne shell","bro"
-                                    ,"c","c shell","c#","c++","caml","ceylon","cfml","ch","clarion","clean","clojure","cobol","cobra","coffeescript","coldfusion","css","ct","d","dart"
-                                    ,"dcl","pascal","e","ecl","ec","ecmascript","egl","elixir","erlang","f#","falcon","felix","forth","fortran","fortress","go","gosu","groovy","hack","haskell",
-                                    "html","icon","idl","inform","informix-4gl","io","java","jade","javascript","jscript","julia","korn shell","kotlin","labview","ladder logic","lingo","lisp"
-                                    ,"logo","lotusscript","lpc","lua","lustre","magic","mantis","mathematica","matlab","mercury","ml","monkry","moo","mumps",
-                                    "objective-c","ocaml","occam","ooc","opa","opencl","perl","php","pilot","sql","postscript","powerscript","powershell","puppet","python","q","r","rexx","ruby","ruby on rails"
-                                    ,"rust","s","s-plus","sas","scala","scilab","sed","self","shell","signal","simula","simulink","smalltalk","smarty","spark","spss","sqr","swift","tacl","tcl","tom","transact-sql"
-                                    ,"typescript","vb.net","vba","vbscript","verilog","vhdl","visual basic 6","xen","xquery","xslt"]
-        
-
-        language_found={}
-        if uid not in df.values:
-            language_found['uid']=uid
-            for db_skill in job_info_skills:
-                if db_skill in list_of_languages:
-                    language_found[db_skill]=1
-            df.loc[len(df)]=language_found
-
-        return df
-
-
-
-    def extract_platform(self,job_info_skills,uid,df):
-        list_of_platforms=["amazon echo","android","apple watch","apple tv","arduino","aws","azure","drupal","esp8266","firebase","gaming console","google cloud platform","heroku","google home","ibm cloud","watson"
-                                    ,"ios","linux","mac os","mainframe","predix","raspberry pi","salesforce","serverless","sharepoint","windows desktop","windows server","windows phone","wordpress"]
-        
-
-        platforms_found={}
-        if uid not in df.values:
-            platforms_found['uid']=uid
-            for db_skill in job_info_skills:
-                if db_skill in list_of_platforms:
-                    platforms_found[db_skill]=1
-            df.loc[len(df)]=platforms_found
-
-        return df
-
-    def extract_frameworks(self,job_info_skills,uid,df):
-        list_of_frameworks=[".net core","agile","angular","asp.net mvc","aura","aurelia","bottle","cakephp","cassandra","catalyst","cloudera","codeigniter","cordova","couchdb","cuba",
-                                "django","dojo","dropwizard","durandal","elm","ember.js","express","flask","flatiron","flex","flink","google web toolkit","grails","hadoop","halcyon","hive","hpcc",
-                                "jsf","koa","laravel","lift","lithium","map reduce","mason","meteor","moustache","ninja","nitro","node.js","pentaho","phoenix","play","polymer","pyramid",
-                                "rapidminer","react","revel","riot.js","ruby on rails","rum","simplex","sinatra","solar","spark","spring","storm","struts","symfony","tapestry","tensorflow","pytorch"
-                                ,"tornado","vaadin","vanilla","vert.x","vue.js","web2py","wicket","xamarin","yarn","yii","zend","zope"]
-        
-
-        frameworks_found={}
-        if uid not in df.values:
-            frameworks_found['uid']=uid
-            for db_skill in job_info_skills:
-                if db_skill in list_of_frameworks:
-                    frameworks_found[db_skill]=1
-            df.loc[len(df)]=frameworks_found
-
-        return df
-
+   
     def format_description(self,sentence:str): 
             # Split the sentence into individual words 
             

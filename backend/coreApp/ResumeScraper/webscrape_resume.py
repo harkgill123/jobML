@@ -53,7 +53,7 @@ class ScrapeResume:
         while(True):
             posting = self.driver.find_elements(By.XPATH, "//a[contains(@href, '/resume/')]")
 
-            for index,post in enumerate(posting):
+            for post in posting:
                 post.click()
                 time.sleep(3)
 
@@ -67,7 +67,7 @@ class ScrapeResume:
                 self.driver.back()
                 time.sleep(3)
             
-            next_page = self.driver.find_element(By.LINK_TEXT, 'Next').click()
+            self.driver.find_element(By.LINK_TEXT, 'Next').click()
 
             
 
