@@ -15,27 +15,27 @@ import re
 import pandas as pd
 import uuid
 import json
-from django.conf import settings
-import django
+# from django.conf import settings
+# import django
 import os
-from django.db.models import Q
+# from django.db.models import Q
 
 
 
 import sys
 from pathlib import Path
-sys.path.append(Path(__file__).resolve().parent.parent.__str__())
+# sys.path.append(Path(__file__).resolve().parent.parent.__str__())
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'coreApp.settings')
-django.setup()
+# os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'coreApp.settings')
+# django.setup()
 
 #from ...backend.Recruiter.viewsimport UploadJob
-from UserAuth.models import JobPosting, ListOfSkills
-from django.utils import timezone
-from Recruiter.views import UploadJob
-import os
+# from UserAuth.models import JobPosting, ListOfSkills
+# from django.utils import timezone
+# from Recruiter.views import UploadJob
+# import os
 
-from django.core.wsgi import get_wsgi_application
+# from django.core.wsgi import get_wsgi_application
 
 def run():
     print('hi')
@@ -48,10 +48,10 @@ class scrapejob:
         """
         
 
-        application = get_wsgi_application()
+        # application = get_wsgi_application()
         self.jobs_to_upload=[]
         self.jobs_to_check=[]
-        self.upload_jobs=UploadJob()
+        # self.upload_jobs=UploadJob()
         opt= Options()
         opt.add_argument("--disable-popup-blocking")
         opt.add_experimental_option("detach", True)
@@ -68,12 +68,14 @@ class scrapejob:
             raise Exception("website must be indeed or glassdoor")
 
 
-
+    #need this to connect 
     def connect(self):
         self.driver.get(self.link)
         self.driver.maximize_window()
         time.sleep(5)
 
+
+    #need this for searching job and closing pop up
     def search_job(self,job_name:str):
         """
             job_name(str): jobs to look up
@@ -118,8 +120,7 @@ class scrapejob:
             #finds number of jobs in each page
             time.sleep(3)
             jobs = self.driver.find_elements("xpath","//li[@class='css-5lfssm eu4oa1w0']")
-            #num_of_jobs= range(0,len(jobs))
-            #for index,job in zip(num_of_jobs,jobs):
+           
 
             job_title_index=0
             for job in jobs:
@@ -180,46 +181,45 @@ class scrapejob:
                 pp = pprint.PrettyPrinter(indent=4)
                 
                 time.sleep(3)
-                test=description.get_text().replace('\n'," ").lower()
-                
-                print(test)
+             
                 current_job_data["skills"]=self.extract_skills(description.get_text().replace('\n'," ").lower())
-                current_job_data["desc"]=description.get_text().replace('\n'," ").lower()
+                current_job_data["desc"]=description.get_text()
                 current_job_data["experience"]=self.parse_experience(description.get_text().replace('\n'," ").lower())
 
-                job_posting_data = {
-                    "title": current_job_data.get("title", "Default Job Title"),
-                    "company_name": current_job_data.get("company", "Default Company"),
-                    "location": current_job_data.get("location", "Default Location"),
-                    "job_description": current_job_data.get("desc", "Default Job Description"),
-                    "posted_date": timezone.now(),
-                    "application_deadline": timezone.now(),
-                    "experience_required": current_job_data.get("experience_required", "No experience required"),
-                    "creator": None,
-                }
+                # job_posting_data = {
+                #     "title": current_job_data.get("title", "Default Job Title"),
+                #     "company_name": current_job_data.get("company", "Default Company"),
+                #     "location": current_job_data.get("location", "Default Location"),
+                #     "job_description": current_job_data.get("desc", "Default Job Description"),
+                #     "posted_date": timezone.now(),
+                #     "application_deadline": timezone.now(),
+                #     "experience_required": current_job_data.get("experience_required", "No experience required"),
+                #     "creator": None,
+                # }
+                print(current_job_data)
 
-                existing_job_posting = JobPosting.objects.filter(
-                Q(title=job_posting_data["title"]) &
-                Q(company_name=job_posting_data["company_name"]) &
-                Q(location=job_posting_data["location"]) &
-                Q(job_description=job_posting_data["job_description"])
-                ).first()
+                input("check")
+                # existing_job_posting = JobPosting.objects.filter(
+                # Q(title=job_posting_data["title"]) &
+                # Q(company_name=job_posting_data["company_name"]) &
+                # Q(location=job_posting_data["location"]) &
+                # Q(job_description=job_posting_data["job_description"])
+                # ).first()
 
 
 
                 time.sleep(5)
-                pp.pprint(current_job_data) 
-                print("CREATED JOB POSTING ENTRY")
+         
           
                 if len(current_job_data["skills"])>=4:
-                    if existing_job_posting is None:
-                        job_posting = JobPosting.objects.create(**job_posting_data)
+                    # if existing_job_posting is None:
+                    #     job_posting = JobPosting.objects.create(**job_posting_data)
 
-                        skills_list = current_job_data.get("skills", [])
+                    #     skills_list = current_job_data.get("skills", [])
 
-                        for skill_name in skills_list:
-                            skill, created = ListOfSkills.objects.get_or_create(skill_name=skill_name)
-                            job_posting.skills.add(skill)
+                    #     for skill_name in skills_list:
+                    #         skill, created = ListOfSkills.objects.get_or_create(skill_name=skill_name)
+                    #         job_posting.skills.add(skill)
                     #del current_job_data["desc"]
                     self.jobs_to_upload.append(current_job_data) 
                     self.upload_jobs.upload(current_job_data)
@@ -228,7 +228,7 @@ class scrapejob:
                     self.jobs_to_check.append(current_job_data)
             try:
 
-                #next_page=self.driver.find_elements("xpath","//ul[@class='css-1g90gv6 eu4oa1w0']/li[@class='css-227srf eu4oa1w0']/a[@class='css-akkh0a e8ju0x50']")
+                
                 
 
                 next_page=self.driver.find_elements("xpath","//ul[@class='css-1g90gv6 eu4oa1w0']/li[@class='css-227srf eu4oa1w0']/a[@aria-label='Next Page']")

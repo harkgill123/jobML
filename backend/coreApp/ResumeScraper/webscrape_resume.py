@@ -50,6 +50,7 @@ class ScrapeResume:
  
         time.sleep(3)
     def scrape_resume(self,limit:int=100):
+        counter = 0
         while(True):
             posting = self.driver.find_elements(By.XPATH, "//a[contains(@href, '/resume/')]")
 
@@ -59,14 +60,17 @@ class ScrapeResume:
 
                 doc=BeautifulSoup(self.driver.page_source,"html.parser")
                 resume_info = doc.find("div",class_="normalText").get_text()
-                print(resume_info)
+                
                 ret = self.extractor.extract_all(text=resume_info)
-                print(ret)
-                # input("wait")
+                
                 time.sleep(3)
                 self.driver.back()
                 time.sleep(3)
+                counter +=1
+
             
+            if counter >= limit:
+                break
             self.driver.find_element(By.LINK_TEXT, 'Next').click()
 
             
