@@ -18,7 +18,7 @@ import pandas as pd
 import uuid
 import json
 import os
-
+from resume import ResumeExtractor
 
 class ScrapeResume:
 
@@ -27,7 +27,7 @@ class ScrapeResume:
         
         self.jobs_to_upload=[]
         self.jobs_to_check=[]
-        
+        self.extractor=ResumeExtractor()
         opt= Options()
         opt.add_argument("--disable-popup-blocking")
         opt.add_experimental_option("detach", True)
@@ -47,37 +47,30 @@ class ScrapeResume:
         element.send_keys(res_name)
         element.send_keys(Keys.RETURN)
         time.sleep(3)
-            # self.driver.find_element("xpath","//a[@class='css-145oca5 emf9s7v0']").click() #set to find newest job posts
-            # time.sleep(3)
-            # while(True):
-            #     try:
-                    
-            #         e=self.driver.find_elements("xpath", "//input[@id='search']") # close the pop up
-            #         time.sleep(3)
-                        
-            #         if(len(e)!=0):     
-            #             e[0].click()
-
-            #             time.sleep(3)
-                        
-            #             break
-            #         else:
-            #             pass
-            #     except:
-            #         pass
+ 
         time.sleep(3)
     def scrape_resume(self,limit:int=100):
+        while(True):
+            posting = self.driver.find_elements(By.XPATH, "//a[contains(@href, '/resume/')]")
 
-        posting = self.driver.find_elements(By.XPATH, "//a[contains(@href, '/resume/')]")
-        print("PRINTING POSTINGS")
+            for index,post in enumerate(posting):
+                post.click()
+                time.sleep(3)
 
-        # print(posting)
-        # home_window= self.driver.current_window_handle
-        for post in posting:
-            post.click()
-            time.sleep(10)
-            self.driver.back()
-            # input("waiting")
+                doc=BeautifulSoup(self.driver.page_source,"html.parser")
+                resume_info = doc.find("div",class_="normalText").get_text()
+                print(resume_info)
+                ret = self.extractor.extract_all(text=resume_info)
+                print(ret)
+                # input("wait")
+                time.sleep(3)
+                self.driver.back()
+                time.sleep(3)
+            
+            next_page = self.driver.find_element(By.LINK_TEXT, 'Next').click()
+
+            
+
         
 if __name__ == "__main__":
     test=ScrapeResume()
