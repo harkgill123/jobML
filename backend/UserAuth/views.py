@@ -7,6 +7,8 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from .forms import SignupForm
 from .serializers import UserSerializer
+from models import ModelVersion
+from Applicant.ML_model import MODEL_VERSION
 
 class SignUpView(APIView):
     def post(self, request):
@@ -14,7 +16,8 @@ class SignUpView(APIView):
         if form.is_valid():
             serializer = UserSerializer(data=form.cleaned_data)
             if serializer.is_valid():
-                serializer.save()
+                instance = serializer.save()
+                ModelVersion.objects.create(user=instance, model_version=MODEL_VERSION, latest_version=MODEL_VERSION)
                 return Response({
                     'success': True,
                     'message': 'Registration successful. Welcome to The Job Recommender System!'

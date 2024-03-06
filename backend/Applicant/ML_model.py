@@ -27,7 +27,7 @@ rcParams['figure.figsize'] = 50, 20
 start=time.time()
 nltk.download('stopwords')
 
-Model_Version = 0
+MODEL_VERSION = 0
 
 # Functions to clean skills data and make a vocabulary for skills vectorization
 common_placeholders = [
@@ -154,11 +154,11 @@ comps['cluster_no'] = y.values
 comps.set_index('cluster_no', inplace=True)
 
 # -------------- Save Model Components --------------
-dump(vectorizer_title, f'model_settings_ver{Model_Version}/vectorizer_title.joblib')
-dump(vectorizer_skills,f'model_settings_ver{Model_Version}/vectorizer_skills.joblib')
-dump(vectorizer_description, f'model_settings_ver{Model_Version}/vectorizer_description.joblib')
-dump(lr, f'model_settings_ver{Model_Version}/lr.joblib')
-dump(comps, f'model_settings_ver{Model_Version}/comps.joblib')
+dump(vectorizer_title, f'model_settings_ver{MODEL_VERSION}/vectorizer_title.joblib')
+dump(vectorizer_skills,f'model_settings_ver{MODEL_VERSION}/vectorizer_skills.joblib')
+dump(vectorizer_description, f'model_settings_ver{MODEL_VERSION}/vectorizer_description.joblib')
+dump(lr, f'model_settings_ver{MODEL_VERSION}/lr.joblib')
+dump(comps, f'model_settings_ver{MODEL_VERSION}/comps.joblib')
 
 # -------------- Update cluster table in database --------------
 def populate_job_clusters():
@@ -169,9 +169,9 @@ def populate_job_clusters():
 
     return job
 
-def update_model_version_database(Model_Version):
-    # Convert the Model_Version number to a string, as the model fields are CharFields
-    model_version_str = str(Model_Version)
+def update_model_version_database(MODEL_VERSION):
+    # Convert the MODEL_VERSION number to a string, as the model fields are CharFields
+    model_version_str = str(MODEL_VERSION)
 
     # Get all user instances from the User table
     users = User.objects.all()
@@ -188,5 +188,5 @@ def update_model_version_database(Model_Version):
 
 JobToClusters.objects.all().delete()
 populate_job_clusters()
-update_model_version_database(Model_Version)
+update_model_version_database(MODEL_VERSION)
 # df.to_json('model_settings/df.json')
