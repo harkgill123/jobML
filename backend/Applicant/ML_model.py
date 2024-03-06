@@ -88,77 +88,79 @@ def clean_text(text):
         .replace("+", "").replace("—", "").replace(":", "").replace(",", "").replace("/", " ")
     return cleaned_text
 
-# -------------- Start Script --------------
-print("---- Starting to train model ----")
-# Fetch job data from the database
-jobs = create_model()
-df = pd.DataFrame(jobs)
+def train_model():
+    # -------------- Start Script --------------
+    print("---- Starting to train model ----")
+    # Fetch job data from the database
 
-df['skills'] = text_scrubber(df['skills'])
-voc = vocab(df)
+    df['skills'] = text_scrubber(df['skills'])
+    voc = vocab(df)
 
-# Apply the clean_text function to each element in the 'jobdescription' column
-df['desc'] = df['job_description'].apply(clean_text)
-df.drop('job_description', axis=1, inplace=True)
+    # Apply the clean_text function to each element in the 'jobdescription' column
+    df['desc'] = df['job_description'].apply(clean_text)
+    df.drop('job_description', axis=1, inplace=True)
 
-#min_df ignores terms that are in more than 20% of documents
-mine = ['manager', 'amp', 'nbsp', 'responsibilities', 'used', 'skills', 'duties', 'work', 'worked', 'daily','services', 'job', 'using', 'com', 'end', 'prepare', 'prepared', 'lead', 'requirements','summary','Job Role','Position']
+    #min_df ignores terms that are in more than 20% of documents
+    mine = ['manager', 'amp', 'nbsp', 'responsibilities', 'used', 'skills', 'duties', 'work', 'worked', 'daily','services', 'job', 'using', 'com', 'end', 'prepare', 'prepared', 'lead', 'requirements','summary','Job Role','Position']
 
-vectorizer_title = TfidfVectorizer(max_features=500, ngram_range=(1, 5))
-vectorizer_description = TfidfVectorizer(analyzer='word', ngram_range=(1, 2), token_pattern='[a-zA-z]{3,50}', max_df=0.2, min_df=5, max_features=10000, stop_words=list(text.ENGLISH_STOP_WORDS.union(list(mine))), decode_error='ignore', vocabulary=None, binary=False) #(max_features=1000, ngram_range=(1, 3))
-vectorizer_skills = TfidfVectorizer(vocabulary=voc, decode_error='ignore') #((max_features=500, ngram_range=(1, 1))
+    vectorizer_title = TfidfVectorizer(max_features=500, ngram_range=(1, 5))
+    vectorizer_description = TfidfVectorizer(analyzer='word', ngram_range=(1, 2), token_pattern='[a-zA-z]{3,50}', max_df=0.2, min_df=5, max_features=10000, stop_words=list(text.ENGLISH_STOP_WORDS.union(list(mine))), decode_error='ignore', vocabulary=None, binary=False) #(max_features=1000, ngram_range=(1, 3))
+    vectorizer_skills = TfidfVectorizer(vocabulary=voc, decode_error='ignore') #((max_features=500, ngram_range=(1, 1))
 
-df['desc_new']=df['desc']
-description_matrix = vectorizer_description.fit_transform(df['desc_new'].values.astype('U'))
-description_matrix = pd.DataFrame(description_matrix.todense())
-description_matrix.columns = vectorizer_description.get_feature_names_out()
+    df['desc_new']=df['desc']
+    description_matrix = vectorizer_description.fit_transform(df['desc_new'].values.astype('U'))
+    description_matrix = pd.DataFrame(description_matrix.todense())
+    description_matrix.columns = vectorizer_description.get_feature_names_out()
 
-df['skills_new']=df['skills']
-skills_matrix = vectorizer_skills.fit_transform(df['skills_new'].values.astype('U'))
-skills_matrix = pd.DataFrame(skills_matrix.todense())
-skills_matrix.columns = vectorizer_skills.get_feature_names_out()
+    df['skills_new']=df['skills']
+    skills_matrix = vectorizer_skills.fit_transform(df['skills_new'].values.astype('U'))
+    skills_matrix = pd.DataFrame(skills_matrix.todense())
+    skills_matrix.columns = vectorizer_skills.get_feature_names_out()
 
-df['title_new']=df['title']
-title_matrix = vectorizer_title.fit_transform(df['title_new'].values.astype('U'))
-title_matrix = pd.DataFrame(title_matrix.todense())
-title_matrix.columns = vectorizer_title.get_feature_names_out()
+    df['title_new']=df['title']
+    title_matrix = vectorizer_title.fit_transform(df['title_new'].values.astype('U'))
+    title_matrix = pd.DataFrame(title_matrix.todense())
+    title_matrix.columns = vectorizer_title.get_feature_names_out()
 
-jobtitle_matrix = pd.concat([title_matrix, skills_matrix, description_matrix], axis=1)
-jobtitle_matrix
-comps = pd.DataFrame(jobtitle_matrix)
-print("Number of features:", comps.shape[1])
+    jobtitle_matrix = pd.concat([title_matrix, skills_matrix, description_matrix], axis=1)
+    jobtitle_matrix
+    comps = pd.DataFrame(jobtitle_matrix)
+    print("Number of features:", comps.shape[1])
 
-# -------------- K Means --------------
-from sklearn.cluster import KMeans
-kmeans = KMeans(n_clusters=10)
-df['cluster_no'] = kmeans.fit_predict(comps)
+    # -------------- K Means --------------
+    from sklearn.cluster import KMeans
+    kmeans = KMeans(n_clusters=10)
+    df['cluster_no'] = kmeans.fit_predict(comps)
 
-# -------------- LogisticRegression --------------
-from sklearn.metrics import accuracy_score, classification_report
-pca = PCA(n_components=2,random_state=42)  # Reduce to 2 dimensions for plotting
-reduced_features = pca.fit_transform(comps)
-reduced_features = pd.DataFrame(reduced_features)
+    # -------------- LogisticRegression --------------
+    from sklearn.metrics import accuracy_score, classification_report
+    pca = PCA(n_components=2,random_state=42)  # Reduce to 2 dimensions for plotting
+    reduced_features = pca.fit_transform(comps)
+    reduced_features = pd.DataFrame(reduced_features)
 
-X = comps
-y = df['cluster_no']
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
-# lr = LogisticRegression(max_iter=1000, random_state=42)
-lr = LogisticRegression(C=10, penalty='l2', multi_class='multinomial', solver='sag', max_iter=1000)
-lr.fit(X_train, y_train)
-y_pred = lr.predict(X_test)
-print("Accuracy:", accuracy_score(y_test, y_pred))
-print(classification_report(y_test, y_pred))
+    X = comps
+    y = df['cluster_no']
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+    # lr = LogisticRegression(max_iter=1000, random_state=42)
+    lr = LogisticRegression(C=10, penalty='l2', multi_class='multinomial', solver='sag', max_iter=1000)
+    lr.fit(X_train, y_train)
+    y_pred = lr.predict(X_test)
+    print("Accuracy:", accuracy_score(y_test, y_pred))
+    print(classification_report(y_test, y_pred))
 
-# Assign cluster number to each job title in comps to pull particular cluster out for comparison
-comps['cluster_no'] = y.values
-comps.set_index('cluster_no', inplace=True)
+    # Assign cluster number to each job title in comps to pull particular cluster out for comparison
+    comps['cluster_no'] = y.values
+    comps.set_index('cluster_no', inplace=True)
 
-# -------------- Save Model Components --------------
-dump(vectorizer_title, f'model_settings_ver{MODEL_VERSION}/vectorizer_title.joblib')
-dump(vectorizer_skills,f'model_settings_ver{MODEL_VERSION}/vectorizer_skills.joblib')
-dump(vectorizer_description, f'model_settings_ver{MODEL_VERSION}/vectorizer_description.joblib')
-dump(lr, f'model_settings_ver{MODEL_VERSION}/lr.joblib')
-dump(comps, f'model_settings_ver{MODEL_VERSION}/comps.joblib')
+    # -------------- Save Model Components --------------
+    dir_path = f'model_settings_ver{MODEL_VERSION}'
+    if not os.path.exists(dir_path):
+        os.makedirs(dir_path)
+    dump(vectorizer_title, os.path.join(dir_path, 'vectorizer_title.joblib'))
+    dump(vectorizer_skills, os.path.join(dir_path, 'vectorizer_skills.joblib'))
+    dump(vectorizer_description, os.path.join(dir_path, 'vectorizer_description.joblib'))
+    dump(lr, os.path.join(dir_path, 'lr.joblib'))
+    dump(comps, os.path.join(dir_path, 'comps.joblib'))
 
 # -------------- Update cluster table in database --------------
 def populate_job_clusters():
@@ -185,8 +187,10 @@ def update_model_version_database(MODEL_VERSION):
             }
         )
 
-
+jobs = create_model()
+df = pd.DataFrame(jobs)
+train_model()
 JobToClusters.objects.all().delete()
 populate_job_clusters()
 update_model_version_database(MODEL_VERSION)
-# df.to_json('model_settings/df.json')
+df.to_json('model_settings/df.json')

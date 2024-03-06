@@ -108,16 +108,11 @@ def give_suggestions(user_id, user_job_title, user_job_description, user_skills)
     Model_Version = Model_Version.latest_version
 
     # Load your model components
-    # vec_title = load(f'Applicant/model_settings_ver{Model_Version}/vectorizer_title.joblib')
-    # vec_desc = load(f'Applicant/model_settings_ver{Model_Version}/vectorizer_description.joblib')
-    # vec_skills = load(f'Applicant/model_settings_ver{Model_Version}/vectorizer_skills.joblib')
-    # lr = load(f'Applicant/model_settings_ver{Model_Version}/lr.joblib')
-    # comps = load(f'Applicant/model_settings_ver{Model_Version}/comps.joblib')
-    vec_title = load(f'Applicant/model_settings/vectorizer_title.joblib')
-    vec_desc = load(f'Applicant/model_settings/vectorizer_description.joblib')
-    vec_skills = load(f'Applicant/model_settings/vectorizer_skills.joblib')
-    lr = load(f'Applicant/model_settings/lr.joblib')
-    comps = load(f'Applicant/model_settings/comps.joblib')
+    vec_title = load(f'Applicant/model_settings_ver{Model_Version}/vectorizer_title.joblib')
+    vec_desc = load(f'Applicant/model_settings_ver{Model_Version}/vectorizer_description.joblib')
+    vec_skills = load(f'Applicant/model_settings_ver{Model_Version}/vectorizer_skills.joblib')
+    lr = load(f'Applicant/model_settings_ver{Model_Version}/lr.joblib')
+    comps = load(f'Applicant/model_settings_ver{Model_Version}/comps.joblib')
 
     # Vectorize user's skills and job descriptions
     user_description = pd.DataFrame(vec_desc.transform([user_job_description]).todense())
@@ -183,7 +178,7 @@ def top_recommendations(user_id):
 
 # ------------- initial rec -------------
 # placeholder
-# sel_user_id = 4
+# sel_user_id = 5
 # user_skills = "python, css, html"
 # user_job_title = "Frontend Developer"
 # user_job_description = "Wrote code in css and hrml"
@@ -193,7 +188,7 @@ def top_recommendations(user_id):
 # print(f"--- Reccomendations: {cos_sim_result} ---")
 
 # ------------- getting top rec -------------
-# user_id = 4  # Replace with the actual user_id you want to query
+# user_id = 5  # Replace with the actual user_id you want to query
 # top_entries = top_recommendations(user_id)
 # print(top_entries)
 

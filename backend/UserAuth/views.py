@@ -7,7 +7,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from .forms import SignupForm
 from .serializers import UserSerializer
-from models import ModelVersion
+from .models import ModelVersion
 from Applicant.ML_model import MODEL_VERSION
 
 class SignUpView(APIView):
