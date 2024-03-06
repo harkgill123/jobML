@@ -16,7 +16,7 @@ from django.contrib.auth import get_user_model
 from django.db.models import Q
 from django.utils import timezone
 from django.core import serializers
-from UserAuth.models import Resume,JobPosting,ListOfSkills,FeedbackforJob
+from UserAuth.models import Resume,JobPosting,ListOfSkills,FeedbackforJob, ModelVersion
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from django.db.models import CharField, Value as V
@@ -66,6 +66,15 @@ class ResumeCreateView(APIView):
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
+
+def sendRecommendationsToFrontEnd(request):
+    user = getUserFromRequest(request)
+    ModelVersionEntry = ModelVersion.objects.get(user=user)
+    userModel = ModelVersionEntry.model_version
+    latestModel = ModelVersionEntry.latest_version
+    if userModel != latestModel:
+        recommended_jobs(request)
+    get_recommendations(request)
 
 def recommended_jobs(request):
     job_ids = []
