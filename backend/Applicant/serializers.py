@@ -7,13 +7,12 @@ from UserAuth.models import Resume, Education, WorkExperience, ListOfSkills, Res
 class SkillSerializer(serializers.ModelSerializer):
     class Meta:
         model = ListOfSkills
-        fields = ('id', 'skill_name')  
+        fields = ('skill_name')  
 
 class ResumeToSkillsSerializer(serializers.ModelSerializer):
-    skill = SkillSerializer()  
     class Meta:
         model = ResumeToSkills
-        fields = ('skillID', 'skill') 
+        exclude = ('resume',) 
 
 class EducationSerializer(serializers.ModelSerializer):
     class Meta:
@@ -28,16 +27,17 @@ class WorkExperienceSerializer(serializers.ModelSerializer):
 class ResumeSerializer(serializers.ModelSerializer):
     educations = EducationSerializer(many=True)
     work_experiences = WorkExperienceSerializer(many=True)
-    
+    resume_skills = ResumeToSkillsSerializer(many=True)  # Add this line
     class Meta:
         model = Resume
-        fields = ('user', 'educations', 'work_experiences')  
+        fields = ('user', 'educations', 'work_experiences', 'resume_skills')  
         read_only_fields = ('user',)  
 
     def create(self, validated_data):
             educations_data = validated_data.pop('educations', None)
             work_experiences_data = validated_data.pop('work_experiences', None)
-            skills_data = validated_data.pop('resume_skills', None)  # Get the skills data.
+            skills_data = validated_data.pop('resume_skills', None)
+            print("Skills data:", skills_data)
             user = self.context['user']  
             resume = Resume.objects.create(user=user)
             
@@ -50,11 +50,13 @@ class ResumeSerializer(serializers.ModelSerializer):
                     WorkExperience.objects.create(resume=resume, **work_experience_data)
             
             if skills_data:
-                for skill_data in skills_data:
-                    skill_instance, _ = ListOfSkills.objects.get_or_create(**skill_data['skill'])
-                    ResumeToSkills.objects.create(resume=resume, skillID=skill_data['skillID'], skill=skill_instance)
-            
-            return resume
+                for skill_dict in skills_data:
+                    skill_name = skill_dict['skill_name']
+                    if not skill_name:
+                        print("Missing 'skill_name' in:", skill_dict)
+                        continue
+                    skill_instance, _ = ListOfSkills.objects.get_or_create(skill_name=skill_name)
+                    ResumeToSkills.objects.create(resume=resume, skill_name=skill_instance)
+
+                return resume
     
-
-

@@ -110,7 +110,7 @@ class scrapejob:
         time.sleep(3)
 
 
-    def scrape_job_data(self,limit:int=5):
+    def scrape_job_data(self,limit:int=100000000000):
         """
             collects job postings until limit is met.
             limit(int)= number of job posts to collect
@@ -157,8 +157,8 @@ class scrapejob:
                 except:
                     continue
                 doc=BeautifulSoup(self.driver.page_source,"html.parser")
-                temp_position=doc.find("h2",class_="jobsearch-JobInfoHeader-title css-jf6w2g e1tiznh50") # title full stack , embedded, backend ....
-               
+                temp_position=doc.find("h2",class_="jobTitle css-14z7akl eu4oa1w0") # title full stack , embedded, backend ....
+            #    jobsearch-JobInfoHeader-title css-jf6w2g e1tiznh50
                 print(temp_position.get_text())
                 position=temp_position.get_text().replace(" - job post","")
                 job_type_tracker= doc.find_all("div",class_="css-fhkva6 eu4oa1w0") # tracks the job type info
@@ -230,14 +230,7 @@ class scrapejob:
                 Q(job_description=job_posting_data["job_description"])
                 ).first()
 
-                if existing_job_posting is None:
-                    job_posting = JobPosting.objects.create(**job_posting_data)
 
-                    skills_list = current_job_data.get("skills", [])
-
-                    for skill_name in skills_list:
-                        skill, created = ListOfSkills.objects.get_or_create(skill_name=skill_name)
-                        job_posting.skills.add(skill)
 
                 time.sleep(5)
                 pp.pprint(current_job_data) 
@@ -247,12 +240,20 @@ class scrapejob:
                 frameworks_profile_job = self.extract_frameworks(current_job_data['skills'],current_job_data['uid'],frameworks_profile_job)
                 languages_profile_job = self.extract_languages(current_job_data['skills'],current_job_data['uid'],languages_profile_job)
                 platforms_profile_job = self.extract_platform(current_job_data['skills'],current_job_data['uid'],platforms_profile_job)
-                if len(current_job_data["skills"])>=7:
+                if len(current_job_data["skills"])>=4:
+                    if existing_job_posting is None:
+                        job_posting = JobPosting.objects.create(**job_posting_data)
+
+                        skills_list = current_job_data.get("skills", [])
+
+                        for skill_name in skills_list:
+                            skill, created = ListOfSkills.objects.get_or_create(skill_name=skill_name)
+                            job_posting.skills.add(skill)
                     #del current_job_data["desc"]
                     self.jobs_to_upload.append(current_job_data) 
                     self.upload_jobs.upload(current_job_data)
                 else:
-                    self.jobs_to_upload.append(current_job_data) 
+                    # self.jobs_to_upload.append(current_job_data) 
                     self.jobs_to_check.append(current_job_data)
             try:
 

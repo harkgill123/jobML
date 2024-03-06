@@ -112,6 +112,11 @@ const ResumeUpload = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     // Construct the payload with the updated structure
+    const skillsArray = skills.split(',')
+    .map(skill => skill.trim())
+    .filter(skill => skill) // Ensure no empty strings are included
+    .map(skill_name => ({skill_name}));
+
     const payload = {
       educations: [
         { school_name: school1, degree: degree1, start_date: startDate1, end_date: endDate1 },
@@ -121,7 +126,7 @@ const ResumeUpload = () => {
         { company_name: companyName1, job_title: jobTitle1, start_date: startWorkDate1, end_date: endWorkDate1 },
         { company_name: companyName2, job_title: jobTitle2, start_date: startWorkDate2, end_date: endWorkDate2 }
       ],
-      //skills,
+      resume_skills: skillsArray,
       //address,
     };
   

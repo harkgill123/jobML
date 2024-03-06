@@ -65,7 +65,7 @@ class WorkExperience(models.Model):
 
 class ResumeToSkills(models.Model):
     resume = models.ForeignKey(Resume, on_delete=models.CASCADE, related_name='resume_skills')
-    skillID = models.CharField(max_length=255, unique=True, default='DefaultSkillID')
+    skill_name = models.CharField(max_length=255, default='DefaultSkillID')
 
 class Project(models.Model):
     resume = models.ForeignKey(Resume, on_delete=models.CASCADE, related_name='projects')
@@ -73,7 +73,7 @@ class Project(models.Model):
     description = models.TextField(default='Default Project Description')
 
 class ListOfSkills(models.Model):
-    #skillID = models.AutoField(max_length=255, unique=True)
+    
     skill_name = models.CharField(max_length=200, default='Default Skill')
 
     def __str__(self):
@@ -123,7 +123,13 @@ class JobToClusters(models.Model):
     job_posting = models.ForeignKey(JobPosting, on_delete=models.CASCADE, related_name='job_cluster')
     cluster = models.CharField(max_length=255, default='defaultcluster')
 
-class Feedback(models.Model):
+class FeedbackforJob(models.Model):
     job_posting = models.ForeignKey(JobPosting, on_delete=models.CASCADE, related_name='feedback')
     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name='feedback')
     feedback = models.CharField(max_length=255, default='0')
+    score = models.CharField(max_length=255, default='0')
+
+class ModelVersion(models.Model):
+    user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name='model_version')
+    model_version = models.CharField(max_length=255, default='0')
+    latest_version = models.CharField(max_length=255, default='0')

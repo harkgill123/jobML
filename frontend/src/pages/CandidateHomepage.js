@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { jwtDecode } from "jwt-decode";
 import { useNavigate } from "react-router-dom";
 import Navigation1 from "../components/Navigation1";
 import SiteLogo from "../components/SiteLogo";
@@ -9,65 +8,79 @@ import Footer from "../components/Footer";
 import styles from "./CandidateHomepage.module.css";
 
 const CandidateHomepage = () => {
-
   const [fullName, setFullName] = useState("default");
-  const navigate = useNavigate(); // useNavigate hook for navigation
+  const [featuredJobs, setFeaturedJobs] = useState([]); // State to hold job data
+  const navigate = useNavigate();
+  const token = localStorage.getItem('token');
 
   useEffect(() => {
-    const fetchFullName = async () => {
-      const token = localStorage.getItem("token");
-      if (!token) {
-         //Redirect to sign-in page if token is missing
-        navigate("/");
-        return;
-      }
-
+    const fetchRecommendedJobs = async () => {
       try {
-        const decoded = jwtDecode(token);
-        const response = await fetch(`http://backend-url/users/${decoded.id}`, {
+        console.log('Token:', token);
+        const response = await fetch('http://localhost:8000/Applicant/recommend-jobs/', {
           headers: {
-            Authorization: `Bearer ${token}`,
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json',
           },
         });
-
+  
         if (!response.ok) {
-          throw new Error("Network response was not ok.");
+          throw new Error(`HTTP error! status: ${response.status}`);
         }
-
-        const data = await response.json();
-        //setFullName(data.fullName);
+        const json = await response.json(); // This will parse the JSON response body content.
+        console.log('Received jobs:', json); // Debug: log the raw received data
+        
+        // Parse the recommended_jobs string into an array
+        if (json.hasOwnProperty('recommended_jobs')) {
+          let jobsArray;
+          try {
+            jobsArray = JSON.parse(json.recommended_jobs);
+          } catch (e) {
+            console.error('Parsing error on recommended_jobs:', e);
+            // Handle parsing error if json.recommended_jobs is not a valid JSON string
+            jobsArray = []; // Fallback to an empty array
+          }
+  
+          if (Array.isArray(jobsArray)) {
+            // Map the received jobs to the expected format
+            const mappedJobs = jobsArray.map(item => {
+              const job = item.fields;
+              return {
+                id: item.pk,
+                title: job.title,
+                company: job.company,
+                location: job.location
+              };
+            });
+            setFeaturedJobs(mappedJobs);
+          } else {
+            console.error('recommended_jobs is not an array:', jobsArray);
+          }
+        } else {
+          console.error('Expected an array of jobs, but received:', json);
+        }
       } catch (error) {
-        console.error("There was a problem fetching user data:", error);
-        //navigate("/");
+        console.error('Error fetching recommended jobs:', error.message);
       }
     };
-
-    fetchFullName();
-    
-  })
-
+  
+    fetchRecommendedJobs();
+  }, [token]); // Dependency array includes token to refetch if it changes
+  
+  
+  
+  
 
   return (
     <div className={styles.candidateHomepage}>
       <Navigation1 fullName={fullName} />
       <SiteLogo
         findAJobThatSuitsYourInte={`Find a job that suits your interest & skills.`}
-        jobTittleKeywordPlacehold="Job tittle, Keyword..."
+        jobTitleKeywordPlacehold="Job title, Keyword..."
       />
       <FeaturedJob
         jobsYouMightLike="Jobs you might like"
-        googleInc="Google Inc."
-        googleInc1="Google Inc."
-        googleInc2="Google Inc."
-        googleInc3="Google Inc."
-        googleInc4="Google Inc."
-        googleInc5="Google Inc."
-        googleInc6="Google Inc."
-        googleInc7="Google Inc."
-        googleInc8="Google Inc."
-        googleInc9="Google Inc."
-        googleInc10="Google Inc."
-        googleInc11="Google Inc."
+        featuredJobs={featuredJobs} // Pass the fetched jobs to the FeaturedJob component
       />
       <Category />
       <Footer />
