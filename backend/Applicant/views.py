@@ -21,11 +21,8 @@ from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from django.db.models import CharField, Value as V
 from django.db.models.functions import Concat
-<<<<<<< HEAD
 from Applicant.recommendations import give_suggestions, update_user_feedback
 
-=======
->>>>>>> 55b47ae (working on model)
 
 def getUserFromRequest(request):
     auth_header = request.META.get('HTTP_AUTHORIZATION')
@@ -80,11 +77,7 @@ def sendRecommendationsToFrontEnd(request):
     get_recommendations(request)
 
 def recommended_jobs(request):
-<<<<<<< HEAD
     job_ids = []
-=======
-    from recommendations import give_suggestions
->>>>>>> 55b47ae (working on model)
     user = getUserFromRequest(request=request)
     try:
         user_resume = Resume.objects.get(user=user)
@@ -113,7 +106,6 @@ def recommended_jobs(request):
         return JsonResponse({"error": "User does not have a resume"}, status=400)
 
 def update_feedback(request):
-    from recommendations import update_user_feedback
     user = getUserFromRequest(request=request)
     update_user_feedback(user_id=user.id, job_id=request.job_id, feedback = request.feedback)
 
