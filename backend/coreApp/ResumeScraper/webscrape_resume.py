@@ -19,7 +19,25 @@ import uuid
 import json
 import os
 from resume import ResumeExtractor
+from django.conf import settings
+import django
+import os
+from django.db.models import Q
+import string
+from random import randint,choice
 
+
+import sys
+from pathlib import Path
+sys.path.append(Path(__file__).resolve().parent.parent.__str__())
+
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'coreApp.settings')
+django.setup()
+
+#might need to ensure no repeat uploads
+from UserAuth.models import Resume,Education,WorkExperience
+from Applicant.serializers import ResumeSerializer
+from UserAuth.serializers import UserSerializer
 class ScrapeResume:
 
     def __init__(self):
@@ -62,7 +80,33 @@ class ScrapeResume:
                 resume_info = doc.find("div",class_="normalText").get_text()
                 
                 ret = self.extractor.extract_all(text=resume_info)
+                clean_resume_text= self.extractor.read_resume(text=resume_info,pdf=False)
+                name = self.extractor.extract_name(clean_resume_text)
+                create_user= {"username" : name, "name" : name , "email" : self.extractor.extract_email(clean_resume_text) , "password" : None , "phone_number" : self.extractor.extract_number(clean_resume_text)}
                 
+                for _ in range(0,10):
+                    if create_user["phone_number"] == "none":
+                        create_user["phone_number"] += "" + randint(0,9)
+                    
+                    if create_user["name"] == "none":
+                        create_user["name"] += choice(string.ascii_lowercase)
+                        create_user["name"] += choice(string.ascii_letters)
+                    if create_user["email"] == "none":
+                        create_user["email"] +=choice(string.ascii_lowercase)
+                    create_user["password"] +=choice(string.ascii_lowercase)
+                            
+                if not(re.match(".+@\w+.\w+",create_user["email"])):
+                    create_user["email"] +="@gmail.com"
+                user_serializer = UserSerializer(data=create_user)
+                if user_serializer.is_valid():
+                    instance = user_serializer.save()
+
+                resume_serializer = ResumeSerializer(data=ret, context={'user': instance})
+
+                if resume_serializer.is_valid():
+                    resume_serializer.save()
+
+
                 time.sleep(3)
                 self.driver.back()
                 time.sleep(3)

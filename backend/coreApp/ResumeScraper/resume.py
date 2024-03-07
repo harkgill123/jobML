@@ -66,13 +66,25 @@ class ResumeExtractor:
 
     #DONE
     def extract_email(self,text):
-        email =""
-        for word in text.split(" "):
+            get_email = self.client.chat.completions.create(
+                    model="gpt-3.5-turbo",
+                    temperature=0.2,
+                    messages=[
+                        
+                        {"role": "user", "content": "Extract the email from the text. IF NO ADDRESS FOUND REPLY WITH none"},
+                        
+                        {"role": "user", "content": text}
+                    ] 
+                )
+            return  get_email.choices[0].message.content
+    # def extract_email(self,text):
+    #     email =""
+    #     for word in text.split(" "):
             
-            if re.findall("([a-z]|.)*@[a-z]*\.(com|ca)",word):
-                email = word
-                break
-        return email
+    #         if re.findall("([a-z]|.)*@[a-z]*\.(com|ca)",word):
+    #             email = word
+    #             break
+    #     return email
     def extract_skills(self,text):
         list_of_skills=["amazon dynamodb","amazon rds/aurora","amazon redshift","apache hbase","apache hive","aster data","cassandra","elasticsearch", "filemaker pro","firebird","google bigquery",
             "google cloud storage","greenplum","hsqldb","ibm db2","informix","mariadb", "memcached","memsql","microsoft access","microsoft azure (tables, cosmosdb, sql, etc)","microsoft azure"
@@ -370,8 +382,8 @@ class ResumeExtractor:
         elif text !=None:
             text= self.read_resume(text=text,pdf=ispdf)
         
-        data = {"Educations" : self.extract_education(text) , "Work Experiences" : self.extract_experience(text) ,"Skills" : self.extract_skills(text),"address" : self.extract_address(text)}
-      
+        #data = {"Educations" : self.extract_education(text) , "Work Experiences" : self.extract_experience(text) ,"Skills" : self.extract_skills(text),"address" : self.extract_address(text)}
+        data = {"educations" : self.extract_education(text) , "work_experiences" : self.extract_experience(text) ,"resume_skills" : self.extract_skills(text)}
         return data
 if __name__ == "__main__":
     resextractor = ResumeExtractor()
