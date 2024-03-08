@@ -10,5 +10,5 @@ urlpatterns = [
     path('recommend-jobs/', recommended_jobs, name='recommend-jobs'),
     path('send-recommendations/', sendRecommendationsToFrontEnd, name='send-recommendations'),
     path('get-recommendations/', get_recommendations, name='get-recommendations'),
-    path('update-feedback/', update_feedback, name='update-feedback')
+    path('update_feedback/', update_feedback, name='update_feedback')
 ]
