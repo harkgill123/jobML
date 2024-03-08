@@ -24,13 +24,14 @@ const FeaturedJob = ({ jobsYouMightLike, featuredJobs }: FeaturedJobProps) => {
   const handleLike = async (jobId: number) => {
     try {
       console.log('Token:', token);
+      console.log(jobId);
       const response = await fetch('http://localhost:8000/Applicant/update_feedback/', {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ job_id: jobId, feedback: 'like' }),
+        body: JSON.stringify({ job_id: jobId, feedback: '1' }),
       });
   
       if (!response.ok) {
@@ -52,7 +53,7 @@ const FeaturedJob = ({ jobsYouMightLike, featuredJobs }: FeaturedJobProps) => {
           'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ job_id: jobId, feedback: 'dislike' }),
+        body: JSON.stringify({ job_id: jobId, feedback: '-1' }),
       });
   
       if (!response.ok) {

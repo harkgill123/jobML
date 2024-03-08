@@ -9,7 +9,7 @@ from UserAuth.models import Resume
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from coreApp.ResumeScraper.resume import ResumeExtractor
-import logging
+import logging, json
 from django.contrib.postgres.aggregates import ArrayAgg
 import jwt,os
 from django.contrib.auth import get_user_model
@@ -22,6 +22,7 @@ from django.http import JsonResponse
 from django.db.models import CharField, Value as V
 from django.db.models.functions import Concat
 from Applicant.recommendations import give_suggestions, update_user_feedback
+from django.views.decorators.csrf import csrf_exempt
 
 
 def getUserFromRequest(request):
@@ -105,9 +106,22 @@ def recommended_jobs(request):
     except Resume.DoesNotExist:
         return JsonResponse({"error": "User does not have a resume"}, status=400)
 
+@csrf_exempt
 def update_feedback(request):
-    user = getUserFromRequest(request=request)
-    update_user_feedback(user_id=user.id, job_id=request.job_id, feedback = request.feedback)
+    try:
+        data = json.loads(request.body)
+        user = getUserFromRequest(request=request)
+        
+        job_id = data.get('job_id')
+        feedback = data.get('feedback')
+        
+        update_user_feedback(user_id=user.id, job_id=job_id, feedback=int(feedback))
+
+        return JsonResponse({"message": "Feedback updated successfully"}, status=200)
+    except json.JSONDecodeError:
+        return JsonResponse({"error": "Invalid JSON"}, status=400)
+    except Exception as e:
+        return JsonResponse({"error": str(e)}, status=500)
 
 def get_recommendations(request):
     from Applicant.recommendations import top_recommendations
