@@ -17,7 +17,7 @@ const CandidateHomepage = () => {
     const fetchRecommendedJobs = async () => {
       try {
         console.log('Token:', token);
-        const response = await fetch('http://localhost:8000/Applicant/recommend-jobs/', {
+        const response = await fetch('http://localhost:8000/Applicant/send-recommendations/', {
           headers: {
             'Authorization': `Bearer ${token}`,
             'Content-Type': 'application/json',
@@ -48,7 +48,7 @@ const CandidateHomepage = () => {
               return {
                 id: item.pk,
                 title: job.title,
-                company: job.company,
+                company: job.company_name,
                 location: job.location
               };
             });
@@ -79,10 +79,9 @@ const CandidateHomepage = () => {
         jobTitleKeywordPlacehold="Job title, Keyword..."
       />
       <FeaturedJob
-        jobsYouMightLike="Jobs you might like"
+        jobsYouMightLike="Jobs you might like..."
         featuredJobs={featuredJobs} // Pass the fetched jobs to the FeaturedJob component
       />
-      <Category />
       <Footer />
     </div>
   );

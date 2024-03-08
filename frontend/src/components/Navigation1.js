@@ -34,15 +34,7 @@ const Navigation1 = ({ fullName }) => {
         </div>
         <div className={styles.videoAnimation}>
           <div className={styles.search}>
-            <div className={styles.image1Parent}>
-              <img className={styles.image1Icon} alt="" src="/image-1@2x.png" />
-              <div className={styles.india}>India</div>
-              <img
-                className={styles.caretdownIcon}
-                alt=""
-                src="/caretdown.svg"
-              />
-            </div>
+
             <div className={styles.searchChild} />
             <img className={styles.fisearchIcon} alt="" src="/fisearch.svg" />
             <input
@@ -51,6 +43,7 @@ const Navigation1 = ({ fullName }) => {
               type="text"
             />
           </div>
+          
         </div>
         <div className={styles.science}>
           <div className={styles.fullName}>{fullName}</div>
