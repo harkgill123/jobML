@@ -18,7 +18,7 @@ import pandas as pd
 import uuid
 import json
 import os
-from resume import ResumeExtractor
+from ResumeScraper.resume import ResumeExtractor
 from django.conf import settings
 import django
 import os
@@ -38,11 +38,10 @@ django.setup()
 from UserAuth.models import Resume,Education,WorkExperience
 from Applicant.serializers import ResumeSerializer
 from UserAuth.serializers import UserSerializer
+from UserAuth.forms import SignupForm
 class ScrapeResume:
 
     def __init__(self):
-        
-        
         self.jobs_to_upload=[]
         self.jobs_to_check=[]
         self.extractor=ResumeExtractor()
@@ -53,9 +52,11 @@ class ScrapeResume:
         self.indeed=False
         self.gdoor=False
         self.link="https://www.postjobfree.com/resumes?q=&l=Toronto%2C+ON%2C+Canada&radius=25"
+
     def connect(self):
         self.driver.get(self.link)
         self.driver.maximize_window()
+        self.driver.implicitly_wait(3)
         time.sleep(5)
 
 
@@ -65,8 +66,8 @@ class ScrapeResume:
         element.send_keys(res_name)
         element.send_keys(Keys.RETURN)
         time.sleep(3)
- 
         time.sleep(3)
+
     def scrape_resume(self,limit:int=100):
         counter = 0
         while(True):
@@ -82,11 +83,11 @@ class ScrapeResume:
                 ret = self.extractor.extract_all(text=resume_info)
                 clean_resume_text= self.extractor.read_resume(text=resume_info,pdf=False)
                 name = self.extractor.extract_name(clean_resume_text)
-                create_user= {"username" : name, "name" : name , "email" : self.extractor.extract_email(clean_resume_text) , "password" : None , "phone_number" : self.extractor.extract_number(clean_resume_text)}
-                
+                create_user= {"username" : name, "name" : name , "email" : self.extractor.extract_email(clean_resume_text) , "password" : "" , "phone_number" : self.extractor.extract_number(clean_resume_text),"user_type": "Applicant"}
+                phone_number=""
                 for _ in range(0,10):
-                    if create_user["phone_number"] == "none":
-                        create_user["phone_number"] += "" + randint(0,9)
+                    if create_user["phone_number"] == "" or create_user["phone_number"] == "none":
+                        phone_number += str(randint(0,9))
                     
                     if create_user["name"] == "none":
                         create_user["name"] += choice(string.ascii_lowercase)
@@ -97,25 +98,38 @@ class ScrapeResume:
                             
                 if not(re.match(".+@\w+.\w+",create_user["email"])):
                     create_user["email"] +="@gmail.com"
-                user_serializer = UserSerializer(data=create_user)
-                if user_serializer.is_valid():
-                    instance = user_serializer.save()
 
+                if phone_number != "":
+                    create_user["phone_number"]=phone_number
+                form=SignupForm(create_user)
+                if form.is_valid():
+                    
+                    user_serializer = UserSerializer(data=form.cleaned_data)
+                    if user_serializer.is_valid():
+
+                        print(form.cleaned_data)
+                        instance = user_serializer.save()
+                        print(instance)
+                    else:
+                        Exception(f"error data is wrong {create_user}")
+           
                 resume_serializer = ResumeSerializer(data=ret, context={'user': instance})
-
+              
+                print(ret["resume_skills"])
                 if resume_serializer.is_valid():
                     resume_serializer.save()
-
-
+                else:
+                    print(resume_serializer.errors)
+                    input("waiting")
                 time.sleep(3)
                 self.driver.back()
                 time.sleep(3)
                 counter +=1
-
-            
             if counter >= limit:
+                self.driver.close()
                 break
-            self.driver.find_element(By.LINK_TEXT, 'Next').click()
+            self.driver.find_element(By.LINK_TEXT, 'Next').click()    
+            
 
             
 

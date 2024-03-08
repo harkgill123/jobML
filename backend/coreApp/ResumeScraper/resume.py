@@ -59,7 +59,7 @@ class ResumeExtractor:
             if unformatted:
                 return text
             else:
-                print(text3)
+               
                 return text3
         
 
@@ -115,7 +115,7 @@ class ResumeExtractor:
         if len(skill) == 0:
             """
                 returns :
-                "Skills": "Python, JavaScript, React, Django"
+                "Skills": [Python, JavaScript, React, Django]
             """
             get_skills = self.client.chat.completions.create(
                     model="gpt-3.5-turbo",
@@ -132,10 +132,10 @@ class ResumeExtractor:
 
             split_skills = list(set(get_skills_response.split(",")))
             
-            join_skills = ",".join(split_skills)
-            return join_skills
+            
+            return split_skills
         else:
-            return ",".join(list(set(skill)))
+            return list(set(skill))
     def extract_number(self,text):
         
         
