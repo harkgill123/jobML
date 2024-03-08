@@ -74,7 +74,7 @@ def sendRecommendationsToFrontEnd(request):
     latestModel = ModelVersionEntry.latest_version
     if userModel != latestModel:
         recommended_jobs(request)
-    get_recommendations(request)
+    return get_recommendations(request)
 
 def recommended_jobs(request):
     job_ids = []
@@ -110,7 +110,7 @@ def update_feedback(request):
     update_user_feedback(user_id=user.id, job_id=request.job_id, feedback = request.feedback)
 
 def get_recommendations(request):
-    from recommendations import top_recommendations
+    from Applicant.recommendations import top_recommendations
     user = getUserFromRequest(request=request)
     try:
         top_entries = top_recommendations(user_id=user.id)
@@ -118,7 +118,8 @@ def get_recommendations(request):
         jobs = JobPosting.objects.filter(id__in=job_ids)
         job_mapping = {job.id: job for job in jobs}
         ordered_jobs = [job_mapping[job_id] for job_id in job_ids if job_id in job_mapping]
-        return JsonResponse({"top_recommended_jobs": ordered_jobs})
+        serialized_jobs = serializers.serialize('json', ordered_jobs)
+        return JsonResponse({"recommended_jobs": serialized_jobs})
     except Resume.DoesNotExist:
         return JsonResponse({"error": "user couldnt be found"}, status=400)
     

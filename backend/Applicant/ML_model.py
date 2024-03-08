@@ -187,10 +187,10 @@ def update_model_version_database(MODEL_VERSION):
             }
         )
 
-jobs = create_model()
-df = pd.DataFrame(jobs)
-train_model()
-JobToClusters.objects.all().delete()
-populate_job_clusters()
-update_model_version_database(MODEL_VERSION)
-df.to_json('model_settings/df.json')
+# jobs = create_model()
+# df = pd.DataFrame(jobs)
+# train_model()
+# JobToClusters.objects.all().delete()
+# populate_job_clusters()
+# update_model_version_database(MODEL_VERSION)
+# df.to_json('model_settings/df.json')

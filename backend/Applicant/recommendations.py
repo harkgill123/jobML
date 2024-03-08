@@ -171,7 +171,7 @@ def top_recommendations(user_id):
     top_feedback_entries = FeedbackforJob.objects.filter(
         user_id = user_id, 
         feedback = 0,
-    ).order_by('-score')[:10]  # Order by score descending, limit to top 10
+    ).order_by('-score')[:12]  # Order by score descending, limit to top 10
     # Create a list of tuples with user_id and job_id for the top entries
     top_entries_list = [{'user_id': entry.user_id,'job_id': entry.job_posting_id} for entry in top_feedback_entries]
     return top_entries_list
