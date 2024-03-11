@@ -8,14 +8,7 @@ from openai import OpenAI
 from dotenv import load_dotenv
 from pathlib import Path
 import os
-"""
-        scraped_data = {
-     
-      
-            ,
-            "Address": "1234 Main St, Hometown, Country"
-        }
-"""
+
 
 class ResumeExtractor:
     def __init__(self):
@@ -35,36 +28,63 @@ class ResumeExtractor:
 
         self.new_skills= [i.lower() for i in data_read[0]]
         self.resume_text=None
-    def read_pdf(self,path):
-        resume = open(path, 'rb')
-
-        resumepdf= PyPDF2.PdfReader(resume)
-
-        text=""
-        for page in resumepdf.pages:
-            text+=page.extract_text()
-            
-            
-
-
-        text2 = ' '.join(text.split())
+    def read_resume(self,text=None,path=None,unformatted=False,pdf=False):
         def remove_non_ascii_1(text):
 
             return ''.join(i for i in text if ord(i)<128)
 
-        text3=remove_non_ascii_1(text2).replace(","," ").replace(":"," ").lower()
-        # self.resume_text=text3
-        return text3
-    
-    #DONE
-    def FindEmail(self,text):
-        email =""
-        for word in text.split(" "):
+        if pdf:
+            resume = open(path, 'rb')
+
+            resumepdf= PyPDF2.PdfReader(resume)
             
-            if re.findall("([a-z]|.)*@[a-z]*\.(com|ca)",word):
-                email = word
-                break
-        return email
+            text=""
+            for page in resumepdf.pages:
+                text+=page.extract_text()
+                
+                
+        
+        
+            text2 = ' '.join(text.split())
+
+
+
+            text3=remove_non_ascii_1(text2).replace(","," ").replace(":"," ").lower()
+            if unformatted:
+                return text2
+            else:
+                return text3
+        else:
+            text3=remove_non_ascii_1(text).replace(","," ").replace(":"," ").replace('\n'," ").lower()
+            if unformatted:
+                return text
+            else:
+               
+                return text3
+        
+
+
+    #DONE
+    def extract_email(self,text):
+            get_email = self.client.chat.completions.create(
+                    model="gpt-3.5-turbo",
+                    temperature=0.2,
+                    messages=[
+                        
+                        {"role": "user", "content": "Extract the email from the text. IF NO ADDRESS FOUND REPLY WITH none"},
+                        
+                        {"role": "user", "content": text}
+                    ] 
+                )
+            return  get_email.choices[0].message.content
+    # def extract_email(self,text):
+    #     email =""
+    #     for word in text.split(" "):
+            
+    #         if re.findall("([a-z]|.)*@[a-z]*\.(com|ca)",word):
+    #             email = word
+    #             break
+    #     return email
     def extract_skills(self,text):
         list_of_skills=["amazon dynamodb","amazon rds/aurora","amazon redshift","apache hbase","apache hive","aster data","cassandra","elasticsearch", "filemaker pro","firebird","google bigquery",
             "google cloud storage","greenplum","hsqldb","ibm db2","informix","mariadb", "memcached","memsql","microsoft access","microsoft azure (tables, cosmosdb, sql, etc)","microsoft azure"
@@ -95,13 +115,14 @@ class ResumeExtractor:
         if len(skill) == 0:
             """
                 returns :
-                "Skills": "Python, JavaScript, React, Django"
+                "Skills": [Python, JavaScript, React, Django]
             """
             get_skills = self.client.chat.completions.create(
                     model="gpt-3.5-turbo",
+                    temperature=0.2,
                     messages=[
-                        {"role": "system", "content": "You are a helpful assistant."},
-                        {"role": "user", "content": "Extract all the skills? LIST THE SKILLS IN A COMMA SEPARATED LIST."},
+                        
+                        {"role": "user", "content": "Extract all the skills? LIST THE SKILLS IN A COMMA SEPARATED LIST.IF NOTHING FOUND REPLY WITH none"},
                         {"role": "assistant", "content": "python,javascript,react,django"},
                         {"role": "user", "content": text}
                     ] 
@@ -111,11 +132,11 @@ class ResumeExtractor:
 
             split_skills = list(set(get_skills_response.split(",")))
             
-            join_skills = ",".join(split_skills)
-            return join_skills
+            
+            return split_skills
         else:
-            return ",".join(list(set(skill)))
-    def FindNumber(self,text):
+            return list(set(skill))
+    def extract_number(self,text):
         
         
         phone_number= re.findall("\(\d+\)\s\d+-\d+",text )
@@ -127,7 +148,20 @@ class ResumeExtractor:
             return phone_number
         else:
             return ""
-        
+    
+
+    def extract_address(self,text):
+            get_address = self.client.chat.completions.create(
+                    model="gpt-3.5-turbo",
+                    temperature=0.2,
+                    messages=[
+                        
+                        {"role": "user", "content": "Extract the house address from the text. IF NO ADDRESS FOUND REPLY WITH none"},
+                        
+                        {"role": "user", "content": text}
+                    ] 
+                )
+            return  get_address.choices[0].message.content
     #DONE
     def extract_experience(self,text):
         """
@@ -137,48 +171,57 @@ class ResumeExtractor:
                     "Company Name": "ABC Corp",
                     "Job Title": "Software Developer",
                     "Start Date": "2020-01",
-                    "End Date": "2022-12"
+                    "End Date": "2022-12",
+                    "job_description : " ... "
                 },
                 {
                     "Company Name": "DEF Technologies",
                     "Job Title": "Junior Developer",
                     "Start Date": "2018-06",
-                    "End Date": "2020-01"
+                    "End Date": "2020-01",
+                    "job_description : " ... "
                 }
             ],
         """
         job_data=[]
         job_description = ""
 
-
-        if len(text.split("work experience")) == 1:
-            job_description = text.split("employement")[1].split("projects")[0]
-        else:
-            job_description = text.split("work experience")[1].split("projects")[0]
-
-
         # model="gpt-4-turbo-preview",
         get_job_titles = self.client.chat.completions.create(
             model="gpt-4-turbo-preview",
+            temperature=0.2,
             messages=[
-                {"role": "system", "content": "You are a helpful assistant."},
-                {"role": "user", "content": "what are the different job titles the person has? Only list the job titles separated by comma if needed"},
+                
+                {"role": "user", "content": "what are the different job titles the person has? Only list the job titles separated by comma if needed. IF NOTHING FOUND REPLY WITH none"},
                 {"role": "assistant", "content": "software engineer, power and performance engineer, silicon design engineer"},
-                {"role": "user", "content": job_description}
+                {"role": "user", "content": text}
             ] 
         )
 
         job_titles_response= get_job_titles.choices[0].message.content
 
         for job_titles in job_titles_response.split(","):
+
+            get_job_desc = self.client.chat.completions.create(
+                model="gpt-3.5-turbo",
+                temperature=0.2,
+                messages=[
+                    
+                    {"role": "user", "content": f"what responsibilities did the {job_titles} have in the text? ONLY LIST THE responsibilities without any formatting.IF NOTHING FOUND REPLY WITH none"},
+                    
+                    {"role": "user", "content": text}
+                ]  
+            )
+            job_desc = get_job_desc.choices[0].message.content
+
             get_company_names = self.client.chat.completions.create(
                 model="gpt-3.5-turbo",
-
+                temperature=0.2,
                 messages=[
-                    {"role": "system", "content": "You are a helpful assistant."},
-                    {"role": "user", "content": f"what company did the person work for as a {job_titles}? only list the company name"},
+                    
+                    {"role": "user", "content": f"what company did the person work for as a {job_titles}? only list the company name. IF NOTHING FOUND REPLY WITH none"},
                     {"role": "assistant", "content": "Intel,AMD,IBM,Google"},
-                    {"role": "user", "content": job_description}
+                    {"role": "user", "content": text}
                 ]  
             )
 
@@ -188,10 +231,10 @@ class ResumeExtractor:
                 temperature=0.2,
                 max_tokens=60,
                 messages=[
-                    {"role": "system", "content": "You are a helpful assistant."},
-                    {"role": "user", "content": f"what is the starting date of the person's role as {job_titles}? ONLY LIST THE START DATE"},
+                    
+                    {"role": "user", "content": f"what is the starting date of the person's role as {job_titles}? ONLY LIST THE START DATE. IF NOTHING FOUND REPLY WITH none"},
                     {"role": "assistant", "content": "25/3/2022"},
-                    {"role": "user", "content": job_description}
+                    {"role": "user", "content": text}
                 ]   
             )
             start_date_response = get_start_date.choices[0].message.content
@@ -201,10 +244,10 @@ class ResumeExtractor:
                      temperature=0.2,
                 max_tokens=60,
                 messages=[
-                    {"role": "system", "content": "You are a helpful assistant."},
-                    {"role": "user", "content": f"what is the end date of the person's role as {job_titles}? ONLY LIST THE END DATE"},
+                    
+                    {"role": "user", "content": f"what is the end date of the person's role as {job_titles}? ONLY LIST THE END DATE. IF NOTHING FOUND REPLY WITH none"},
                     {"role": "assistant", "content": "25/3/2022"},
-                    {"role": "user", "content": job_description}
+                    {"role": "user", "content": text}
                 ]   
             )
             end_date_response = get_end_date.choices[0].message.content
@@ -214,7 +257,8 @@ class ResumeExtractor:
                     "Company Name": company_name,
                     "Job Title":job_titles,
                     "Start Date": start_date_response,
-                    "End Date": end_date_response
+                    "End Date": end_date_response,
+                    "job_description" : job_desc
             }
             job_data.append(data)
 
@@ -237,8 +281,21 @@ class ResumeExtractor:
                     break
         return [first_name,last_name]
     
-    def get_first_and_last_name(self,text):
-        pass
+    def extract_name(self,text):
+            get_name = self.client.chat.completions.create(
+                model="gpt-3.5-turbo",
+                     temperature=0.2,
+                max_tokens=60,
+                messages=[
+                    
+                    {"role": "user", "content": f"Extract the name from this text. ONLY LIST THE NAME. IF NOTHING FOUND REPLY WITH none"},
+                    {"role": "assistant", "content": "25/3/2022"},
+                    {"role": "user", "content": text}
+                ]   
+            )
+            name_response = get_name.choices[0].message.content
+
+            return name_response    
 
     def extract_education(self,text):
             """
@@ -264,8 +321,8 @@ class ResumeExtractor:
                 temperature=0.2,
                 max_tokens=60,
                 messages=[
-                    {"role": "system", "content": "You are a helpful assistant."},
-                    {"role": "user", "content": f"extract the different university or college degrees this person has. ONLY LIST THE DEGREE NAME. If there are multiple degrees use a comma to seperate them."},
+                    
+                    {"role": "user", "content": f"extract the different university or college degrees this person has. ONLY LIST THE DEGREE NAME. If there are multiple degrees use a comma to seperate them.IF NOTHING FOUND REPLY WITH none"},
                     
                     {"role": "user", "content": text}
                 ]   
@@ -280,8 +337,8 @@ class ResumeExtractor:
                     temperature=0.2,
                     max_tokens=60,
                     messages=[
-                        {"role": "system", "content": "You are a helpful assistant."},
-                        {"role": "user", "content": f"what is the starting date of the person's {degrees} degree? ONLY LIST THE START DATE"},
+                        
+                        {"role": "user", "content": f"what is the starting date of the person's {degrees} degree? ONLY LIST THE START DATE. IF NOTHING FOUND REPLY WITH none"},
                         {"role": "assistant", "content": "25/3/2022"},
                         {"role": "user", "content": text}
                     ]   
@@ -293,8 +350,8 @@ class ResumeExtractor:
                         temperature=0.2,
                     max_tokens=60,
                     messages=[
-                        {"role": "system", "content": "You are a helpful assistant."},
-                        {"role": "user", "content": f"what is the starting date of the person's {degrees} degree? ONLY LIST THE END DATE"},
+                        
+                        {"role": "user", "content": f"what is the starting date of the person's {degrees} degree? ONLY LIST THE END DATE. IF NOTHING FOUND REPLY WITH none"},
                         {"role": "assistant", "content": "25/3/2022"},
                         {"role": "user", "content": text}
                     ]   
@@ -306,8 +363,8 @@ class ResumeExtractor:
                         temperature=0.2,
                     max_tokens=60,
                     messages=[
-                        {"role": "system", "content": "You are a helpful assistant."},
-                        {"role": "user", "content": f"in what school did the person get the {degrees} degree at ? ONLY NAME THE SCHOOL"},
+                        
+                        {"role": "user", "content": f"in what school did the person get the {degrees} degree at ? ONLY NAME THE SCHOOL. IF NOTHING FOUND REPLY WITH none"},
                         {"role": "assistant", "content": "25/3/2022"},
                         {"role": "user", "content": text}
                     ]   
@@ -319,20 +376,16 @@ class ResumeExtractor:
             return education_data
 
         
-    def extract_all(self,filename):
+    def extract_all(self,text=None,filename=None,ispdf=False):
+        if filename!=None:
+            text= self.read_resume(path=filename,pdf=ispdf)
+        elif text !=None:
+            text= self.read_resume(text=text,pdf=ispdf)
         
-        text= self.read_pdf(filename)
-        data = {"Educations" : self.extract_education(text) , "Work Experiences" : self.extract_experience(text) ,"Skills" : self.extract_skills(text)}
-      
+        #data = {"Educations" : self.extract_education(text) , "Work Experiences" : self.extract_experience(text) ,"Skills" : self.extract_skills(text),"address" : self.extract_address(text)}
+        data = {"educations" : self.extract_education(text) , "work_experiences" : self.extract_experience(text) ,"resume_skills" : self.extract_skills(text)}
         return data
 if __name__ == "__main__":
     resextractor = ResumeExtractor()
-    print(resextractor.extract_all("./karim_soubra_resume.pdf"))
-
-    # text = resextractor.read_pdf("./karim_soubra_resume.pdf")
-
-
-
-    # skills = resextractor.extract_skills(text)
-
-    # print(skills)
+    text = resextractor.read_resume("./karim_soubra_resume.pdf")
+    print(resextractor.extract_address(text))
