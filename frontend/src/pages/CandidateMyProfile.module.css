@@ -1,16 +1,5 @@
 .candidateMyProfile,
-.candidateSettingsWrapper {
-  display: flex;
-  align-items: flex-start;
-  box-sizing: border-box;
-}
-.candidateSettingsWrapper {
-  width: 1604px;
-  flex-direction: row;
-  justify-content: center;
-  padding: 0 var(--padding-xl);
-  max-width: 100%;
-}
+
 .candidateMyProfile {
   width: 100%;
   position: relative;

@@ -1,4 +1,6 @@
 import { FunctionComponent, useMemo, type CSSProperties } from "react";
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom"; 
 import styles from "./SiteLogo.module.css";
 
 export type SiteLogoType = {
@@ -28,44 +30,55 @@ const SiteLogo: FunctionComponent<SiteLogoType> = ({
     };
   }, [propWidth]);
 
+  const navigate = useNavigate(); // useNavigate hook for navigation
+  const [searchQuery, setSearchQuery] = useState(""); // State to keep track of the search query
+
+  const handleFindJob = async () => {
+    console.log("Finding job...");
+    console.log("Search query:", searchQuery); // Print the search query
+  
+    try {
+      const response = await fetch('http://localhost:8000/Applicant/search_jobs/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          // 'X-CSRFToken': csrfToken // Include this if you're not exempting CSRF verification
+        },
+        body: JSON.stringify({ q: searchQuery }),
+        credentials: 'include' // Required if you're sending CSRF token from a cookie
+      });
+  
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+  
+      const data = await response.json();
+      navigate('/candidate-search-page', { state: { searchQuery, jobs: data.jobs } });
+    } catch (error) {
+      console.error("There was an error with the search:", error);
+    }
+  };
+
+
+
+
   return (
     <section className={styles.siteLogo}>
       <div className={styles.headerSection}>
         <div className={styles.container}>
           <h1 className={styles.findAJob}>{findAJobThatSuitsYourInte}</h1>
-          <form className={styles.search}>
-            <div className={styles.inputField} style={inputFieldStyle}>
-              <img
-                className={styles.fisearchIcon}
-                alt=""
-                src="/fisearch-1.svg"
-              />
-              <input
-                className={styles.jobTittleKeyword}
-                placeholder={jobTittleKeywordPlacehold}
-                type="text"
-                style={jobTittleKeywordStyle}
-              />
-            </div>
+          <div className={styles.search}>
             <div className={styles.searchChild} />
-            <div className={styles.icon}>
-              <div className={styles.inputField1}>
-                <img
-                  className={styles.fimapPinIcon}
-                  alt=""
-                  src="/fimappin.svg"
-                />
-                <input
-                  className={styles.yourLocation}
-                  placeholder="Your Location"
-                  type="text"
-                />
-              </div>
-            </div>
-            <button className={styles.button}>
-              <div className={styles.primary}>Find Job</div>
-            </button>
-          </form>
+            <img className={styles.fisearchIcon} alt="" src="/fisearch.svg" />
+            <input
+              className={styles.jobTitleKeyword}
+              placeholder="Job title, keyword, company"
+              type="text"
+              value={searchQuery} // Controlled input
+              onChange={(e) => setSearchQuery(e.target.value)}
+            />
+            <button className={styles.findJobButton} onClick={handleFindJob}>Find Job</button> {/* Added find job button */}
+          </div>
         </div>
       </div>
       <img

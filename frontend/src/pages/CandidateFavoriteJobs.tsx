@@ -1,21 +1,12 @@
 import { FunctionComponent } from "react";
-import Navigation5 from "../components/Navigation5";
+import Navigation1 from "../components/Navigation1";
 import LocationMarker from "../components/LocationMarker";
 import styles from "./CandidateFavoriteJobs.module.css";
 
 const CandidateFavoriteJobs: FunctionComponent = () => {
   return (
     <div className={styles.candidateFavoriteJobs}>
-      <Navigation5
-        jobTitleKeywordPlaceholde="Job title, keyword, company"
-        navigationAlignSelf="stretch"
-        navigationPosition="unset"
-        navigationTop="unset"
-        navigationLeft="unset"
-        navigationWidth="unset"
-        funFactsFrameWidth="213px"
-        appliedjobsIconPadding="0px var(--padding-12xs) 0px 0px"
-      />
+      <Navigation1 />
       <section className={styles.sidebarParent}>
         <div className={styles.sidebar}>
           <div className={styles.links}>

@@ -46,7 +46,7 @@ function App() {
         title = "";
         metaDescription = "";
         break;
-      case "/job-page":
+      case "/job/:jobId":
         title = "";
         metaDescription = "";
         break;
@@ -141,7 +141,7 @@ function App() {
   return (
     <Routes>
       <Route path="/" element={<SignIn />} />
-      <Route path="/job-page" element={<JobPage />} />
+      <Route path="/job/:jobId" element={<JobPage />} />
       <Route path="/candidate-homepage" element={<CandidateHomepage />} />
       <Route path="/candidate-my-profile" element={<CandidateMyProfile />} />
       <Route path="/candidate-search-page" element={<CandidateSearchPage />} />
@@ -151,7 +151,7 @@ function App() {
         element={<CandidateAppliedJobs />}
       />
       <Route
-        path="/candidate-favorite-jobs"
+        path="/candidate-liked-jobs"
         element={<CandidateFavoriteJobs />}
       />
       <Route

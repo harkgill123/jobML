@@ -1,3 +1,4 @@
+
 .settings {
   margin: 0;
   align-self: stretch;
@@ -750,27 +751,108 @@
 }
 .candidateSettings {
   margin: 0;
-  width: 984px;
+  width: 1600x;
   background-color: var(--gray-scale-white);
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  justify-content: flex-start;
+  justify-content: left;
   gap: var(--gap-13xl);
   max-width: 100%;
 }
-@media screen and (max-width: 900px) {
-  .candidateSettings {
-    gap: var(--gap-13xl);
-  }
+
+
+
+
+/* Base styles */
+* {
+  box-sizing: border-box;
 }
-@media screen and (max-width: 450px) {
-  .settings {
-    font-size: var(--font-size-lgi);
-    line-height: 26px;
-  }
-  .buttonXCircle,
-  .checkParent {
-    flex-wrap: wrap;
+
+body, html {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  font-family: 'Roboto', sans-serif; /* Change as per your font */
+}
+
+/* Main container */
+.candidateSettings {
+  background-color: #fff;
+  max-width: 1800px; /* Adjust width as needed */
+  margin: 100px auto; /* Center the form with top margin */
+  padding: 0px;
+  
+}
+
+/* Section Headings */
+.settings {
+  font-size: 30px; /* Adjust size as per design */
+  color: #333;
+  margin-bottom: 0px;
+  font-family: 'Roboto', sans-serif;
+
+}
+
+/* Form input fields */
+.inputField input[type='text'],
+.inputField input[type='email'],
+.inputField input[type='password'] {
+  width: 100%; /* Full width - padding */
+  padding: 20px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 18px; /* Adjust size as per design */
+  font-family: 'Roboto', sans-serif;
+
+}
+
+/* Buttons */
+.button {
+  width: auto; /* Auto width to fit text */
+  color: #fff; /* Text color */
+  padding: 15px 15px;
+  margin: 0px 0 0px; /* Spacing around buttons */
+  background-color: #007bff; /* Replace with your brand color */
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-family: 'Roboto', sans-serif;
+  font-size: 16px;
+}
+.deleteButton {
+  width: auto; /* Auto width to fit text */
+  color: #fff; /* Text color */
+  padding: 15px 15px;
+  margin: 10px 0 20px; /* Spacing around buttons */
+  background-color: #c40000; /* Replace with your brand color */
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-family: 'Roboto', sans-serif;
+  font-size: 16px;
+}
+.button:hover {
+  background-color: #0056b3; /* Darker shade on hover */
+}
+.deleteButton:hover {
+  background-color: #8b0000; /* Darker shade on hover */
+}
+/* Utility classes for alignment */
+.align-left {
+  text-align: left;
+}
+
+.no-border {
+  border: none;
+}
+
+/* Responsive adjustments */
+@media screen and (max-width: 768px) {
+  .candidateSettings {
+    width: 100%;
+    margin: 20px auto;
   }
 }

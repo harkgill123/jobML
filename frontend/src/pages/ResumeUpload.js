@@ -129,7 +129,7 @@ const ResumeUpload = () => {
       resume_skills: skillsArray,
       //address,
     };
-  
+    console.log('payload', payload)
     // Retrieve the token from localStorage
     const token = localStorage.getItem('token'); // Assume the token is stored with the key 'token'
   
@@ -154,6 +154,7 @@ const ResumeUpload = () => {
       const result = await response.json();
       console.log('Resume data submitted successfully', result);
       // Handle successful submission, e.g., redirect or display a success message
+      navigate('candidate-homepage/');
     } catch (error) {
       console.error('There was an error submitting the resume data', error);
       // Handle the error, e.g., display an error message to the user

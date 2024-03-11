@@ -25,3 +25,4 @@ coverage.xml
 cover/
 
 .pdf
+jobML/backend/coreApp/ResumeScraper/.env

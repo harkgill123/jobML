@@ -6,7 +6,7 @@ from .views import ResumeCreateView, ResumeUploadView, search_jobs, recommended_
 urlpatterns = [
     path('upload-resume/', ResumeUploadView.as_view(), name='upload-resume'),
     path('create-resume/', ResumeCreateView.as_view(), name='create-resume'),
-    path('search-jobs/', search_jobs, name='search-jobs'),
+    path('search_jobs/', search_jobs, name='search_jobs'),
     path('recommend-jobs/', recommended_jobs, name='recommend-jobs'),
     path('send-recommendations/', sendRecommendationsToFrontEnd, name='send-recommendations'),
     path('get-recommendations/', get_recommendations, name='get-recommendations'),

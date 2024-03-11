@@ -19,7 +19,7 @@
   min-height: 24px;
 }
 .jobTittleKeyword {
-  width: 156px;
+  width: 100%;
   border: 0;
   outline: 0;
   font-family: var(--button-button);
@@ -45,57 +45,8 @@
   gap: var(--gap-xs);
   min-width: 180px;
 }
-.searchChild {
-  height: 33px;
-  width: 1px;
-  position: relative;
-  border-right: 1px solid var(--gray-100);
-  box-sizing: border-box;
-  display: none;
-}
-.fimapPinIcon,
-.yourLocation {
-  height: 24px;
-  position: relative;
-}
-.fimapPinIcon {
-  width: 24px;
-  overflow: hidden;
-  flex-shrink: 0;
-  min-height: 24px;
-}
-.yourLocation {
-  width: 104px;
-  border: 0;
-  outline: 0;
-  font-family: var(--button-button);
-  font-size: var(--button-button-size);
-  background-color: transparent;
-  line-height: 24px;
-  color: var(--gray-400);
-  text-align: left;
-  display: inline-block;
-}
-.icon,
-.inputField1 {
-  display: flex;
-  align-items: flex-start;
-  justify-content: flex-start;
-}
-.inputField1 {
-  align-self: stretch;
-  border-radius: var(--br-8xs);
-  background-color: var(--gray-scale-white);
-  flex-direction: row;
-  padding: var(--padding-base) var(--padding-lg);
-  gap: var(--gap-xs);
-}
-.icon {
-  width: 236px;
-  flex-direction: column;
-  padding: 0 var(--padding-xs) 0 0;
-  box-sizing: border-box;
-}
+
+
 .primary {
   position: relative;
   font-size: var(--button-button-size);
@@ -221,4 +172,65 @@
     font-size: var(--font-size-15xl);
     line-height: 38px;
   }
+}
+.findJobButton {
+  white-space: nowrap; /* This prevents the text from wrapping */
+  background-color: var(--primary-500);  color: white;
+  border: none;
+  padding: 19px 20px;
+  font-weight: 550;
+  margin-left: 10px; /* Adjust as necessary */
+  border-radius: 5px; /* Adjust as necessary */
+  cursor: pointer;
+  font-size: 1rem; /* Adjust as necessary */
+}
+
+/* Add :hover and :active states for better user experience */
+.findJobButton:hover {
+  background-color: var(--color-dodgerblue);
+}
+
+.findJobButton:active {
+  background-color: var(--color-dodgerblue);
+}
+.searchChild {
+  height: 33px;
+  width: 1px;
+  position: relative;
+  border-right: 1px solid var(--gray-100);
+  box-sizing: border-box;
+  display: none;
+}
+.fisearchIcon {
+  height: 50px;
+  width: 30px;
+  position: relative;
+  overflow: hidden;
+  flex-shrink: 0;
+  min-height: 24px;
+}
+.search {
+  width: 100%;
+  border-radius: var(--br-8xs);
+  background-color: var(--gray-scale-white);
+  border: 1px solid var(--gray-100);
+  box-sizing: border-box;
+  flex-direction: row;
+  padding: var(--padding-smi) var(--padding-5xl);
+  gap: var(--gap-xs);
+}
+.jobTitleKeyword {
+  width: 100%;
+  border: 0;
+  outline: 0;
+  font-family: var(--button-button);
+  font-size: var(--button-button-size);
+  background-color: transparent;
+  /* Adjust the height and padding to fit your design */
+  height: 55px; /* This is an example height; set it to the height of your search bar */
+  padding: 12px 0; /* This will be half of the height if there's no other content/padding */
+  color: var(--gray-400);
+  text-align: left;
+  display: block; /* changed from inline-block to block */
+  box-sizing: border-box; /* Make sure padding and border are included in the height */
 }
