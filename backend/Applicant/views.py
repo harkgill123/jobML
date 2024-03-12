@@ -23,6 +23,7 @@ from django.db.models import CharField, Value as V
 from django.db.models.functions import Concat
 from Applicant.recommendations import give_suggestions, update_user_feedback
 from django.views.decorators.csrf import csrf_exempt
+from django.core.serializers import serialize
 
 
 def getUserFromRequest(request):
@@ -163,3 +164,16 @@ def search_jobs(request):
     ))
     print(jobs_list)
     return JsonResponse({'jobs': jobs_list})
+
+
+
+def liked_jobs(request):
+    user = getUserFromRequest(request=request)
+    liked_jobs = FeedbackforJob.objects.filter(user_id=user.id, feedback='1')
+    for job in liked_jobs:
+        job_ids = [job.job_posting_id]
+    jobs = JobPosting.objects.filter(id__in=job_ids)
+    
+    jobs_json = serialize('json', jobs)
+    
+    return JsonResponse({'jobs': jobs_json}, safe=False)
