@@ -192,13 +192,13 @@ class scrapejob:
                     "location": current_job_data.get("location", "Default Location"),
                     "job_description": current_job_data.get("desc", "Default Job Description"),
                     "posted_date": timezone.now(),
-                    "application_deadline": timezone.now(),
+                    "application_deadline": timezone.now() + timezone.timedelta(days=100),
                     "experience_required": current_job_data.get("experience_required", "No experience required"),
                     "creator": None,
                 }
-                print(current_job_data)
+                # print(current_job_data)
 
-                input("check")
+             
                 existing_job_posting = JobPosting.objects.filter(
                 Q(title=job_posting_data["title"]) &
                 Q(company_name=job_posting_data["company_name"]) &
