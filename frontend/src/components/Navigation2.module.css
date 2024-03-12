@@ -1,9 +1,272 @@
-.navigation {
-  align-self: stretch;
-  box-shadow: 0-1px 0#e4e5e8 inset;
-  display: flex;
+.button,
+.buttonChild {
+  height: 48px;
+  width: 48px;
+  display: none;
+}
+.buttonChild {
+  position: relative;
+  border-radius: 50%;
+  object-fit: cover;
+}
+.button {
   flex-direction: row;
   align-items: center;
   justify-content: center;
+}
+.digitalMarketing,
+.digitalMarketing1,
+.digitalMarketing2 {
+  height: 20px;
+  width: 4px;
+  position: relative;
+  border-right: 4px solid var(--gradient-red-gradient-9);
+  box-sizing: border-box;
+}
+.digitalMarketing1,
+.digitalMarketing2 {
+  height: 16px;
+  border-right: 4px solid var(--gradient-orange-gradient-10);
+}
+.digitalMarketing2 {
+  height: 12px;
+  border-right: 4px solid var(--gradient-blue-gradient-19);
+}
+.sitelogo1 {
+  align-self: stretch;
+  width: 0;
+  position: relative;
+  font-weight: 500;
+  display: inline-block;
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+.sitelogo {
+  height: 26px;
+  width: 30px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  gap: var(--gap-3xs);
+  z-index: 1;
+}
+.jobsync {
+  position: relative;
+  font-size: var(--heading-04-size);
+  line-height: 40px;
+  font-weight: 600;
+  font-family: var(--button-button);
+  color: var(--gray-900);
+  white-space: nowrap;
+  margin: 0 0 0-2px;
+}
+.categoryIconGroup,
+.loaction {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.findJobButton {
+  white-space: nowrap; /* This prevents the text from wrapping */
+  background-color: var(--primary-500);  color: white;
+  border: none;
+  padding: 10px 20px;
+  font-weight: 550;
+  margin-left: 10px; /* Adjust as necessary */
+  border-radius: 5px; /* Adjust as necessary */
+  cursor: pointer;
+  font-size: 1rem; /* Adjust as necessary */
+}
+
+/* Add :hover and :active states for better user experience */
+.findJobButton:hover {
+  background-color: var(--color-dodgerblue);
+}
+
+.findJobButton:active {
+  background-color: var(--color-dodgerblue);
+}
+
+.inputField {
+  flex: 1;
+  border-radius: var(--br-8xs);
+  background-color: var(--gray-scale-white);
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: flex-start;
+  padding: var(--padding-base) var(--padding-lg);
+  box-sizing: border-box;
+  gap: var(--gap-xs);
+  min-width: 180px;
+}
+
+
+.searchChild {
+  height: 33px;
+  width: 1px;
+  position: relative;
+  border-right: 1px solid var(--gray-100);
+  box-sizing: border-box;
+  display: none;
+}
+.fisearchIcon {
+  height: 30px;
+  width: 24px;
+  position: relative;
+  overflow: hidden;
+  flex-shrink: 0;
+  min-height: 24px;
+}
+.jobTitleKeyword {
+  width: 100%;
+  border: 0;
+  outline: 0;
+  font-family: var(--button-button);
+  font-size: var(--button-button-size);
+  background-color: transparent;
+  /* Adjust the height and padding to fit your design */
+  height: 30px; /* This is an example height; set it to the height of your search bar */
+  padding: 12px 0; /* This will be half of the height if there's no other content/padding */
+  color: var(--gray-400);
+  text-align: left;
+  display: block; /* changed from inline-block to block */
+  box-sizing: border-box; /* Make sure padding and border are included in the height */
+}
+
+.search,
+.videoAnimation {
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
   max-width: 100%;
+}
+.search {
+  width: 100%;
+  border-radius: var(--br-8xs);
+  background-color: var(--gray-scale-white);
+  border: 1px solid var(--gray-100);
+  box-sizing: border-box;
+  flex-direction: row;
+  padding: var(--padding-smi) var(--padding-5xl);
+  gap: var(--gap-xs);
+}
+.videoAnimation {
+  width: 1028px;
+  flex-direction: column;
+  font-size: var(--body-small-500-size);
+  color: var(--gray-900);
+}
+.dashboard,
+.home,
+.myProfile {
+  margin: 0;
+  position: relative;
+  font-size: inherit;
+  font-family: inherit;
+}
+.home {
+  line-height: 20px;
+  font-weight: 700;
+  color: var(--primary-500);
+}
+.dashboard,
+.myProfile {
+  flex: 1;
+  font-weight: 400;
+}
+.dashboard {
+  line-height: 20px;
+}
+.myProfile {
+  white-space: nowrap;
+}
+.signoutIcon {
+  height: 24px;
+  width: 24px;
+  position: relative;
+}
+.logOut {
+  margin: 0;
+  position: relative;
+  font-size: inherit;
+  line-height: 20px;
+  font-weight: 400;
+  font-family: inherit;
+}
+.quickLink,
+.science {
+  justify-content: flex-start;
+}
+.quickLink {
+  flex: 1;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: var(--gap-8xs);
+  color: var(--gray-500);
+}
+.science {
+  width: 452px;
+  gap: var(--gap-11xl);
+  font-size: var(--body-xl-500-size);
+  color: var(--gray-600);
+}
+.navigation,
+.navigation1,
+.science {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  max-width: 100%;
+  justify-content: flex-end; /* Align to the right */
+  flex: 0 1 auto; /* Don't grow, but allow shrinking and base the size on content */
+}
+.navigation1 {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%; /* Ensure it spans the full width of the header */
+  padding: var(--padding-xl) var(--padding-9xl);
+  box-sizing: border-box;
+}
+.navigation {
+  display: flex;
+  align-self: stretch;
+  box-shadow: 0-1px 0#e4e5e8 inset;
+  justify-content: space-between;
+  align-items: center;
+  text-align: left;
+  font-size: var(--font-size-3xl);
+  color: var(--color-black);
+  font-family: var(--button-button);
+}
+.navButton {
+  /* Add your button styling here */
+  background: none;
+  border: none;
+  color: inherit; /* or any color you wish */
+  padding: 10px;
+  cursor: pointer;
+  font-size: inherit; /* or the size you want */
+  font-family: inherit; /* or the family you want */
+  margin: 0 10px; /* Adjust as needed */
+}
+
+.navButton:hover {
+  /* Add hover effects here */
+  background-color: #ececec; /* Example */
+}
+@media screen and (max-width: 1600px) {
+  .science {
+    display: none;
+  }
+}
+@media screen and (max-width: 900px) {
+  .navigation1 {
+    gap: var(--gap-12xl);
+  }
 }

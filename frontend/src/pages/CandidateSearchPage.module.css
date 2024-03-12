@@ -1,196 +1,80 @@
-.label {
-  position: relative;
-  line-height: 28px;
-  font-weight: 500;
-}
-.badge,
-.label1 {
-  position: relative;
-  line-height: 20px;
-}
-.label2 {
-  align-self: stretch;
-  width: 36px;
-  display: none;
-}
-.div,
-.label2,
-.label3 {
-  position: relative;
-  line-height: 20px;
-}
-.div {
-  align-self: stretch;
-  width: 5px;
-  display: none;
-}
-.label3 {
-  width: 36px;
-}
-.div1,
-.label3,
-.label4 {
-  align-self: stretch;
-  display: none;
-}
-.div1 {
-  width: 5px;
-  position: relative;
-  line-height: 20px;
-}
-.label4 {
-  width: 36px;
-}
-.div2,
-.label4,
-.label5 {
-  position: relative;
-  line-height: 20px;
-}
-.div2 {
-  align-self: stretch;
-  width: 5px;
-  display: none;
-}
-.label5 {
-  width: 36px;
-}
-.div3,
-.label5,
-.label6 {
-  align-self: stretch;
-  display: none;
-}
-.div3 {
-  width: 5px;
-  position: relative;
-  line-height: 20px;
-}
-.label6 {
-  width: 36px;
-}
-.div4,
-.label6,
-.label7 {
-  position: relative;
-  line-height: 20px;
-}
-.div4 {
-  align-self: stretch;
-  width: 5px;
-  display: none;
-}
-.label7 {
-  width: 36px;
-}
-.div5,
-.label7,
-.label8 {
-  align-self: stretch;
-  display: none;
-}
-.div5 {
-  width: 5px;
-  position: relative;
-  line-height: 20px;
-}
-.label8 {
-  width: 36px;
-}
-.div6,
-.label8,
-.label9 {
-  position: relative;
-  line-height: 20px;
-}
-.div6 {
-  align-self: stretch;
-  width: 5px;
-  display: none;
-}
-.label9 {
-  color: var(--gray-900);
-}
-.process {
-  display: flex;
-  flex-direction: row;
-  align-items: flex-start;
-  justify-content: flex-start;
-  gap: var(--gap-5xs);
-  text-align: left;
-  font-size: var(--body-small-500-size);
-  color: var(--gray-500);
-}
-.bookmarkSimpleWrapper,
-.breadcrumb,
-.headerGroup {
-  display: flex;
-  flex-direction: row;
-  box-sizing: border-box;
-}
-.breadcrumb {
-  width: 1934px;
-  background-color: var(--gray-50);
-  align-items: center;
-  justify-content: space-between;
-  padding: var(--padding-5xl) var(--padding-278xl) var(--padding-5xl)
-    var(--padding-281xl);
-  gap: var(--gap-xl);
-  max-width: 101%;
-  flex-shrink: 0;
-  z-index: 1;
-}
-.bookmarkSimpleWrapper,
-.headerGroup {
-  align-items: flex-start;
-  max-width: 100%;
-}
-.headerGroup {
-  align-self: stretch;
-  justify-content: flex-end;
-  padding: 0;
-}
-.bookmarkSimpleWrapper {
-  width: 1640px;
-  justify-content: flex-start;
-  padding: 0 0 var(--padding-49xl) var(--padding-xl);
-}
 .candidateSearchPage {
-  width: 100%;
-  position: relative;
-  background-color: var(--gray-scale-white);
-  overflow: hidden;
   display: flex;
   flex-direction: column;
-  align-items: flex-end;
-  justify-content: flex-start;
-  letter-spacing: normal;
+  align-items: center;
+  min-height: 100vh;
+  background-color: #f9f9f9;
+  font-family: var(--font-roboto), sans-serif;
+}
+
+.searchResultsTitle {
+  font-size: 2rem; /* Larger font size for title */
+  font-weight: 590;
+  color: #333;
+  margin-top: 20px;
+  margin-bottom: 20px; /* Provide space between title and job listings */
+  width: 100%; /* Full width */
+  text-align: left; /* Center title text */
+}
+
+.jobListingsContainer {
+  width: 100%;
+  max-width: 1200px; /* Or adjust to fit your design */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.jobCard {
+  background-color: white;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  margin-bottom: 20px;
+  padding: 20px;
+  display: flex;
+  justify-content: space-between; /* Space out title and button */
+  align-items: center;
+  width: 100%; /* Full width of container */
+}
+
+.jobTitle {
+  font-size: 1.50rem;
+  font-weight: 200;
+  color: #333;
+  flex: 1; /* Flex grow to take available space */
+  margin-right: 20px; /* Space before the button */
+}
+
+.jobDetails {
+  display: flex;
+  flex-direction: column;
+  margin-right: auto; /* Ensure details are aligned to the left of the button */
+}
+
+.companyName, .location, .postedDate {
+  font-size: 1.25rem;
+  color: #666;
+  margin: 4px 0; /* Vertical spacing for details */
+}
+
+.viewJobButton {
+  padding: 10px 20px;
+  background-color: var(--primary-500);  color: white;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  font-family: var(--font-roboto), sans-serif; /* Ensure button uses Roboto */
+}
+
+.viewJobButton:hover {
+  background-color: var(--color-dodgerblue);
+}
+
+.noResults {
+  font-size: 1rem;
   text-align: center;
-  font-size: var(--body-large-500-size);
-  color: var(--gray-900);
-  font-family: var(--button-button);
-}
-@media screen and (max-width: 1275px) {
-  .breadcrumb {
-    padding-left: var(--padding-131xl);
-    padding-right: var(--padding-129xl);
-    box-sizing: border-box;
-  }
-  .bookmarkSimpleWrapper {
-    padding-bottom: var(--padding-10xl);
-    box-sizing: border-box;
-  }
-}
-@media screen and (max-width: 900px) {
-  .breadcrumb {
-    flex-wrap: wrap;
-    justify-content: center;
-    padding-left: var(--padding-56xl);
-    padding-right: var(--padding-55xl);
-    box-sizing: border-box;
-  }
-  .bookmarkSimpleWrapper {
-    padding-bottom: var(--padding-xl);
-    box-sizing: border-box;
-  }
+  width: 100%; /* Full width */
+  padding: 20px; /* Some padding around the text */
 }

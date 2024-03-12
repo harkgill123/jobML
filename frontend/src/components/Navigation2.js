@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom"; // Import useNavigate hook for programmatic navigation
-import styles from "./Navigation1.module.css";
+import styles from "./Navigation2.module.css";
 
 const Navigation1 = () => {
   const navigate = useNavigate(); // useNavigate hook for navigation
@@ -32,7 +32,7 @@ const Navigation1 = () => {
       }
   
       const data = await response.json();
-      navigate('/candidate-search-page', { state: { searchQuery, jobs: data.jobs } });
+      navigate('/employer-search-page', { state: { searchQuery, jobs: data.jobs } });
     } catch (error) {
       console.error("There was an error with the search:", error);
     }
@@ -62,18 +62,18 @@ const Navigation1 = () => {
             <img className={styles.fisearchIcon} alt="" src="/fisearch.svg" />
             <input
               className={styles.jobTitleKeyword}
-              placeholder="Job title, keyword, company"
+              placeholder="Candidate, skills, experience..."
               type="text"
               value={searchQuery} // Controlled input
               onChange={(e) => setSearchQuery(e.target.value)}
             />
-            <button className={styles.findJobButton} onClick={handleFindJob}>Find Job</button> {/* Added find job button */}
+            <button className={styles.findJobButton} onClick={handleFindJob}>Search</button> {/* Added find job button */}
           </div>
         </div>
         <div className={styles.science}>
-          <button className={styles.navButton} onClick={() => navigate('/candidate-homepage')}>Home</button>
-          <button className={styles.navButton} onClick={() => navigate('/candidate-liked-jobs')}>Liked Jobs</button>
-          <button className={styles.navButton} onClick={() => navigate('/candidate-my-profile')}>My Profile</button>
+          <button className={styles.navButton} onClick={() => navigate('/employer-homepage')}>Home</button>
+          <button className={styles.navButton} onClick={() => navigate('/employer-dashboard')}>Dashboard</button>
+          <button className={styles.navButton} onClick={() => navigate('/employer-my-profile')}>My Profile</button>
           <button className={styles.navButton} onClick={handleLogout}>Log-out</button>
           <div className={styles.quickLink}>
             {/* Other links or buttons */}

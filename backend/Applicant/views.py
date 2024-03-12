@@ -138,8 +138,15 @@ def get_recommendations(request):
     except Resume.DoesNotExist:
         return JsonResponse({"error": "user couldnt be found"}, status=400)
     
+@csrf_exempt
 def search_jobs(request):
-    query = request.GET.get('q', '')
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        query = data.get('q', '')
+    else:
+        query = request.GET.get('q', '')
+
+    print(query)
     if query:
         jobs = JobPosting.objects.filter(
             Q(title__icontains=query) | 
@@ -149,13 +156,13 @@ def search_jobs(request):
             application_deadline__gte=timezone.now()
         )
     else:
-        jobs = JobPosting.objects.none()
+        jobs = JobPosting.objects.all()
 
     jobs_list = list(jobs.values(
-        'id', 'title', 'company_name', 'location', 'posted_date', 
+        'id', 'title', 'company_name', 'location', 'job_description', 'posted_date', 
         'application_deadline', 'experience_required'
     ))
-
+    print(jobs_list)
     return JsonResponse({'jobs': jobs_list})
 
 
