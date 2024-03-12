@@ -132,10 +132,10 @@ class ResumeExtractor:
 
             split_skills = list(set(get_skills_response.split(",")))
             
-            
-            return split_skills
+            join_skills = ",".join(split_skills)
+            return join_skills
         else:
-            return list(set(skill))
+            return ",".join(list(set(skill)))
     def extract_number(self,text):
         
         
@@ -233,7 +233,7 @@ class ResumeExtractor:
                 messages=[
                     
                     {"role": "user", "content": f"what is the starting date of the person's role as {job_titles}? ONLY LIST THE START DATE. IF NOTHING FOUND REPLY WITH none"},
-                    {"role": "assistant", "content": "25/3/2022"},
+                    {"role": "assistant", "content": "year-month-day"},
                     {"role": "user", "content": text}
                 ]   
             )
@@ -246,18 +246,18 @@ class ResumeExtractor:
                 messages=[
                     
                     {"role": "user", "content": f"what is the end date of the person's role as {job_titles}? ONLY LIST THE END DATE. IF NOTHING FOUND REPLY WITH none"},
-                    {"role": "assistant", "content": "25/3/2022"},
+                    {"role": "assistant", "content": "year-month-day"},
                     {"role": "user", "content": text}
                 ]   
             )
             end_date_response = get_end_date.choices[0].message.content
 
-
+            #   "start_date": start_date_response,
+            #         "end_date ": end_date_response,
             data = {
-                    "Company Name": company_name,
-                    "Job Title":job_titles,
-                    "Start Date": start_date_response,
-                    "End Date": end_date_response,
+                    "company_name": company_name,
+                    "job_title":job_titles,
+                  
                     "job_description" : job_desc
             }
             job_data.append(data)
@@ -289,7 +289,7 @@ class ResumeExtractor:
                 messages=[
                     
                     {"role": "user", "content": f"Extract the name from this text. ONLY LIST THE NAME. IF NOTHING FOUND REPLY WITH none"},
-                    {"role": "assistant", "content": "25/3/2022"},
+                    {"role": "assistant", "content": "year-month-day"},
                     {"role": "user", "content": text}
                 ]   
             )
@@ -338,8 +338,8 @@ class ResumeExtractor:
                     max_tokens=60,
                     messages=[
                         
-                        {"role": "user", "content": f"what is the starting date of the person's {degrees} degree? ONLY LIST THE START DATE. IF NOTHING FOUND REPLY WITH none"},
-                        {"role": "assistant", "content": "25/3/2022"},
+                        {"role": "user", "content": f"what is the starting date of the person's {degrees} degree? ONLY LIST THE START DATE.REPLY WITH the format year-month-day. IF NOTHING FOUND REPLY WITH none"},
+                        {"role": "assistant", "content": "year-month-day"},
                         {"role": "user", "content": text}
                     ]   
                 )
@@ -351,8 +351,8 @@ class ResumeExtractor:
                     max_tokens=60,
                     messages=[
                         
-                        {"role": "user", "content": f"what is the starting date of the person's {degrees} degree? ONLY LIST THE END DATE. IF NOTHING FOUND REPLY WITH none"},
-                        {"role": "assistant", "content": "25/3/2022"},
+                        {"role": "user", "content": f"what is the starting date of the person's {degrees} degree? ONLY LIST THE END DATE. REPLY WITH the format year-month-day. IF NOTHING FOUND REPLY WITH none"},
+                        {"role": "assistant", "content": "year-month-day"},
                         {"role": "user", "content": text}
                     ]   
                 )
@@ -365,12 +365,16 @@ class ResumeExtractor:
                     messages=[
                         
                         {"role": "user", "content": f"in what school did the person get the {degrees} degree at ? ONLY NAME THE SCHOOL. IF NOTHING FOUND REPLY WITH none"},
-                        {"role": "assistant", "content": "25/3/2022"},
+                        {"role": "assistant", "content": "year-month-day"},
                         {"role": "user", "content": text}
                     ]   
                 )
                 get_school_response = get_school.choices[0].message.content
-                data = {"School" : get_school_response , "Degree" : degrees , "Start Date" : start_date_response , "End Date" : end_date_response}
+
+                if start_date_response == "none":
+                     start_date_response="2020-9-23"
+                #"start_date" : start_date_response , "end_date" : end_date_response
+                data = {"school_name" : get_school_response , "degree" : degrees }
                 education_data.append(data)
 
             return education_data

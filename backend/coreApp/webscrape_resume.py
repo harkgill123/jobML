@@ -1,3 +1,4 @@
+from collections import OrderedDict
 from selenium import webdriver
 import nltk
 nltk.download('punkt')
@@ -35,7 +36,7 @@ os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'coreApp.settings')
 django.setup()
 
 #might need to ensure no repeat uploads
-from UserAuth.models import Resume,Education,WorkExperience
+from UserAuth.models import Resume,Education,WorkExperience,User
 from Applicant.serializers import ResumeSerializer
 from UserAuth.serializers import UserSerializer
 from UserAuth.forms import SignupForm
@@ -68,7 +69,7 @@ class ScrapeResume:
         time.sleep(3)
         time.sleep(3)
 
-    def scrape_resume(self,limit:int=100):
+    def scrape_resume(self,limit:int=1000):
         counter = 0
         while(True):
             posting = self.driver.find_elements(By.XPATH, "//a[contains(@href, '/resume/')]")
@@ -81,6 +82,17 @@ class ScrapeResume:
                 resume_info = doc.find("div",class_="normalText").get_text()
                 
                 ret = self.extractor.extract_all(text=resume_info)
+
+                skills = ret["resume_skills"].split(",")
+                
+              
+                new_skills = []
+                for skill in skills:
+                    od = OrderedDict()
+                    od['skill_name']=skill
+                    new_skills.append(od)
+
+                ret["resume_skills"]=new_skills
                 clean_resume_text= self.extractor.read_resume(text=resume_info,pdf=False)
                 name = self.extractor.extract_name(clean_resume_text)
                 create_user= {"username" : name, "name" : name , "email" : self.extractor.extract_email(clean_resume_text) , "password" : "" , "phone_number" : self.extractor.extract_number(clean_resume_text),"user_type": "Applicant"}
@@ -101,30 +113,47 @@ class ScrapeResume:
 
                 if phone_number != "":
                     create_user["phone_number"]=phone_number
-                form=SignupForm(create_user)
-                if form.is_valid():
-                    
-                    user_serializer = UserSerializer(data=form.cleaned_data)
-                    if user_serializer.is_valid():
+                # print(ret["work_experiences"])
 
-                        print(form.cleaned_data)
-                        instance = user_serializer.save()
-                        print(instance)
+                
+
+
+
+
+                existing_user = User.objects.filter(
+                Q(username=create_user["username"]) &
+                Q(name=create_user["name"]) &
+                Q(email=create_user["email"]) 
+                ).first()
+                if existing_user is None:
+                    form=SignupForm(create_user)
+                    if form.is_valid():
+                        
+                        user_serializer = UserSerializer(data=form.cleaned_data)
+                        if user_serializer.is_valid():
+
+                            # print(form.cleaned_data)
+                            instance = user_serializer.save()
+                            # print(instance)
+                        else:
+                            Exception(f"error data is wrong {create_user}")
+            
+                    resume_serializer = ResumeSerializer(data=ret, context={'user': instance})
+                
+                    
+                    if resume_serializer.is_valid():
+                        resume_serializer.save()
                     else:
-                        Exception(f"error data is wrong {create_user}")
-           
-                resume_serializer = ResumeSerializer(data=ret, context={'user': instance})
-              
-                print(ret["resume_skills"])
-                if resume_serializer.is_valid():
-                    resume_serializer.save()
+                        print(resume_serializer.errors)
                 else:
-                    print(resume_serializer.errors)
-                    input("waiting")
-                time.sleep(3)
+                    print("User found skipping")
+                    print(existing_user)
+                    
+                
                 self.driver.back()
-                time.sleep(3)
+                
                 counter +=1
+                time.sleep(60)
             if counter >= limit:
                 self.driver.close()
                 break
