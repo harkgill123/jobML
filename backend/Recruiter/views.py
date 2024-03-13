@@ -4,7 +4,7 @@ from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
 from UserAuth.models import JobPosting
 from .serializers import JobPostingSerializer, JobPostingCreateSerializer
-
+from django.views.decorators.csrf import csrf_exempt
 import json
 from django.http import JsonResponse
 from django.db.models import Q
@@ -30,7 +30,8 @@ class JobPostingCreateView(APIView):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    
+
+@csrf_exempt  
 def search_applicants(request):
     if request.method == 'POST':
         data = json.loads(request.body)
