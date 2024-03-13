@@ -88,6 +88,8 @@ class JobPosting(models.Model):
     posted_date = models.DateField(default=timezone.now)
     application_deadline = models.DateField(default=timezone.now)
     experience_required = models.CharField(max_length=255, null=True, blank=True, default='No experience required')  
+    benefits = models.TextField(max_length=700, null=True, blank=True)
+    employment_type = models.CharField(max_length=200, null=True, blank=True)
     skills = models.ManyToManyField(ListOfSkills, related_name='job_postings', blank=True)  
     creator = models.ForeignKey(
         settings.AUTH_USER_MODEL, 
@@ -100,24 +102,9 @@ class JobPosting(models.Model):
     def __str__(self):
         return self.title
 
-class JobRequirements(models.Model):
-    #requirementID = models.AutoField(max_length=255, unique=True)
-    job_posting = models.ForeignKey(JobPosting, on_delete=models.CASCADE, related_name='requirements')
-    description = models.TextField(default='Default Requirement Description')
-
 class JobToSkills(models.Model):
     job_posting = models.ForeignKey(JobPosting, on_delete=models.CASCADE, related_name='job_skills')
     #skillID = models.CharField(max_length=255, unique=True, default='DefaultSkillID')
-
-class Benefits(models.Model):
-    #benefitID = models.AutoField(max_length=255, unique=True)
-    job_posting = models.ForeignKey(JobPosting, on_delete=models.CASCADE, related_name='benefits')
-    description = models.TextField(default='Default Benefit Description')
-
-class EmploymentType(models.Model):
-    #typeID = models.AutoField(max_length=255, unique=True)
-    job_posting = models.ForeignKey(JobPosting, on_delete=models.CASCADE, related_name='employment_type')
-    type_name = models.CharField(max_length=200, default='Default Employment Type')
 
 class JobToClusters(models.Model):
     job_posting = models.ForeignKey(JobPosting, on_delete=models.CASCADE, related_name='job_cluster')
