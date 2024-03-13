@@ -5,6 +5,12 @@ from rest_framework.permissions import IsAuthenticated
 from UserAuth.models import JobPosting
 from .serializers import JobPostingSerializer, JobPostingCreateSerializer
 
+import json
+from django.http import JsonResponse
+from django.db.models import Q
+from UserAuth.models import User, Resume, ResumeToSkills, Education, WorkExperience, Project
+
+
 class JobPostingListView(APIView):
     permission_classes = [IsAuthenticated] 
 
@@ -25,6 +31,49 @@ class JobPostingCreateView(APIView):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
+def search_applicants(request):
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        query = data.get('q', '')
+    else:
+        query = request.GET.get('q', '')
+
+    if query:
+        applicants = User.objects.filter(
+            Q(user_type=User.UserType.APPLICANT) & (
+                Q(name__icontains=query) |
+                Q(email__icontains=query) |
+                Q(resumes__resume_skills__skill_name__icontains=query) |
+                Q(resumes__educations__school_name__icontains=query) |
+                Q(resumes__work_experiences__company_name__icontains=query) |
+                Q(resumes__projects__title__icontains=query)
+            )
+        ).distinct().prefetch_related('resumes__resume_skills', 'resumes__educations', 'resumes__work_experiences', 'resumes__projects')
+    else:
+        applicants = User.objects.filter(user_type=User.UserType.APPLICANT).prefetch_related('resumes__resume_skills', 'resumes__educations', 'resumes__work_experiences', 'resumes__projects')
+
+    applicants_list = []
+    for applicant in applicants:
+        applicant_dict = {
+            'name': applicant.name,
+            'email': applicant.email,
+            'phone_number': applicant.phone_number,
+            'skills': [],
+            'educations': [],
+            'work_experiences': [],
+            'projects': []
+        }
+        
+        resume = applicant.resumes.first()
+        if resume:
+            applicant_dict['skills'] = list(resume.resume_skills.values('skill_name'))
+            applicant_dict['educations'] = list(resume.educations.values('school_name', 'degree', 'start_date', 'end_date', 'gpa'))
+            applicant_dict['work_experiences'] = list(resume.work_experiences.values('company_name', 'job_title', 'start_date', 'end_date', 'job_description'))
+            applicant_dict['projects'] = list(resume.projects.values('title', 'description'))
+
+        applicants_list.append(applicant_dict)
+
+    return JsonResponse({'applicants': applicants_list})
 
 class UploadJob:
 
