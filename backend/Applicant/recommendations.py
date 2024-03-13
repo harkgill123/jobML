@@ -193,10 +193,10 @@ def top_recommendations(user_id):
 # print(top_entries)
 
 # ------------- updating feedback -------------
-user_id=1
-job_id='836'
-feedback=1
-update_user_feedback(user_id, job_id, feedback)
+# user_id=1
+# job_id='836'
+# feedback=1
+# update_user_feedback(user_id, job_id, feedback)
 # user_id=2
 # job_id='201'
 # feedback=1

@@ -12,7 +12,6 @@ const EmployerCreateJob = () => {
     job_description: '',
     posted_date: '',
     application_deadline: '',
-    requirements: '',
     job_skills: '',
     benefits: '',
     employment_type: '',
@@ -29,6 +28,7 @@ const EmployerCreateJob = () => {
 
   const handleCreateJob = async (e) => {
     e.preventDefault();
+    console.log(formData)
     const token = localStorage.getItem('token');
     const response = await fetch('http://localhost:8000/Recruiter/jobPostingCreateView/', {
       method: 'POST',
@@ -133,15 +133,6 @@ const EmployerCreateJob = () => {
                 value={formData.job_description}
                 onChange={handleInputChange}
                 placeholder="Enter job description"
-              />
-            </div>
-            <div className={styles.formGroup}>
-              <label>Requirements</label>
-              <textarea
-                name="requirements"
-                value={formData.requirements}
-                onChange={handleInputChange}
-                placeholder="Enter job requirements"
               />
             </div>
             <div className={styles.formSkill}>

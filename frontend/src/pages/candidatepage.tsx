@@ -2,7 +2,7 @@ import React from 'react';
 import { useParams, useLocation, Navigate } from 'react-router-dom';
 import Navigation2 from "../components/Navigation2";
 import Footer from "../components/Footer";
-import styles from './JobPage.module.css';
+import styles from './candidatepage.module.css';
 
 
 /*<div className={styles.jobDetailSection}>

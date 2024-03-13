@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from UserAuth.models import JobPosting, JobRequirements, Benefits, EmploymentType, ListOfSkills
+from UserAuth.models import JobPosting,  ListOfSkills
 from rest_framework import serializers
 from UserAuth.models import JobPosting
 
@@ -43,27 +43,10 @@ class JobPostingCreateSerializer(serializers.ModelSerializer):
         return representation
 
 
-class JobRequirementsSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = JobRequirements
-        fields = '__all__'
 
-
-class BenefitsSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Benefits
-        fields = '__all__'
-
-class EmploymentTypeSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = EmploymentType
-        fields = '__all__'
 
 class JobPostingSerializer(serializers.ModelSerializer):
-    requirements = JobRequirementsSerializer(many=True, read_only=True)
-   # job_skills = JobToSkillsSerializer(many=True, read_only=True)
-    benefits = BenefitsSerializer(many=True, read_only=True)
-    employment_type = EmploymentTypeSerializer(many=True, read_only=True)
+
     
     class Meta:
         model = JobPosting
