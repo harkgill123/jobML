@@ -171,14 +171,14 @@ def top_recommendations(user_id):
     top_feedback_entries = FeedbackforJob.objects.filter(
         user_id = user_id, 
         feedback = 0,
-    ).order_by('-score')[:12]  # Order by score descending, limit to top 10
+    ).order_by('-score')[:12]  # Order by score descending, limit to top 12
     # Create a list of tuples with user_id and job_id for the top entries
     top_entries_list = [{'user_id': entry.user_id,'job_id': entry.job_posting_id} for entry in top_feedback_entries]
     return top_entries_list
 
 # ------------- initial rec -------------
 # placeholder
-# sel_user_id = 5
+# sel_user_id = 1
 # user_skills = "python, css, html"
 # user_job_title = "Frontend Developer"
 # user_job_description = "Wrote code in css and hrml"
@@ -188,15 +188,15 @@ def top_recommendations(user_id):
 # print(f"--- Reccomendations: {cos_sim_result} ---")
 
 # ------------- getting top rec -------------
-# user_id = 5  # Replace with the actual user_id you want to query
+# user_id = 1  # Replace with the actual user_id you want to query
 # top_entries = top_recommendations(user_id)
 # print(top_entries)
 
 # ------------- updating feedback -------------
-# user_id=2
-# job_id='13'
-# feedback=-1
-# update_user_feedback(user_id, job_id, feedback)
+user_id=1
+job_id='836'
+feedback=1
+update_user_feedback(user_id, job_id, feedback)
 # user_id=2
 # job_id='201'
 # feedback=1
