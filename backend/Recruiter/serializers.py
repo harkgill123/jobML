@@ -3,6 +3,7 @@ from UserAuth.models import JobPosting, JobRequirements, Benefits, EmploymentTyp
 from rest_framework import serializers
 from UserAuth.models import JobPosting
 
+
 class JobPostingCreateSerializer(serializers.ModelSerializer):
     skills = serializers.PrimaryKeyRelatedField(
         many=True,
@@ -40,6 +41,7 @@ class JobPostingCreateSerializer(serializers.ModelSerializer):
         representation = super(JobPostingCreateSerializer, self).to_representation(instance)
         representation['skills'] = instance.skills.values_list('id', flat=True)
         return representation
+
 
 class JobRequirementsSerializer(serializers.ModelSerializer):
     class Meta:

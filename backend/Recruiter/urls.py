@@ -4,8 +4,8 @@ from .views import JobPostingListView, JobPostingCreateView, search_applicants
 
 
 urlpatterns = [
-    path('home/', JobPostingListView.as_view(), name='home'),
-    path('new_job_posting/', JobPostingCreateView.as_view(), name='create-job-posting'),
+    path('jobPostingListView/', JobPostingListView.as_view(), name='jobPostingListView'),
+    path('jobPostingCreateView/', JobPostingCreateView.as_view(), name='jobPostingCreateView'),
     path('search_applicants/', search_applicants, name='search_applicants')
 
 ]

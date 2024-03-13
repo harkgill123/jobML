@@ -25,6 +25,9 @@ import EmployerSearchPage from "./pages/EmployerSearchPage";
 import CreateAccount from "./pages/CreateAccount";
 import EmployerCreateAccount from "./pages/EmployerCreateAccount";
 import ResumeUpload from "./pages/ResumeUpload";
+import EmployerCreateJob from "./pages/EmployerCreateJob";
+import CandidatePage from "./pages/candidatepage";
+
 
 function App() {
   const action = useNavigationType();
@@ -50,6 +53,10 @@ function App() {
         title = "";
         metaDescription = "";
         break;
+      case "/cadidatepage":
+          title = "";
+          metaDescription = "";
+          break;
       case "/candidate-homepage":
         title = "";
         metaDescription = "";
@@ -118,6 +125,10 @@ function App() {
           title = "";
           metaDescription = "";
           break;
+          case "/create-job":
+          title = "";
+          metaDescription = "";
+          break;
         case "/resume-upload":
           title = "";
            metaDescription = "";
@@ -146,6 +157,7 @@ function App() {
       <Route path="/candidate-my-profile" element={<CandidateMyProfile />} />
       <Route path="/candidate-search-page" element={<CandidateSearchPage />} />
       <Route path="/candidate-dashboard" element={<CandidateDashboard />} />
+      <Route path="/cadidatepage" element={<CandidatePage />} />
       <Route
         path="/candidate-applied-jobs"
         element={<CandidateAppliedJobs />}
@@ -175,6 +187,7 @@ function App() {
         element={<EmployerSettingsAccount />}
       />
       <Route path="/employer-search-page" element={<EmployerSearchPage />} />
+      <Route path="/create-job" element={<EmployerCreateJob />} />
       <Route path="/candidate-create-account" element={<CreateAccount />} />
       <Route path="/resume-upload" element={<ResumeUpload />} />
       <Route path="/employer-create-account" element={<EmployerCreateAccount />} />
