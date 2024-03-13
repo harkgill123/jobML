@@ -23,16 +23,14 @@ class JobPostingCreateSerializer(serializers.ModelSerializer):
             'experience_required',
             'benefits',
             'employment_type',
-            'skills',
-            'creator',
+            'skills'
         )
-        extra_kwargs = {
-            'creator': {'read_only': True},
-        }
+        read_only_fields = ('user',)  
 
     def create(self, validated_data):
+        user = self.context['user']
         skills_data = validated_data.pop('skills', None)
-        job_posting = JobPosting.objects.create(**validated_data)
+        job_posting = JobPosting.objects.create(user=user, **validated_data)
         if skills_data:
             job_posting.skills.set(skills_data)
         return job_posting

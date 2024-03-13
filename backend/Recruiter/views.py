@@ -11,6 +11,7 @@ from django.db.models import Q
 from UserAuth.models import User, Resume, ResumeToSkills, Education, WorkExperience, Project
 from django.contrib.auth import get_user_model
 import jwt,os
+from django.core.serializers import serialize
 
 def getUserFromRequest(request):
     auth_header = request.META.get('HTTP_AUTHORIZATION')
@@ -25,12 +26,11 @@ class JobPostingListView(APIView):
 
     def get(self, request, *args, **kwargs):
         user = getUserFromRequest(request=request)
-        job_postings = JobPosting.objects.filter(creator=user.id).prefetch_related(
-            'requirements', 'job_skills', 'benefits', 'employment_type'
-        )
-        serializer = JobPostingSerializer(job_postings, many=True)
-        print(serializer.data)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        job_postings = JobPosting.objects.filter(user_id=user.id)
+
+        jobs_json = serialize('json', job_postings)
+        print(jobs_json)
+        return JsonResponse({'jobs': jobs_json}, safe=False)
 
 class JobPostingCreateView(APIView):
     # permission_classes = [IsAuthenticated] 
@@ -38,8 +38,7 @@ class JobPostingCreateView(APIView):
     def post(self, request, *args, **kwargs):
         print("Request Data:", request.data)  # Add this line to log incoming request data
         user = getUserFromRequest(request=request)
-        context = {'request': request, 'user': user}
-        serializer = JobPostingCreateSerializer(data=request.data, context=context)
+        serializer = JobPostingCreateSerializer(data=request.data,  context={'user': user})
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)

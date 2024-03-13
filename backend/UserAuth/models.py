@@ -91,13 +91,7 @@ class JobPosting(models.Model):
     benefits = models.TextField(max_length=700, null=True, blank=True)
     employment_type = models.CharField(max_length=200, null=True, blank=True)
     skills = models.ManyToManyField(ListOfSkills, related_name='job_postings', blank=True)  
-    creator = models.ForeignKey(
-        settings.AUTH_USER_MODEL, 
-        on_delete=models.CASCADE, 
-        related_name='job_postings',
-        null=True, 
-        blank=True
-    )
+    user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name='creator')
 
     def __str__(self):
         return self.title
