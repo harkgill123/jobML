@@ -34,36 +34,7 @@ const CandidateProfile = () => {
     <form className={styles.candidateSettings}>
 
       {/* Personal Info Section */}
-      <h2 className={styles.settings}>Personal Info</h2>
-      <div className={styles.inputFieldParent}>
-        <div className={styles.inputField}>
-          <input
-            placeholder="Name"
-            type="text"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-          />
-        </div>
-        <div className={styles.inputField}>
-          <input
-            placeholder="Username"
-            type="text"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-          />
-        </div>
-        <div className={styles.inputField}>
-          <input
-            placeholder="Phone number"
-            type="text"
-            value={phoneNumber}
-            onChange={(e) => setPhoneNumber(e.target.value)}
-          />
-        </div>
-      </div>
-      <button onClick={handleSaveChangesClick} className={styles.button}>
-        Save Changes
-      </button>
+      
 
       {/* Update Email Section */}
       <h2 className={styles.settings}>Update Email</h2>

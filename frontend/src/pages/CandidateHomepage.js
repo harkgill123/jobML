@@ -73,7 +73,7 @@ const CandidateHomepage = () => {
 
   return (
     <div className={styles.candidateHomepage}>
-      <Navigation1 fullName={fullName} />
+      <Navigation1 />
       <SiteLogo
         findAJobThatSuitsYourInte={`Find a job that suits your interest & skills.`}
         jobTitleKeywordPlacehold="Job title, Keyword..."
