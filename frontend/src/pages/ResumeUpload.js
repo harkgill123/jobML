@@ -25,6 +25,9 @@ const ResumeUpload = () => {
   const [endWorkDate2, setEndWorkDate2] = useState("");
   const [skills, setSkills] = useState("");
   const [address, setAddress] = useState("");
+  const [desc, setDesc] = useState("");
+  const [desc2, setDesc2] = useState("");
+
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -64,42 +67,42 @@ const ResumeUpload = () => {
   
       const result = await response.json();
       console.log('File uploaded successfully', result);
-  
-      // Assuming result contains the structured data as described
-      if (result['Educations'] && result['Educations'].length > 0) {
+      console.log(result)
+            // Assuming result contains the structured data as described
+      // Corrected for case sensitivity and key names
+      if (result['educations'] && result['educations'].length > 0) {
         // Update for first education entry
-        setSchool1(result['Educations'][0]['School']);
-        setDegree1(result['Educations'][0]['Degree']);
-        setStartDate1(result['Educations'][0]['Start Date']);
-        setEndDate1(result['Educations'][0]['End Date']);
-  
-        // If there's a second education entry, update it as well
-        if (result['Educations'].length > 1) {
-          setSchool2(result['Educations'][1]['School']);
-          setDegree2(result['Educations'][1]['Degree']);
-          setStartDate2(result['Educations'][1]['Start Date']);
-          setEndDate2(result['Educations'][1]['End Date']);
-        }
+        setSchool1(result['educations'][0]['school_name']);
+        setDegree1(result['educations'][0]['degree']);
+        // Add handling for start and end dates if present in your JSON data
       }
-  
-      if (result['Work Experiences'] && result['Work Experiences'].length > 0) {
+
+      if (result['educations'] && result['educations'].length > 1) {
+        // Update for first education entry
+        setSchool2(result['educations'][1]['school_name']);
+        setDegree2(result['educations'][1]['degree']);
+        // Add handling for start and end dates if present in your JSON data
+      }
+
+      if (result['work_experiences'] && result['work_experiences'].length > 0) {
         // Update for first work experience entry
-        setCompanyName1(result['Work Experiences'][0]['Company Name']);
-        setJobTitle1(result['Work Experiences'][0]['Job Title']);
-        setStartWorkDate1(result['Work Experiences'][0]['Start Date']);
-        setEndWorkDate1(result['Work Experiences'][0]['End Date']);
-  
-        // If there's a second work experience entry, update it as well
-        if (result['Work Experiences'].length > 1) {
-          setCompanyName2(result['Work Experiences'][1]['Company Name']);
-          setJobTitle2(result['Work Experiences'][1]['Job Title']);
-          setStartWorkDate2(result['Work Experiences'][1]['Start Date']);
-          setEndWorkDate2(result['Work Experiences'][1]['End Date']);
-        }
+        setCompanyName1(result['work_experiences'][0]['company_name']);
+        setJobTitle1(result['work_experiences'][0]['job_title']);
+        setDesc(result['work_experiences'][0]['job_description']);
+
+        // Add handling for start and end dates if present in your JSON data
       }
-  
-      // Set skills and address from the response
-      setSkills(result['Skills']);
+
+      if (result['work_experiences'] && result['work_experiences'].length > 1) {
+        // Update for first work experience entry
+        setCompanyName2(result['work_experiences'][1]['company_name']);
+        setJobTitle2(result['work_experiences'][1]['job_title']);
+        setDesc2(result['work_experiences'][0]['job_description']);
+      }
+
+      // Correct handling for skills (assuming you modify your JSON or parse the string)
+      setSkills(result['resume_skills']);
+
       setAddress(result['Address']);
   
       setFileUploaded(true); // Indicate that the file upload and data extraction were successful
@@ -113,8 +116,8 @@ const ResumeUpload = () => {
     event.preventDefault();
     // Construct the payload with the updated structure
     const skillsArray = skills.split(',')
-    .map(skill => skill.trim())
-    .filter(skill => skill) // Ensure no empty strings are included
+    .map(skill => skill.trim()) // Trim whitespace from each skill
+    .filter(skill => skill.length > 0) // Ensure no empty strings are included
     .map(skill_name => ({skill_name}));
 
     const payload = {
@@ -123,8 +126,8 @@ const ResumeUpload = () => {
         { school_name: school2, degree: degree2, start_date: startDate2, end_date: endDate2 }
       ],
       work_experiences: [
-        { company_name: companyName1, job_title: jobTitle1, start_date: startWorkDate1, end_date: endWorkDate1 },
-        { company_name: companyName2, job_title: jobTitle2, start_date: startWorkDate2, end_date: endWorkDate2 }
+        { company_name: companyName1, job_title: jobTitle1, job_description: desc, start_date: startWorkDate1, end_date: endWorkDate1 },
+        { company_name: companyName2, job_title: jobTitle2, job_description: desc2, start_date: startWorkDate2, end_date: endWorkDate2 }
       ],
       resume_skills: skillsArray,
       //address,
@@ -154,7 +157,7 @@ const ResumeUpload = () => {
       const result = await response.json();
       console.log('Resume data submitted successfully', result);
       // Handle successful submission, e.g., redirect or display a success message
-      navigate('candidate-homepage/');
+      navigate('/candidate-homepage/');
     } catch (error) {
       console.error('There was an error submitting the resume data', error);
       // Handle the error, e.g., display an error message to the user
@@ -204,6 +207,7 @@ const ResumeUpload = () => {
               <h3 className={styles.inputTitle}>Work Experience 1</h3>
               <input type="text" placeholder="Company Name" value={companyName1} onChange={e => setCompanyName1(e.target.value)} />
               <input type="text" placeholder="Job Title" value={jobTitle1} onChange={e => setJobTitle1(e.target.value)} />
+              <input type="text" placeholder="Job Description" value={desc} onChange={e => setDesc(e.target.value)} />
               <input type="date" placeholder="Start Date" value={startWorkDate1} onChange={e => setStartWorkDate1(e.target.value)} />
               <input type="date" placeholder="End Date" value={endWorkDate1} onChange={e => setEndWorkDate1(e.target.value)} />
             </div>
@@ -212,6 +216,7 @@ const ResumeUpload = () => {
               <h3 className={styles.inputTitle}>Work Experience 2</h3>
               <input type="text" placeholder="Company Name" value={companyName2} onChange={e => setCompanyName2(e.target.value)} />
               <input type="text" placeholder="Job Title" value={jobTitle2} onChange={e => setJobTitle2(e.target.value)} />
+              <input type="text" placeholder="Job Description" value={desc2} onChange={e => setDesc2(e.target.value)} />
               <input type="date" placeholder="Start Date" value={startWorkDate2} onChange={e => setStartWorkDate2(e.target.value)} />
               <input type="date" placeholder="End Date" value={endWorkDate2} onChange={e => setEndWorkDate2(e.target.value)} />
             </div>

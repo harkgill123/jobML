@@ -380,7 +380,7 @@ class ResumeExtractor:
             return education_data
 
         
-    def extract_all(self,text=None,filename=None,ispdf=False):
+    def extract_all(self,text=None,filename=None,ispdf=True):
         if filename!=None:
             text= self.read_resume(path=filename,pdf=ispdf)
         elif text !=None:

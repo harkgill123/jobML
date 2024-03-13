@@ -46,6 +46,7 @@ class ResumeUploadView(APIView):
         # scraped_data = scrape_resume_data(full_file_path)  # This needs to be implemented
         extractor = ResumeExtractor()
         scraped_data = extractor.extract_all(filename=full_file_path)
+        print(scraped_data)
         return Response(scraped_data, status=status.HTTP_200_OK)
 
 logger = logging.getLogger(__name__)
