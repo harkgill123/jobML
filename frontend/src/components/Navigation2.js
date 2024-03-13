@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom"; // Import useNavigate hook for programmatic navigation
 import styles from "./Navigation2.module.css";
 
-const Navigation1 = () => {
+const Navigation2 = () => {
   const navigate = useNavigate(); // useNavigate hook for navigation
   const [searchQuery, setSearchQuery] = useState(""); // State to keep track of the search query
 
@@ -72,7 +72,7 @@ const Navigation1 = () => {
         </div>
         <div className={styles.science}>
           <button className={styles.navButton} onClick={() => navigate('/employer-homepage')}>Home</button>
-          <button className={styles.navButton} onClick={() => navigate('/employer-dashboard')}>Dashboard</button>
+          <button className={styles.navButton} onClick={() => navigate('/employer-dashboard')}>Liked Applicants</button>
           <button className={styles.navButton} onClick={() => navigate('/employer-my-profile')}>My Profile</button>
           <button className={styles.navButton} onClick={handleLogout}>Log-out</button>
           <div className={styles.quickLink}>
@@ -84,4 +84,4 @@ const Navigation1 = () => {
   );
 };
 
-export default Navigation1;
+export default Navigation2;
