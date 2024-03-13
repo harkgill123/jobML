@@ -21,7 +21,7 @@ class JobPostingCreateSerializer(serializers.ModelSerializer):
             'posted_date',
             'application_deadline',
             'experience_required',
-            'skills'
+            'job_skills'
             'benefits',
             'employment_type',
         )
@@ -29,7 +29,7 @@ class JobPostingCreateSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         user = self.context['user']
-        skills_data = validated_data.pop('skills', None)
+        skills_data = validated_data.pop('job_skills', None)
         job_posting = JobPosting.objects.create(user=user, **validated_data)
         if skills_data:
             job_posting.skills.set(skills_data)
@@ -37,7 +37,7 @@ class JobPostingCreateSerializer(serializers.ModelSerializer):
 
     def to_representation(self, instance):
         representation = super(JobPostingCreateSerializer, self).to_representation(instance)
-        representation['skills'] = instance.skills.values_list('id', flat=True)
+        representation['job_skills'] = instance.skills.values_list('id', flat=True)
         return representation
 
 

@@ -13,7 +13,7 @@ const EmployerCreateJob = () => {
     job_description: '',
     posted_date: '',
     application_deadline: '',
-    skills: '', // Initially, skills are an empty string.
+    job_skills: '',
     benefits: '',
     employment_type: '',
   });
@@ -28,27 +28,15 @@ const EmployerCreateJob = () => {
     }));
   };
 
-  // Add a function to map skill names to IDs (placeholder)
-  const mapSkillsToIds = async (skillNames) => {
-    // Placeholder: Implement the actual logic to convert skill names to IDs.
-    // This could involve fetching from your backend a list of skills with their IDs.
-    // For demonstration, it just returns an empty array.
-    return [];
-  };
-
   const handleCreateJob = async (e) => {
     e.preventDefault();
 
-    // Assuming you have a function to convert skill names to their IDs
-    const skillIds = await mapSkillsToIds(formData.skills.split(',').map(skill => skill.trim()));
-
+    // Convert job_skills from string to array of trimmed strings
     const formDataWithSkillsArray = {
       ...formData,
-      skills: skillIds, // Use the IDs instead of names
+      job_skills: formData.job_skills.split(',').map(skill => skill.trim()),
     };
-
-    console.log(formDataWithSkillsArray); // For debugging
-
+    console.log(formData)
     const token = localStorage.getItem('token');
     const response = await fetch('http://localhost:8000/Recruiter/jobPostingCreateView/', {
       method: 'POST',
@@ -60,11 +48,13 @@ const EmployerCreateJob = () => {
     });
 
     if (response.ok) {
+      // If you expect a response, you can await it here
       const data = await response.json();
-      navigate('/employer-homepage'); // Navigate on success
+      // Replace '/path-to-redirect-after-creation' with your actual path
+      navigate('/employer-homepage');
     } else {
+      // Log or handle errors here
       console.error('Failed to create job posting');
-      // Here you could set an error state and display it to the user.
     }
   };
   
@@ -159,8 +149,8 @@ const EmployerCreateJob = () => {
             <div className={styles.formSkill}>
               <label>Job Skills</label>
               <textarea
-                name="skills"
-                value={formData.skills}
+                name="job_skills"
+                value={formData.job_skills}
                 onChange={handleInputChange}
                 placeholder="Enter required job skills"
               />
