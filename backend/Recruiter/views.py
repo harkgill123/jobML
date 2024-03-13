@@ -41,6 +41,7 @@ class JobPostingCreateView(APIView):
         serializer = JobPostingCreateSerializer(data=request.data,  context={'user': user})
         if serializer.is_valid():
             serializer.save()
+            print("Serialized Data:", serializer.data)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         else:
             print("Errors:", serializer.errors)  # Add this line to log validation errors

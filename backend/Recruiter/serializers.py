@@ -21,9 +21,9 @@ class JobPostingCreateSerializer(serializers.ModelSerializer):
             'posted_date',
             'application_deadline',
             'experience_required',
+            'skills'
             'benefits',
             'employment_type',
-            'skills'
         )
         read_only_fields = ('user',)  
 
