@@ -134,7 +134,7 @@ class ModelVersion(models.Model):
     model_version = models.CharField(max_length=255, default='0')
     latest_version = models.CharField(max_length=255, default='0')
 
-class ResumeoClusters(models.Model):
+class ResumetoClusters(models.Model):
     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name='resume_cluster')
     cluster = models.CharField(max_length=255, default='defaultcluster')
 
