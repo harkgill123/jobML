@@ -38,7 +38,7 @@ const EmployerCreateAccount = () => {
         const data = await response.json();
         // Handle success
         console.log(data);
-        navigate('/');
+        navigate('/employer-homepage');
       } else {
         // Handle error
         console.error("Signup failed:", response);

@@ -230,16 +230,12 @@
   font-family: var(--button-button);
 }
 .employerHomepage {
-  width: 100%;
-  position: relative;
-  background-color: var(--gray-scale-white);
-  overflow: hidden;
+  min-height: 100vh; /* Minimum height of the viewport */
   display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  justify-content: flex-start;
-  letter-spacing: normal;
+  flex-direction: column; /* Stack children vertically */
+  justify-content: space-between; /* Push footer to the bottom */
 }
+
 @media screen and (max-width: 1600px) {
   .footerLink {
     display: none;
@@ -249,4 +245,37 @@
   .navigation1 {
     gap: var(--gap-12xl);
   }
+}
+.jobContainer {
+  flex-grow: 1; /* Grow to fill available space */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center; /* Center content vertically */
+  padding: 50px 0; /* Add some padding */
+}
+
+.noJobsMessage {
+  color: #333; /* Any color you prefer */
+  margin-bottom: 20px; /* Space between message and button */
+  font-family: var(--font-roboto), sans-serif; /* Ensure button uses Roboto */
+  font-size: 3rem;
+  font-weight: 200;
+
+}
+
+.createJobButton {
+  padding: 15px 30px; /* Adjust padding as needed */
+  font-size: 1.5rem; /* Adjust font-size as needed */
+  color: white; /* Text color */
+  background-color: var(--primary-500);  color: white;
+  border: none;
+  border-radius: 5px; /* Rounded corners */
+  cursor: pointer;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1); /* Optional: adds shadow for depth */
+  transition: background-color 0.3s ease; /* Smooth transition for hover effect */
+}
+
+.createJobButton:hover {
+  background-color: var(--color-dodgerblue);
 }

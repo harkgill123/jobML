@@ -3,16 +3,22 @@ from UserAuth.models import JobPosting, JobRequirements, Benefits, EmploymentTyp
 from rest_framework import serializers
 from UserAuth.models import JobPosting
 
+
 class JobPostingCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = JobPosting
-        fields = ('title', 'company_name', 'location', 'job_description', 'posted_date', 'application_deadline', 'requirements', 'job_skills', 'benefits', 'employment_type')
+        fields = (
+            'title', 'company_name', 'location', 'job_description', 
+            'posted_date', 'application_deadline', 'requirements', 
+            'job_skills', 'benefits', 'employment_type'
+        )
 
     def create(self, validated_data):
-        try:
-            validated_data['creator'] = self.context['request'].user
-        except:
-            validated_data['creator'] = "NA"
+        user = self.context.get('user')  # Get the user from the context
+        if user and not user.is_anonymous:
+            validated_data['creator'] = user
+        else:
+            validated_data['creator'] = "NA"  # Or handle as appropriate
         return super().create(validated_data)
 
 class JobRequirementsSerializer(serializers.ModelSerializer):

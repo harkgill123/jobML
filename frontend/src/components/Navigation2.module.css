@@ -167,6 +167,7 @@
   position: relative;
   font-size: inherit;
   font-family: inherit;
+  
 }
 .home {
   line-height: 20px;
@@ -191,6 +192,7 @@
 }
 .logOut {
   margin: 0;
+  padding: 10px 20px;
   position: relative;
   font-size: inherit;
   line-height: 20px;
@@ -246,6 +248,7 @@
 }
 .navButton {
   /* Add your button styling here */
+  white-space: nowrap; /* This prevents the text from wrapping */
   background: none;
   border: none;
   color: inherit; /* or any color you wish */
