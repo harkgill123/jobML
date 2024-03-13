@@ -36,7 +36,7 @@ const EmployerCreateJob = () => {
       ...formData,
       job_skills: formData.job_skills.split(',').map(skill => skill.trim()),
     };
-
+    console.log(formData)
     const token = localStorage.getItem('token');
     const response = await fetch('http://localhost:8000/Recruiter/jobPostingCreateView/', {
       method: 'POST',
