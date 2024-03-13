@@ -25,6 +25,7 @@ import EmployerSearchPage from "./pages/EmployerSearchPage";
 import CreateAccount from "./pages/CreateAccount";
 import EmployerCreateAccount from "./pages/EmployerCreateAccount";
 import ResumeUpload from "./pages/ResumeUpload";
+import EmployerCreateJob from "./pages/EmployerCreateJob";
 
 function App() {
   const action = useNavigationType();
@@ -118,6 +119,10 @@ function App() {
           title = "";
           metaDescription = "";
           break;
+          case "/create-job":
+          title = "";
+          metaDescription = "";
+          break;
         case "/resume-upload":
           title = "";
            metaDescription = "";
@@ -175,6 +180,7 @@ function App() {
         element={<EmployerSettingsAccount />}
       />
       <Route path="/employer-search-page" element={<EmployerSearchPage />} />
+      <Route path="/create-job" element={<EmployerCreateJob />} />
       <Route path="/candidate-create-account" element={<CreateAccount />} />
       <Route path="/resume-upload" element={<ResumeUpload />} />
       <Route path="/employer-create-account" element={<EmployerCreateAccount />} />
