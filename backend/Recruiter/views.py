@@ -3,7 +3,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
 from UserAuth.models import JobPosting
-from .serializers import JobPostingSerializer, JobPostingCreateSerializer
+from .serializers import  JobPostingCreateSerializer
 from django.views.decorators.csrf import csrf_exempt
 import json
 from django.http import JsonResponse
@@ -33,19 +33,27 @@ class JobPostingListView(APIView):
         return JsonResponse({'jobs': jobs_json}, safe=False)
 
 class JobPostingCreateView(APIView):
-    # permission_classes = [IsAuthenticated] 
-
     def post(self, request, *args, **kwargs):
-        print("Request Data:", request.data)  # Add this line to log incoming request data
-        user = getUserFromRequest(request=request)
-        serializer = JobPostingCreateSerializer(data=request.data,  context={'user': user})
+        # Debugging: Print the received request data
+        print("Received POST request data:", request.data)
+
+        # Initialize the serializer with request data and context including the user
+        serializer = JobPostingCreateSerializer(data=request.data, context={'user': request.user})
+
         if serializer.is_valid():
-            serializer.save()
-            print("Serialized Data:", serializer.data)
+            job_posting = serializer.save()
+
+            # Debugging: Confirm job posting has been created and display associated skills
+            print("Job posting created with ID:", job_posting.id)
+            print("Associated skills:", [skill.skill_name for skill in job_posting.skills.all()])
+
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         else:
-            print("Errors:", serializer.errors)  # Add this line to log validation errors
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            # Debugging: Log serializer errors if the data is invalid
+            print("Serializer validation errors:", serializer.errors)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+        
 @csrf_exempt  
 def search_applicants(request):
     if request.method == 'POST':

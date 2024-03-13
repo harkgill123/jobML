@@ -31,12 +31,16 @@ const EmployerCreateJob = () => {
   const handleCreateJob = async (e) => {
     e.preventDefault();
 
-    // Convert job_skills from string to array of trimmed strings
-    const formDataWithSkillsArray = {
+    // Prepare the formData to include skill_names in the correct format
+    const payload = {
       ...formData,
-      job_skills: formData.job_skills.split(',').map(skill => skill.trim()),
+      skill_names: formData.job_skills.split(',').map(skill => skill.trim()),
     };
-    console.log(formData)
+    // Remove job_skills from payload since the backend expects skill_names
+    delete payload.job_skills;
+
+    console.log(payload); // For debugging, to verify the correct payload format
+
     const token = localStorage.getItem('token');
     const response = await fetch('http://localhost:8000/Recruiter/jobPostingCreateView/', {
       method: 'POST',
@@ -44,16 +48,13 @@ const EmployerCreateJob = () => {
         'Authorization': `Bearer ${token}`,
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(formDataWithSkillsArray),
+      body: JSON.stringify(payload),
     });
 
     if (response.ok) {
-      // If you expect a response, you can await it here
       const data = await response.json();
-      // Replace '/path-to-redirect-after-creation' with your actual path
-      navigate('/employer-homepage');
+      navigate('/employer-homepage'); // Navigate on successful job creation
     } else {
-      // Log or handle errors here
       console.error('Failed to create job posting');
     }
   };
