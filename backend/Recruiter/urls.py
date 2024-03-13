@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.urls import path, include
-from .views import JobPostingListView, JobPostingCreateView
+from .views import JobPostingListView, JobPostingCreateView, search_applicants
 
 
 urlpatterns = [
