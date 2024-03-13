@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import styles from './EmployerCreateJob.module.css';
 
 const EmployerCreateJob = () => {
+  
   const [formData, setFormData] = useState({
     title: '',
     company_name: '',
@@ -16,6 +17,7 @@ const EmployerCreateJob = () => {
     benefits: '',
     employment_type: '',
   });
+
   const navigate = useNavigate();
 
   const handleInputChange = (e) => {
@@ -28,7 +30,13 @@ const EmployerCreateJob = () => {
 
   const handleCreateJob = async (e) => {
     e.preventDefault();
-    console.log(formData)
+
+    // Convert job_skills from string to array of trimmed strings
+    const formDataWithSkillsArray = {
+      ...formData,
+      job_skills: formData.job_skills.split(',').map(skill => skill.trim()),
+    };
+
     const token = localStorage.getItem('token');
     const response = await fetch('http://localhost:8000/Recruiter/jobPostingCreateView/', {
       method: 'POST',
@@ -36,17 +44,20 @@ const EmployerCreateJob = () => {
         'Authorization': `Bearer ${token}`,
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(formData),
+      body: JSON.stringify(formDataWithSkillsArray),
     });
 
     if (response.ok) {
+      // If you expect a response, you can await it here
       const data = await response.json();
-      navigate('/path-to-redirect-after-creation');
+      // Replace '/path-to-redirect-after-creation' with your actual path
+      navigate('/employer-homepage');
     } else {
+      // Log or handle errors here
       console.error('Failed to create job posting');
     }
   };
-
+  
   return (
     <>
       <Navigation2 />

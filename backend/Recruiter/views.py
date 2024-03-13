@@ -25,7 +25,7 @@ class JobPostingListView(APIView):
 
     def get(self, request, *args, **kwargs):
         user = getUserFromRequest(request=request)
-        job_postings = JobPosting.objects.filter(creator=user).prefetch_related(
+        job_postings = JobPosting.objects.filter(creator=user.id).prefetch_related(
             'requirements', 'job_skills', 'benefits', 'employment_type'
         )
         serializer = JobPostingSerializer(job_postings, many=True)
