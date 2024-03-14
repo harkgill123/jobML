@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.urls import path, include
-from .views import ResumeCreateView, ResumeUploadView, search_jobs, recommended_jobs, update_feedback, sendRecommendationsToFrontEnd, get_recommendations
+from .views import ResumeCreateView, ResumeUploadView, search_jobs, recommended_jobs, update_feedback, sendRecommendationsToFrontEnd, get_recommendations, liked_jobs
 
 
 urlpatterns = [
@@ -10,5 +10,6 @@ urlpatterns = [
     path('recommend-jobs/', recommended_jobs, name='recommend-jobs'),
     path('send-recommendations/', sendRecommendationsToFrontEnd, name='send-recommendations'),
     path('get-recommendations/', get_recommendations, name='get-recommendations'),
-    path('update_feedback/', update_feedback, name='update_feedback')
+    path('update_feedback/', update_feedback, name='update_feedback'),
+    path('liked_jobs/', liked_jobs, name='liked_jobs')
 ]

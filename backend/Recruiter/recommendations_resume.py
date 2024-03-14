@@ -174,7 +174,7 @@ def give_suggestions(job_id, job_title, job_description, job_skills):
             "feedback": 0  # Initial feedback value
         })
     update_feedback_database(job_id, new_suggestions_list)
-    update_model_version_database(user_id, Model_Version)
+  #  update_model_version_database(user_id, Model_Version)
     return new_suggestions_list
 
 #Todo: have jasdeep update these values in the database

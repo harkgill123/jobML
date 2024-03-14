@@ -46,19 +46,16 @@ class JobPostingListView(APIView):
                 'employment_type': job.employment_type,
                 'skills': [skill.skill_name for skill in job.skills.all()]
             })
-        print(job_postings_list)
         return Response({'jobs': job_postings_list}, status=status.HTTP_200_OK)
 
 class JobPostingCreateView(APIView):
     # permission_classes = [IsAuthenticated] 
 
     def post(self, request, *args, **kwargs):
-        print("Request Data:", request.data)  # Add this line to log incoming request data
         user = getUserFromRequest(request=request)
         serializer = JobPostingCreateSerializer(data=request.data,  context={'request': request, 'user': user})
         if serializer.is_valid():
             serializer.save()
-            print("Serialized Data:", serializer.data)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         else:
             print("Errors:", serializer.errors)  # Add this line to log validation errors
@@ -122,18 +119,25 @@ class UploadJob:
             return False
 @csrf_exempt        
 def sendRecommendationsToFrontEnd(request):
+    print(request.body)
+    data = json.loads(request.body)
+    print(data)
+    job_id = data['job_id']
+    print(job_id)
     user = getUserFromRequest(request)
-    ModelVersionEntry = ModelVersionResume.objects.get(user=user)
+    ModelVersionEntry = ModelVersionResume.objects.get(job_posting_id=job_id)
     resumeModel = ModelVersionEntry.model_version
     latestModel = ModelVersionEntry.latest_version
     if resumeModel != latestModel:
         recommended_jobs(request)
-    return get_recommendations(request) 
+    return recommended_jobs(request) 
 
 def recommended_jobs(request):
     user_ids = []
     user = getUserFromRequest(request=request)
-    job_posting = JobPosting.objects.filter(job_posting_id = request.job_id)
+    data = json.loads(request.body)
+    job_id = data['job_id']
+    job_posting = JobPosting.objects.filter(id = job_id)
     try:
         job_skills = job_posting.resume_skills.all()
         job_skills_texts = [skill.skill_name for skill in job_skills]
@@ -168,15 +172,18 @@ def update_feedback(request):
 def get_recommendations(request):
     from Recruiter.recommendations_resume import top_recommendations
     user = getUserFromRequest(request=request)
-    job_posting = JobPosting.objects.filter(job_posting_id = request.job_id)
+    data = json.loads(request.body)
+    job_id = data['job_id']
+    job_posting = ModelVersionResume.objects.filter(job_posting_id = job_id)
     
     try:
-        top_entries = top_recommendations(job_posting_id=job_posting.id)
+        top_entries = top_recommendations(job_id=job_id)
         user_ids = [suggestion['user_id'] for suggestion in top_entries]
         users = User.objects.filter(id__in=user_ids).values_list('id', 'name')
         user_mapping = {user_id: name for user_id, name in users}
         ordered_user_names = [user_mapping[user_id] for user_id in user_ids if user_id in user_mapping]
         serialized_users = serializers.serialize('json', ordered_user_names)
+        print(serialized_users)
         return JsonResponse({"recommended_users": serialized_users})
     except Resume.DoesNotExist:
         return JsonResponse({"error": "user couldnt be found"}, status=400)

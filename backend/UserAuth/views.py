@@ -106,7 +106,7 @@ class UpdateEmailView(APIView):
                 'result' : 'ERROR: New Email is same as existing'}, 
                 status=status.HTTP_400_BAD_REQUEST)
         if user.check_password(password):
-            user.email == new_email
+            user.email = new_email
             user.save()
             return Response({
                 'result' : 'SUCCESS: Email has been changed successfully'}, 
