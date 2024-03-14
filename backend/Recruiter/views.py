@@ -8,10 +8,13 @@ from django.views.decorators.csrf import csrf_exempt
 import json
 from django.http import JsonResponse
 from django.db.models import Q
-from UserAuth.models import User, Resume, ResumeToSkills, Education, WorkExperience, Project
+from UserAuth.models import User, Resume, ResumeToSkills, Education, WorkExperience, Project, ModelVersionResume
 from django.contrib.auth import get_user_model
 import jwt,os
 from django.core.serializers import serialize
+from django.core import serializers
+from Recruiter.recommendations_resume import give_suggestions, update_user_feedback
+
 
 def getUserFromRequest(request):
     auth_header = request.META.get('HTTP_AUTHORIZATION')
@@ -117,3 +120,62 @@ class UploadJob:
         else:
             return False
         
+def sendRecommendationsToFrontEnd(request):
+    user = getUserFromRequest(request)
+    ModelVersionEntry = ModelVersionResume.objects.get(user=user)
+    resumeModel = ModelVersionEntry.model_version
+    latestModel = ModelVersionEntry.latest_version
+    if resumeModel != latestModel:
+        recommended_jobs(request)
+    return get_recommendations(request) 
+
+def recommended_jobs(request):
+    user_ids = []
+    user = getUserFromRequest(request=request)
+    job_posting = JobPosting.objects.filter(job_posting_id = request.job_id)
+    try:
+        job_skills = job_posting.resume_skills.all()
+        job_skills_texts = [skill.skill_name for skill in job_skills]
+        job_title = job_posting.job_title
+        job_desc = job_posting.job_description
+
+        suggestions_list = give_suggestions(job_posting.id, job_title, job_desc,' '.join(job_skills_texts))
+        print(f"suggestions_list: {suggestions_list}")
+        print(f"Inital recommendations complete")
+        
+        return JsonResponse({"success: recommended_jobs"})     
+    except Resume.DoesNotExist:
+        return JsonResponse({"error": "User does not have a resume"}, status=400)
+
+@csrf_exempt
+def update_feedback(request):
+    try:
+        data = json.loads(request.body)
+        user = getUserFromRequest(request=request)
+        
+        job_id = data.get('job_id')
+        feedback = data.get('feedback')
+        
+        update_user_feedback(user_id=user.id, job_id=job_id, feedback=int(feedback))
+
+        return JsonResponse({"message": "Feedback updated successfully"}, status=200)
+    except json.JSONDecodeError:
+        return JsonResponse({"error": "Invalid JSON"}, status=400)
+    except Exception as e:
+        return JsonResponse({"error": str(e)}, status=500)
+
+def get_recommendations(request):
+    from Recruiter.recommendations_resume import top_recommendations
+    user = getUserFromRequest(request=request)
+    job_posting = JobPosting.objects.filter(job_posting_id = request.job_id)
+    
+    try:
+        top_entries = top_recommendations(job_posting_id=job_posting.id)
+        user_ids = [suggestion['user_id'] for suggestion in top_entries]
+        users = User.objects.filter(id__in=user_ids).values_list('id', 'name')
+        user_mapping = {user_id: name for user_id, name in users}
+        ordered_user_names = [user_mapping[user_id] for user_id in user_ids if user_id in user_mapping]
+        serialized_users = serializers.serialize('json', ordered_user_names)
+        return JsonResponse({"recommended_users": serialized_users})
+    except Resume.DoesNotExist:
+        return JsonResponse({"error": "user couldnt be found"}, status=400)

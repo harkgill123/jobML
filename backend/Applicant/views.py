@@ -68,8 +68,6 @@ class ResumeCreateView(APIView):
             # Respond with the error details
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-
-
 def sendRecommendationsToFrontEnd(request):
     user = getUserFromRequest(request)
     ModelVersionEntry = ModelVersion.objects.get(user=user)

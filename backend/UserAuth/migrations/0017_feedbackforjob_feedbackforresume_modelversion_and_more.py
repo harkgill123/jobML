@@ -23,16 +23,6 @@ class Migration(migrations.Migration):
             ],
         ),
         migrations.CreateModel(
-            name='FeedbackforResume',
-            fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('feedback', models.CharField(default='0', max_length=255)),
-                ('score', models.CharField(default='0', max_length=255)),
-                ('resume', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='feedback_resume', to='UserAuth.resume')),
-                ('user', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='feedback_resume', to=settings.AUTH_USER_MODEL)),
-            ],
-        ),
-        migrations.CreateModel(
             name='ModelVersion',
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),

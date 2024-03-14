@@ -6,7 +6,7 @@ sys.path.append(Path(__file__).resolve().parent.parent.__str__())
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'coreApp.settings')
 django.setup()
-from UserAuth.models import FeedbackforResume,ModelVersionResume,Resume
+from UserAuth.models import FeedbackforResume,ModelVersionResume,Resume, User
 
 from joblib import load
 from sklearn.metrics.pairwise import cosine_similarity
@@ -26,21 +26,26 @@ nltk.download('stopwords')
 def create_clustered_model():
     # Fetch the resumes and prefetch related work experiences, educations, projects, and skills
     user_resumes = Resume.objects.prefetch_related('work_experiences', 'educations', 'projects', 'resume_skills')
-
+    
     # Initialize a dictionary to store resume information with user_id as the key
     resume_dict = {}
 
     for resume in user_resumes:
+        user_clusters = resume.user.resume_cluster.all() if resume.user else None
+        cluster_no = 'No Cluster'
+        if user_clusters:
+            # Assuming each user may have multiple clusters, but we take the first for this example
+            cluster_no = user_clusters.first().cluster
         # Check if the user already has an entry in the resume_dict
         if resume.user_id not in resume_dict:
             # Create an entry if it does not exist
             resume_dict[resume.user_id] = {
-                'resume_id': resume.id,
-                # 'user_id': resume.user_id if resume.user else None,
+                # 'resume_id': resume.id,
+                'user_id': resume.user_id if resume.user else None,
                 'title': [],
                 'job_description': '',  # Assuming all descriptions are the same; will be updated later
                 'skills': list(resume.resume_skills.values_list('skill_name', flat=True)),
-                'cluster_no': resume.resume_cluster.first().cluster if resume.resume_cluster.exists() else 'No Cluster'
+                'cluster_no': cluster_no
             }
 
         # Update the job titles and job description for the user
@@ -79,20 +84,21 @@ def user_info():
     feedback_list = []
     for feedback in feedback_entries:
         feedback_list.append({
-            'feedback': feedback.feedback,
             'job_id': feedback.job_posting.id,
+            'feedback': feedback.feedback,
             'user_id': feedback.user.id,
             'job_title': feedback.job_posting.title,  # Assumes job_posting has a 'title' field
         })
     return feedback_list
 
-def update_feedback_database(user_id, new_suggestions_list):
+def update_feedback_database(job_id, new_suggestions_list):
     # First, remove all existing feedback entries for the user
-    FeedbackforResume.objects.filter(user_id=user_id).delete()
+    FeedbackforResume.objects.filter(job_posting_id=job_id).delete()
+    print(new_suggestions_list)
 
     # Now, add new feedback entries from the new_suggestions_list
     for entry in new_suggestions_list:
-        job_id = entry["job_id"]
+        user_id = entry["user_id"]
         feedback = entry["feedback"]
         score = entry["score"]
 
@@ -113,12 +119,13 @@ def update_model_version_database(user_id, Model_Version):
             }
         )
 
-def give_suggestions(user_id, job_title, job_description, job_skills):
+def give_suggestions(job_id, job_title, job_description, job_skills):
     resumes = create_clustered_model()
     df = pd.DataFrame(resumes)
 
-    Model_Version = get_object_or_404(ModelVersionResume, user_id=user_id)
-    Model_Version = Model_Version.latest_version
+    # Model_Version = get_object_or_404(ModelVersionResume, user_id=user_id)
+    # Model_Version = Model_Version.latest_version
+    Model_Version = 0
 
     # Load your model components
     vec_title = load(f'Recruiter/model_settings_ver{Model_Version}/vectorizer_title.joblib')
@@ -148,24 +155,25 @@ def give_suggestions(user_id, job_title, job_description, job_skills):
 
     # Get job titles from df to associate cosine similarity scores with jobs
     df['cluster_no'] = pd.to_numeric(df['cluster_no'], errors='coerce')
+    print(df)
     samp_for_cluster = df[df['cluster_no'] == predicted_cluster]
-    cos_sim = cos_sim.T.set_index(samp_for_cluster['id'])
+    cos_sim = cos_sim.T.set_index(samp_for_cluster['user_id'])
     cos_sim.columns = ['score']
 
     # top suggested jobs for the user's cluster after adjustment
     top_cos_sim = cos_sim.sort_values('score', ascending=False)[:30]
     
     new_suggestions_list = []
-    for resume_id, score in top_cos_sim.to_dict()['score'].items():
-        resume_title = samp_for_cluster[samp_for_cluster['id'] == resume_id]['title'].values[0]
+    for user_id, score in top_cos_sim.to_dict()['score'].items():
+        resume_title = samp_for_cluster[samp_for_cluster['user_id'] == user_id]['title'].values[0]
         new_suggestions_list.append({
             "user_id": user_id,
-            "resume_id": resume_id,
+            "job_id": job_id,
             "suggestions": resume_title,
             "score": score,
             "feedback": 0  # Initial feedback value
         })
-    update_feedback_database(user_id, new_suggestions_list)
+    update_feedback_database(job_id, new_suggestions_list)
     update_model_version_database(user_id, Model_Version)
     return new_suggestions_list
 
@@ -179,42 +187,34 @@ def update_user_feedback(user_id, resume_id, feedback):
     feedback_entry.feedback = feedback
     feedback_entry.save()
 
-def top_recommendations(user_id):
+def top_recommendations(job_id):
     # Query the FeedbackforJob table, excluding entries with feedback of 1 or -1
     top_feedback_entries = FeedbackforResume.objects.filter(
-        user_id = user_id, 
+        job_posting_id = job_id, 
         feedback = 0,
     ).order_by('-score')[:12]  # Order by score descending, limit to top 12
     # Create a list of tuples with user_id and job_id for the top entries
-    top_entries_list = [{'user_id': entry.user_id,'job_id': entry.job_posting_id} for entry in top_feedback_entries]
+    top_entries_list = [{'job_id': entry.job_posting_id,'user_id': entry.user_id} for entry in top_feedback_entries]
     return top_entries_list
 
 # ------------- initial rec -------------
 # placeholder
-# sel_user_id = 1
+# sel_job_id = 1
 # user_skills = "python, css, html"
-# user_job_title = "Frontend Developer"
-# user_job_description = "Wrote code in css and hrml"
-# print(f"Resume input: {user_skills}, {user_job_title}, {user_job_description}")
+# user_title = "Frontend Developer"
+# user_description = "Write code in css and html"
+# print(f"Resume input: {user_skills}, {user_title}, {user_description}")
 
-# cos_sim_result = give_suggestions(sel_user_id, user_skills, user_job_description, user_job_title)
+# cos_sim_result = give_suggestions(sel_job_id, user_skills, user_description, user_title)
 # print(f"--- Reccomendations: {cos_sim_result} ---")
 
 # ------------- getting top rec -------------
-# user_id = 1  # Replace with the actual user_id you want to query
-# top_entries = top_recommendations(user_id)
+# job_id = 1  
+# top_entries = top_recommendations(job_id)
 # print(top_entries)
 
 # ------------- updating feedback -------------
-# user_id=1
-# job_id='836'
-# feedback=1
-# update_user_feedback(user_id, job_id, feedback)
-# user_id=2
-# job_id='201'
-# feedback=1
-# update_user_feedback(user_id, job_id, feedback)
-# user_id=2
-# job_id='3'
+# job_id=1
+# user_id=18
 # feedback=1
 # update_user_feedback(user_id, job_id, feedback)
