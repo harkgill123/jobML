@@ -1,0 +1,69 @@
+.jobPage {
+    display: flex;
+    flex-direction: column;
+    max-width: 100%;
+    margin: 0 auto;
+    font-family: 'Roboto', sans-serif;
+  }
+  
+  .jobContent {
+    display: flex; /* Use flexbox to create two columns */
+    flex-direction: row; /* Align children horizontally */
+    gap: 40px; /* Add some space between the columns */
+    padding: 0px;
+    width: 100%;
+    max-width: 100%;
+    margin-top: 30px;
+    margin-bottom: 30px;
+
+  }
+  
+  .jobDetailColumn, .additionalContentColumn {
+    flex: 0 0 50%; /* Each column takes up half of the .jobContent width */
+    display: flex;
+    flex-direction: column;
+    /* If you want exact halves, you can use flex: 0 0 50%; instead */
+  }
+
+  .jobDetailHeader,
+  .jobDescriptionSection,
+  .jobDetailSection {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    margin-bottom: 20px;
+    margin-left: 40px;
+    width: 90%;
+  }
+  
+  .jobTitle {
+    font-size: 2.5rem; /* Increase font size */
+    font-weight: bold;
+    margin-bottom: 1rem; /* Increase margin */
+  }
+  
+  .jobCompany, 
+  .jobLocation, 
+  .jobPostedDate, 
+  .jobApplicationDeadline, 
+  .jobExperienceRequired {
+    font-size: 1.25rem; /* Increase font size */
+    color: #666;
+    margin-bottom: 0.5rem; /* Increase margin */
+  }
+  
+  .jobDescription {
+    font-size: 1.25rem; /* Increase font size */
+    color: #333;
+    line-height: 1.5;
+  }
+  
+  .sectionTitle {
+    font-size: 1.5rem; /* Increase font size */
+    font-weight: bold;
+    margin-bottom: 1.5rem; /* Increase margin */
+  }
+  
+  /* Add additional styles as necessary */
+  

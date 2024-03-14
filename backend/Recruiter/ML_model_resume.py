@@ -4,7 +4,7 @@ sys.path.append(Path(__file__).resolve().parent.parent.__str__())
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'coreApp.settings')
 django.setup()
-from UserAuth.models import Resume,ResumeToClusters,ModelVersionResume,User
+from UserAuth.models import Resume,ResumetoClusters,ModelVersionResume,JobPosting
 
 import pandas as pd
 import numpy as np
@@ -47,8 +47,8 @@ def create_model():
         if resume.user_id not in resume_dict:
             # Create an entry if it does not exist
             resume_dict[resume.user_id] = {
-                'resume_id': resume.id,
-                # 'user_id': resume.user_id if resume.user else None,
+                # 'resume_id': resume.id,
+                'user_id': resume.user_id if resume.user else None,
                 'title': [],
                 'job_description': '',  # Assuming all descriptions are the same; will be updated later
                 'skills': list(resume.resume_skills.values_list('skill_name', flat=True))
@@ -182,9 +182,9 @@ def train_model():
 # -------------- Update cluster table in database --------------
 def populate_resume_clusters():
     for index, row in df.iterrows():
-        resume_id = row['resume_id']
+        user_id = row['user_id']
         cluster_no = row['cluster_no']
-        resume, created = ResumeToClusters.objects.get_or_create(resume=resume_id,cluster=cluster_no)
+        resume, created = ResumetoClusters.objects.get_or_create(user_id=user_id,cluster=cluster_no)
 
     return resume
 
@@ -193,12 +193,13 @@ def update_model_version_database(MODEL_VERSION):
     model_version_str = str(MODEL_VERSION)
 
     # Get all user instances from the User table
-    users = User.objects.all()
-
+    jobs = JobPosting.objects.all()
+    print(jobs)
     # Now create or update ModelVersion entries for each user
-    for user in users:
+    for job in jobs:
+        print(job)
         ModelVersionResume.objects.update_or_create(
-            user=user,
+            job_posting_id=job.id,
             defaults={
                 'latest_version': model_version_str  # Update the latest model version
             }
@@ -208,7 +209,7 @@ def update_model_version_database(MODEL_VERSION):
 # print(jobs)
 # df = pd.DataFrame(jobs)
 # train_model()
-# ResumeToClusters.objects.all().delete()
+# ResumetoClusters.objects.all().delete()
 # populate_resume_clusters()
 # update_model_version_database(MODEL_VERSION)
 # df.to_json('model_settings/df.json')

@@ -279,3 +279,96 @@
 .createJobButton:hover {
   background-color: var(--color-dodgerblue);
 }
+
+/* Job Card Styles */
+.yourJobPostingsHeading {
+  /* Add styles for the job postings heading here, similar to .searchResultsTitle */
+  font-size: 2rem;
+  font-weight: 590;
+  color: #333;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  width: 100%;
+  text-align: left;
+}
+
+.jobListingsContainer {
+  width: 100%;
+  max-width: 1200px; /* Or adjust to fit your design */
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Centers the job cards in the container */
+  justify-content: center; /* Centers the job cards vertically if there's extra space */
+  margin: auto; /* Added to center the container itself if the viewport is wider than max-width */
+}
+
+.jobCard {
+  background-color: white;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  margin-bottom: 20px;
+  padding: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%; /* Full width of container */
+  max-width: 1550px; /* Adjust this to change the card width */
+  margin-left: auto; /* Centers the card within the container */
+  margin-right: auto; /* Centers the card within the container */
+}
+
+.jobTitle {
+  /* Title of the job inside the card */
+  font-size: 1.50rem;
+  font-weight: 200;
+  color: #333;
+  flex: 1;
+}
+
+.jobDetails {
+  /* Container for company name and location */
+  display: flex;
+  flex-direction: column;
+  margin-right: auto;
+}
+
+.companyName, .location {
+  /* Styles for company name and location */
+  font-size: 1.25rem;
+  color: #666;
+  margin: 4px 0;
+}
+
+.viewJobButton {
+  /* Align this button to the right */
+  padding: 10px 15px;
+  background-color: var(--primary-500);
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  font-size: 1.15rem;
+}
+
+.viewJobButton:hover {
+  background-color: var(--color-dodgerblue);
+}
+
+.createJobButton2 {
+  padding: 15px 30px; /* Adjust padding as needed */
+  font-size: 1.5rem;
+  margin-top: 20px; /* Adjust font-size as needed */
+  margin-bottom: 40px;
+  color: white; /* Text color */
+  background-color: var(--primary-500);  color: white;
+  border: none;
+  border-radius: 5px; /* Rounded corners */
+  cursor: pointer;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1); /* Optional: adds shadow for depth */
+  transition: background-color 0.3s ease; /* Smooth transition for hover effect */
+}
+
+.createJobButton2:hover {
+  background-color: var(--color-dodgerblue);
+}

@@ -27,6 +27,7 @@ import EmployerCreateAccount from "./pages/EmployerCreateAccount";
 import ResumeUpload from "./pages/ResumeUpload";
 import EmployerCreateJob from "./pages/EmployerCreateJob";
 import CandidatePage from "./pages/candidatepage";
+import EmployerRecommendedCandidates from "./pages/EmployerRecommendedCandidates";
 
 
 function App() {
@@ -117,6 +118,10 @@ function App() {
         title = "";
         metaDescription = "";
         break;
+        case "/recommended-candidates":
+        title = "";
+        metaDescription = "";
+        break;
       case "/candidate-create-account":
         title = "";
         metaDescription = "";
@@ -188,6 +193,7 @@ function App() {
       />
       <Route path="/employer-search-page" element={<EmployerSearchPage />} />
       <Route path="/create-job" element={<EmployerCreateJob />} />
+      <Route path="/recommended-candidates/:jobId" element={<EmployerRecommendedCandidates />} />
       <Route path="/candidate-create-account" element={<CreateAccount />} />
       <Route path="/resume-upload" element={<ResumeUpload />} />
       <Route path="/employer-create-account" element={<EmployerCreateAccount />} />
