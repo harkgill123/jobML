@@ -96,9 +96,9 @@ class JobPosting(models.Model):
     def __str__(self):
         return self.title
 
-class JobToSkills(models.Model):
-    job_posting = models.ForeignKey(JobPosting, on_delete=models.CASCADE, related_name='job_skills')
-    #skillID = models.CharField(max_length=255, unique=True, default='DefaultSkillID')
+# class JobToSkills(models.Model):
+#     job_posting = models.ForeignKey(JobPosting, on_delete=models.CASCADE, related_name='job_skills')
+#     #skillID = models.CharField(max_length=255, unique=True, default='DefaultSkillID')
 
 class JobToClusters(models.Model):
     job_posting = models.ForeignKey(JobPosting, on_delete=models.CASCADE, related_name='job_cluster')
