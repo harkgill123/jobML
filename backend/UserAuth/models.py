@@ -119,13 +119,13 @@ class ResumetoClusters(models.Model):
     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name='resume_cluster')
     cluster = models.CharField(max_length=255, default='defaultcluster')
 
-class FeedbackforResume(models.Model):
-    user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name='feedback_resume')
-    resume = models.ForeignKey(Resume, on_delete=models.CASCADE, related_name='feedback_resume')
-    feedback = models.CharField(max_length=255, default='0')
-    score = models.CharField(max_length=255, default='0')
-
 class ModelVersionResume(models.Model):
-    user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name='model_version_resume')
+    job_posting = models.ForeignKey(JobPosting, on_delete=models.SET_NULL,null=True, blank=True, related_name='model_version_resume')
     model_version = models.CharField(max_length=255, default='0')
     latest_version = models.CharField(max_length=255, default='0')
+
+class FeedbackforResume(models.Model):
+    user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name='feedback_resume')
+    job_posting = models.ForeignKey(JobPosting, on_delete=models.SET_NULL, null=True, blank=True, related_name='feedback_resume')
+    feedback = models.CharField(max_length=255, default='0')
+    score = models.CharField(max_length=255, default='0')

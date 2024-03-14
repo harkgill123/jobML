@@ -21,4 +21,27 @@ class Migration(migrations.Migration):
             name='user',
             field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='creator', to=settings.AUTH_USER_MODEL),
         ),
+         migrations.CreateModel(
+            name='ModelVersionResume',
+            fields=[
+                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('model_version', models.CharField(default='0', max_length=255)),
+                ('latest_version', models.CharField(default='0', max_length=255)),
+                ('user', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='model_version_resume', to=settings.AUTH_USER_MODEL)),
+            ],
+        ),
+        migrations.RemoveField(
+            model_name='modelversionresume',
+            name='user',
+        ),
+        migrations.AddField(
+            model_name='modelversionresume',
+            name='job_posting',
+            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='model_version', to='UserAuth.jobposting'),
+        ),
+        migrations.AlterField(
+            model_name='modelversionresume',
+            name='job_posting',
+            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='model_version_resume', to='UserAuth.jobposting'),
+        ),
     ]
