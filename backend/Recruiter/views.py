@@ -28,9 +28,23 @@ class JobPostingListView(APIView):
         user = getUserFromRequest(request=request)
         job_postings = JobPosting.objects.filter(user_id=user.id)
 
-        jobs_json = serialize('json', job_postings)
-        print(jobs_json)
-        return JsonResponse({'jobs': jobs_json}, safe=False)
+        job_postings_list = []
+        for job in job_postings:
+            job_postings_list.append({
+                'id': job.id,
+                'title': job.title,
+                'company_name': job.company_name,
+                'location': job.location,
+                'job_description': job.job_description,
+                'posted_date': job.posted_date,
+                'application_deadline': job.application_deadline,
+                'experience_required': job.experience_required,
+                'benefits': job.benefits,
+                'employment_type': job.employment_type,
+                'skills': [skill.skill_name for skill in job.skills.all()]
+            })
+        print(job_postings_list)
+        return Response({'jobs': job_postings_list}, status=status.HTTP_200_OK)
 
 class JobPostingCreateView(APIView):
     # permission_classes = [IsAuthenticated] 
@@ -38,7 +52,7 @@ class JobPostingCreateView(APIView):
     def post(self, request, *args, **kwargs):
         print("Request Data:", request.data)  # Add this line to log incoming request data
         user = getUserFromRequest(request=request)
-        serializer = JobPostingCreateSerializer(data=request.data,  context={'user': user})
+        serializer = JobPostingCreateSerializer(data=request.data,  context={'request': request, 'user': user})
         if serializer.is_valid():
             serializer.save()
             print("Serialized Data:", serializer.data)
