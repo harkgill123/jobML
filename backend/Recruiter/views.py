@@ -14,6 +14,7 @@ import jwt,os
 from django.core.serializers import serialize
 from django.core import serializers
 from Recruiter.recommendations_resume import give_suggestions, update_user_feedback
+from Recruiter.ML_model_resume import MODEL_VERSION
 
 
 def getUserFromRequest(request):
@@ -53,12 +54,18 @@ class JobPostingCreateView(APIView):
 
     def post(self, request, *args, **kwargs):
         user = getUserFromRequest(request=request)
+        model_version_str = str(MODEL_VERSION)
         serializer = JobPostingCreateSerializer(data=request.data,  context={'request': request, 'user': user})
         if serializer.is_valid():
-            serializer.save()
+            job = serializer.save()
+            ModelVersionResume.objects.update_or_create(
+                job_posting_id=job.id,
+                defaults={
+                    'latest_version': model_version_str  
+                })
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         else:
-            print("Errors:", serializer.errors)  # Add this line to log validation errors
+            print("Errors:", serializer.errors)  
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
 @csrf_exempt  
@@ -121,34 +128,33 @@ class UploadJob:
 def sendRecommendationsToFrontEnd(request):
     print(request.body)
     data = json.loads(request.body)
-    print(data)
     job_id = data['job_id']
-    print(job_id)
     user = getUserFromRequest(request)
     ModelVersionEntry = ModelVersionResume.objects.get(job_posting_id=job_id)
     resumeModel = ModelVersionEntry.model_version
     latestModel = ModelVersionEntry.latest_version
     if resumeModel != latestModel:
         recommended_jobs(request)
-    return recommended_jobs(request) 
+    return get_recommendations(request) 
 
 def recommended_jobs(request):
     user_ids = []
     user = getUserFromRequest(request=request)
     data = json.loads(request.body)
     job_id = data['job_id']
-    job_posting = JobPosting.objects.filter(id = job_id)
+    job_posting = JobPosting.objects.get(id=job_id)
+    print(job_posting)
     try:
-        job_skills = job_posting.resume_skills.all()
+        job_skills = job_posting.skills.all()
         job_skills_texts = [skill.skill_name for skill in job_skills]
-        job_title = job_posting.job_title
+        job_title = job_posting.title
         job_desc = job_posting.job_description
 
         suggestions_list = give_suggestions(job_posting.id, job_title, job_desc,' '.join(job_skills_texts))
         print(f"suggestions_list: {suggestions_list}")
         print(f"Inital recommendations complete")
         
-        return JsonResponse({"success: recommended_jobs"})     
+        return JsonResponse({"success": "recommended_jobs"})   
     except Resume.DoesNotExist:
         return JsonResponse({"error": "User does not have a resume"}, status=400)
 
@@ -171,19 +177,16 @@ def update_feedback(request):
 
 def get_recommendations(request):
     from Recruiter.recommendations_resume import top_recommendations
-    user = getUserFromRequest(request=request)
     data = json.loads(request.body)
     job_id = data['job_id']
-    job_posting = ModelVersionResume.objects.filter(job_posting_id = job_id)
-    
     try:
         top_entries = top_recommendations(job_id=job_id)
         user_ids = [suggestion['user_id'] for suggestion in top_entries]
-        users = User.objects.filter(id__in=user_ids).values_list('id', 'name')
-        user_mapping = {user_id: name for user_id, name in users}
-        ordered_user_names = [user_mapping[user_id] for user_id in user_ids if user_id in user_mapping]
-        serialized_users = serializers.serialize('json', ordered_user_names)
+        users = User.objects.filter(id__in=user_ids)
+        
+        serialized_users = serializers.serialize('json', users, fields=('id', 'name'))
         print(serialized_users)
-        return JsonResponse({"recommended_users": serialized_users})
-    except Resume.DoesNotExist:
-        return JsonResponse({"error": "user couldnt be found"}, status=400)
+        
+        return JsonResponse({"recommended_users": json.loads(serialized_users)})
+    except User.DoesNotExist: 
+        return JsonResponse({"error": "user couldn't be found"}, status=400)

@@ -7,10 +7,13 @@ from rest_framework.response import Response
 from django.core.serializers import serialize
 from django.http import JsonResponse
 from .forms import SignupForm
-from .serializers import UserSerializer
-from .models import ModelVersion
+from .serializers import UserSerializer, ResumeSerializer, EducationSerializer, WorkExperienceSerializer, UserSerializer
+from .models import ModelVersion, Education, WorkExperience, Resume
 from Applicant.ML_model import MODEL_VERSION
 from Applicant.views import getUserFromRequest
+from django.core.exceptions import ObjectDoesNotExist
+
+
 class SignUpView(APIView):
     def post(self, request):
         form = SignupForm(request.data)
@@ -141,22 +144,49 @@ class DisplayResumeInfo(APIView):
         })
 
 
-# class UpdateResumeInfo(APIView):
-#     def put(self, request):
-#         user = getUserFromRequest(request)
-#         password = request.data['password']
+class UpdateResumeInfo(APIView):
+    def put(self, request):
+        try:
+            user = getUserFromRequest(request)
 
-#         work_experience = request.data['work_experience']
-#         education = request.data['education']
-#         skills = 
-  
-#         if user.check_password(password):
-#             if 
-#             user.save()
-#             return Response({
-#                 'result' : 'SUCCESS: Resume Info has been changed successfully'}, 
-#                 status=status.HTTP_200_OK)
-#         else:
-#             return Response({
-#                 'result' : 'ERROR: Password is incorrect'}, 
-#                 status=status.HTTP_400_BAD_REQUEST)
+            user_data = request.data.get('user', {})
+            user_serializer = UserSerializer(user, data=user_data, partial=True)
+            if user_serializer.is_valid():
+                user_serializer.save()
+            else:
+                return Response(user_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+            resume = user.resumes.first()
+            if resume:
+                resume_data = request.data.get('resume', {})
+                if resume_data:
+                    resume_serializer = ResumeSerializer(resume, data=resume_data, partial=True)
+                    if resume_serializer.is_valid():
+                        resume_serializer.save()
+                    else:
+                        return Response(resume_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+                for work_experience_data in request.data.get('work_experiences', []):
+                    for work_experience in resume.work_experiences.all():
+                        work_experience_serializer = WorkExperienceSerializer(work_experience, data=work_experience_data, partial=True)
+                        if work_experience_serializer.is_valid():
+                            work_experience_serializer.save()
+                        else:
+                            return Response(work_experience_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+                        break 
+
+                for education_data in request.data.get('educations', []):
+                    for education in resume.educations.all():
+                        education_serializer = EducationSerializer(education, data=education_data, partial=True)
+                        if education_serializer.is_valid():
+                            education_serializer.save()
+                        else:
+                            return Response(education_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+                        break  
+
+            return Response({"message": "User and resume information updated successfully"}, status=status.HTTP_200_OK)
+
+        except ObjectDoesNotExist:
+            return Response({"error": "Object not found"}, status=status.HTTP_404_NOT_FOUND)
+        except Exception as e:
+            return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
