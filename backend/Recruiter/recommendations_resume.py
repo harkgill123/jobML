@@ -110,10 +110,10 @@ def update_feedback_database(job_id, new_suggestions_list):
             score=score
         )
 
-def update_model_version_database(user_id, Model_Version):
+def update_model_version_database(job_id, Model_Version):
     model_version_str = str(Model_Version)
     ModelVersionResume.objects.update_or_create(
-            user=user_id,
+            job_posting_id=job_id,
             defaults={
                 'model_version': model_version_str  # Update the latest model version
             }
@@ -123,9 +123,8 @@ def give_suggestions(job_id, job_title, job_description, job_skills):
     resumes = create_clustered_model()
     df = pd.DataFrame(resumes)
 
-    # Model_Version = get_object_or_404(ModelVersionResume, user_id=user_id)
-    # Model_Version = Model_Version.latest_version
-    Model_Version = 0
+    Model_Version = get_object_or_404(ModelVersionResume, user_id=user_id)
+    Model_Version = Model_Version.latest_version
 
     # Load your model components
     vec_title = load(f'Recruiter/model_settings_ver{Model_Version}/vectorizer_title.joblib')
@@ -174,7 +173,7 @@ def give_suggestions(job_id, job_title, job_description, job_skills):
             "feedback": 0  # Initial feedback value
         })
     update_feedback_database(job_id, new_suggestions_list)
-  #  update_model_version_database(user_id, Model_Version)
+    update_model_version_database(job_id, Model_Version)
     return new_suggestions_list
 
 #Todo: have jasdeep update these values in the database

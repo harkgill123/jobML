@@ -27,7 +27,7 @@ rcParams['figure.figsize'] = 50, 20
 start=time.time()
 nltk.download('stopwords')
 
-MODEL_VERSION = 0
+MODEL_VERSION = 1
 
 # Functions to clean skills data and make a vocabulary for skills vectorization
 common_placeholders = [
@@ -194,10 +194,8 @@ def update_model_version_database(MODEL_VERSION):
 
     # Get all user instances from the User table
     jobs = JobPosting.objects.all()
-    print(jobs)
     # Now create or update ModelVersion entries for each user
     for job in jobs:
-        print(job)
         ModelVersionResume.objects.update_or_create(
             job_posting_id=job.id,
             defaults={
@@ -205,11 +203,15 @@ def update_model_version_database(MODEL_VERSION):
             }
         )
 
+# print(f"----- MODEL VERSION {MODEL_VERSION} -----")
 # jobs = create_model()
 # print(jobs)
 # df = pd.DataFrame(jobs)
+# print("----- Training Model -----")
 # train_model()
+# print("----- Deleting all Resume to Cluster Table -----")
 # ResumetoClusters.objects.all().delete()
+# print("----- Updating Resume to Cluster Table -----")
 # populate_resume_clusters()
+# print("----- Updating Model Version Resume Table -----")
 # update_model_version_database(MODEL_VERSION)
-# df.to_json('model_settings/df.json')
