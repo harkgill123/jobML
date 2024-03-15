@@ -207,7 +207,7 @@ class DisplayUserInfo(APIView):
         'work_experiences': [],
         'projects': []
     }
-
+        users = []
         resume = user.resumes.first()  
         if resume:
             user_data['skills'] = list(resume.resume_skills.values('skill_name'))
@@ -215,4 +215,5 @@ class DisplayUserInfo(APIView):
             user_data['work_experiences'] = list(resume.work_experiences.values('company_name', 'job_title', 'start_date', 'end_date', 'job_description'))
             user_data['projects'] = list(resume.projects.values('title', 'description')) if hasattr(resume, 'projects') else []
 
-        return JsonResponse({'applicants': user_data})
+        users.append(user_data)
+        return JsonResponse({'applicants': users})
