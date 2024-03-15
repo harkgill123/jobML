@@ -71,12 +71,17 @@ const SiteLogo: FunctionComponent<SiteLogoType> = ({
             <div className={styles.searchChild} />
             <img className={styles.fisearchIcon} alt="" src="/fisearch.svg" />
             <input
-              className={styles.jobTitleKeyword}
-              placeholder="Job title, keyword, company"
-              type="text"
-              value={searchQuery} // Controlled input
-              onChange={(e) => setSearchQuery(e.target.value)}
-            />
+            className={styles.jobTitleKeyword}
+            placeholder="Job title, keyword, company"
+            type="text"
+            value={searchQuery} // Controlled input
+            onChange={(e) => setSearchQuery(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter') {
+                handleFindJob();
+              }
+            }}
+          />
             <button className={styles.findJobButton} onClick={handleFindJob}>Find Job</button> {/* Added find job button */}
           </div>
         </div>

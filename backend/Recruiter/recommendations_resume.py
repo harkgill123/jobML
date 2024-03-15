@@ -177,10 +177,10 @@ def give_suggestions(job_id, job_title, job_description, job_skills):
     return new_suggestions_list
 
 #Todo: have jasdeep update these values in the database
-def update_user_feedback(user_id, resume_id, feedback):
-    print(f"--- Changing feedback for user {user_id}, resume {resume_id} to feedback value {feedback} ---")
+def update_user_feedback(user_id, job_id, feedback):
+    print(f"--- Changing feedback for job {job_id}, user {user_id} to feedback value {feedback} ---")
     # Attempt to retrieve the specific feedback entry
-    feedback_entry = get_object_or_404(FeedbackforResume, resume_id=resume_id, user_id=user_id)
+    feedback_entry = get_object_or_404(FeedbackforResume, job_posting_id=job_id, user_id=user_id)
     
     # Update the feedback value
     feedback_entry.feedback = feedback

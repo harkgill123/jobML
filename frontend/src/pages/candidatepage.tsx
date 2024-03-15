@@ -192,15 +192,17 @@ const CandidatePage: React.FC = () => {
             {experience.start_date} to {experience.end_date}
           </p>
           <div className={styles.workExperienceDescription}>
-            {/* Split description by '-' and render each part */}
-            {experience.job_description.split('-').map((part, idx) => (
-              <React.Fragment key={idx}>
-                {/* Ensure we don't add a new line before the first item */}
-                {idx > 0 && <br />}
-                {part}
-              </React.Fragment>
-            ))}
-          </div>
+  {/* Split description by '- ' (hyphen followed by space) and render each part */}
+  {experience.job_description.split('- ').map((part, idx) => (
+    <React.Fragment key={idx}>
+      {/* Add a bullet point before each item except the first */}
+      {idx > 0 && <span>• </span>}
+      {part}
+      {/* Ensure we don't add a new line after the last item */}
+      {idx < experience.job_description.split('- ').length - 1 && <br />}
+    </React.Fragment>
+  ))}
+</div>
         </div>
       ))}
     </div>

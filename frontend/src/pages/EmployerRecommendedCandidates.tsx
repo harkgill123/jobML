@@ -13,6 +13,7 @@ type Job = {
   application_deadline?: string;
   experience_required?: string;
   job_description?: string;
+  skills?: String[];
 };
 
 type LocationState = {
@@ -87,6 +88,7 @@ const EmployerRecommendedCandidates: React.FC = () => {
     application_deadline,
     experience_required,
     job_description,
+    skills,
   } = state.job;
 
   useEffect(() => {
@@ -158,7 +160,7 @@ const EmployerRecommendedCandidates: React.FC = () => {
     }
   };
 
-  const handleLike = async (jobId: any) => {
+  const handleLike = async (userId: any) => {
     try {
       console.log('Token:', token);
       console.log(jobId);
@@ -168,7 +170,7 @@ const EmployerRecommendedCandidates: React.FC = () => {
           'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ job_id: jobId, feedback: '1' }),
+        body: JSON.stringify({ user_id: userId, job_id: jobId, feedback: '1' }),
       });
   
       if (!response.ok) {
@@ -183,7 +185,7 @@ const EmployerRecommendedCandidates: React.FC = () => {
   };
 
 
-  const handleDislike = async (jobId: any) => {
+  const handleDislike = async (userId: any) => {
     try {
       const response = await fetch('http://localhost:8000/Recruiter/update_feedback/', {
         method: 'POST',
@@ -191,7 +193,7 @@ const EmployerRecommendedCandidates: React.FC = () => {
           'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ job_id: jobId, feedback: '-1' }),
+        body: JSON.stringify({ user_id: userId, job_id: jobId, feedback: '-1' }),
       });
   
       if (!response.ok) {
@@ -223,6 +225,20 @@ const EmployerRecommendedCandidates: React.FC = () => {
             <h2 className={styles.sectionTitle}>Description</h2>
             {job_description && <p className={styles.jobDescription}>{job_description}</p>}
           </div>
+          <div className={styles.jobDescriptionSection}>
+          <h2 className={styles.sectionTitle}>Skills</h2>
+          {skills && skills.length > 0 ? (
+            <ul className={styles.list}>
+              {skills.map((skill, index) => (
+                <li key={index} className={styles.listItem}>
+                  {skill}
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <p>No skills information provided.</p>
+          )}
+        </div>
   
           <div className={styles.jobDetailSection}>
             {posted_date && <p className={styles.jobPostedDate}>Posted: {new Date(posted_date).toLocaleDateString()}</p>}
@@ -245,7 +261,7 @@ const EmployerRecommendedCandidates: React.FC = () => {
       <div className={styles.actionButtons}>
         {/* Like and Dislike buttons */}
         <div className={styles.interactionIcons}>
-          <button className={styles.likeButton} onClick={() => handleLike(jobId)}>
+          <button className={styles.likeButton} onClick={() => handleLike(user.id)}>
             <img
               className={styles.thumbsupIcon}
               loading="lazy"
@@ -253,7 +269,7 @@ const EmployerRecommendedCandidates: React.FC = () => {
               src="/thumbsup.svg"
             />
           </button>
-          <button className={styles.dislikeButton} onClick={() => handleDislike(jobId)}>
+          <button className={styles.dislikeButton} onClick={() => handleDislike(user.id)}>
             <img
               className={styles.thumbsdownIcon}
               loading="lazy"

@@ -1,19 +1,9 @@
-.button,
-.buttonChild {
-  height: 48px;
-  width: 48px;
-  display: none;
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
-.buttonChild {
-  position: relative;
-  border-radius: 50%;
-  object-fit: cover;
-}
-.button {
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-}
+
 .digitalMarketing,
 .digitalMarketing1,
 .digitalMarketing2 {
@@ -26,10 +16,12 @@
 .digitalMarketing1,
 .digitalMarketing2 {
   height: 16px;
+  
   border-right: 4px solid var(--gradient-orange-gradient-10);
 }
 .digitalMarketing2 {
   height: 12px;
+  margin-right: 4px;
   border-right: 4px solid var(--gradient-blue-gradient-19);
 }
 .sitelogo1 {
@@ -52,6 +44,8 @@
   z-index: 1;
 }
 .jobsync {
+  user-select: none;
+  cursor: default;
   position: relative;
   font-size: var(--heading-04-size);
   line-height: 40px;
@@ -59,10 +53,10 @@
   font-family: var(--button-button);
   color: var(--gray-900);
   white-space: nowrap;
-  margin: 0 0 0-2px;
+  margin: 0 0 0 0px;
+  margin-left: 8px;
 }
-.categoryIconGroup,
-.loaction {
+.categoryIconGroup {
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -90,29 +84,6 @@
   background-color: var(--color-dodgerblue);
 }
 
-.inputField {
-  flex: 1;
-  border-radius: var(--br-8xs);
-  background-color: var(--gray-scale-white);
-  display: flex;
-  flex-direction: row;
-  align-items: flex-start;
-  justify-content: flex-start;
-  padding: var(--padding-base) var(--padding-lg);
-  box-sizing: border-box;
-  gap: var(--gap-xs);
-  min-width: 180px;
-}
-
-
-.searchChild {
-  height: 33px;
-  width: 1px;
-  position: relative;
-  border-right: 1px solid var(--gray-100);
-  box-sizing: border-box;
-  display: none;
-}
 .fisearchIcon {
   height: 30px;
   width: 24px;
@@ -140,12 +111,17 @@
 .search,
 .videoAnimation {
   display: flex;
-  align-items: flex-start;
-  justify-content: flex-start;
-  max-width: 100%;
+  align-items: center;
+  width: 100%;
+  max-width: 1600px;
+  flex-direction: column;
+  font-size: var(--body-small-500-size);
+  color: var(--gray-900);
+  flex-grow: 2;
 }
 .search {
   width: 100%;
+  flex-grow: 1;
   border-radius: var(--br-8xs);
   background-color: var(--gray-scale-white);
   border: 1px solid var(--gray-100);
@@ -154,70 +130,7 @@
   padding: var(--padding-smi) var(--padding-5xl);
   gap: var(--gap-xs);
 }
-.videoAnimation {
-  width: 1028px;
-  flex-direction: column;
-  font-size: var(--body-small-500-size);
-  color: var(--gray-900);
-}
-.dashboard,
-.home,
-.myProfile {
-  margin: 0;
-  position: relative;
-  font-size: inherit;
-  font-family: inherit;
-  
-}
-.home {
-  line-height: 20px;
-  font-weight: 700;
-  color: var(--primary-500);
-}
-.dashboard,
-.myProfile {
-  flex: 1;
-  font-weight: 400;
-}
-.dashboard {
-  line-height: 20px;
-}
-.myProfile {
-  white-space: nowrap;
-}
-.signoutIcon {
-  height: 24px;
-  width: 24px;
-  position: relative;
-}
-.logOut {
-  margin: 0;
-  padding: 10px 20px;
-  position: relative;
-  font-size: inherit;
-  line-height: 20px;
-  font-weight: 400;
-  font-family: inherit;
-}
-.quickLink,
-.science {
-  justify-content: flex-start;
-}
-.quickLink {
-  flex: 1;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  gap: var(--gap-8xs);
-  color: var(--gray-500);
-}
-.science {
-  width: 452px;
-  gap: var(--gap-11xl);
-  font-size: var(--body-xl-500-size);
-  color: var(--gray-600);
-}
-.navigation,
+
 .navigation1,
 .science {
   display: flex;
@@ -225,27 +138,19 @@
   align-items: center;
   max-width: 100%;
   justify-content: flex-end; /* Align to the right */
-  flex: 0 1 auto; /* Don't grow, but allow shrinking and base the size on content */
+  font-size: var(--body-xl-500-size);
+  color: var(--gray-600);
 }
 .navigation1 {
   display: flex;
-  justify-content: space-between;
+  justify-content: space-between; /* Space out logo/search, nav links */
   align-items: center;
-  width: 100%; /* Ensure it spans the full width of the header */
-  padding: var(--padding-xl) var(--padding-9xl);
-  box-sizing: border-box;
+  padding: var(--padding-xl);
+  box-shadow: 0 1px 0 var(--gray-100) inset;
+  background-color: var(--gray-scale-white);
+  gap: var(--gap-xs);
 }
-.navigation {
-  display: flex;
-  align-self: stretch;
-  box-shadow: 0-1px 0#e4e5e8 inset;
-  justify-content: space-between;
-  align-items: center;
-  text-align: left;
-  font-size: var(--font-size-3xl);
-  color: var(--color-black);
-  font-family: var(--button-button);
-}
+
 .navButton {
   /* Add your button styling here */
   white-space: nowrap; /* This prevents the text from wrapping */
@@ -263,13 +168,11 @@
   /* Add hover effects here */
   background-color: #ececec; /* Example */
 }
-@media screen and (max-width: 1600px) {
-  .science {
+
+
+@media screen and (max-width: 1020px) {
+  .videoAnimation {
     display: none;
   }
-}
-@media screen and (max-width: 900px) {
-  .navigation1 {
-    gap: var(--gap-12xl);
-  }
+
 }

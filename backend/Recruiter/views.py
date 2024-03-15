@@ -165,12 +165,13 @@ def recommended_jobs(request):
 def update_feedback(request):
     try:
         data = json.loads(request.body)
-        user = getUserFromRequest(request=request)
+        print(data)
+        #user = getUserFromRequest(request=request)
+        user_id = data['user_id']
+        job_id = data['job_id']
+        feedback = data['feedback']
         
-        job_id = data.get('job_id')
-        feedback = data.get('feedback')
-        
-        update_user_feedback(user_id=user.id, job_id=job_id, feedback=int(feedback))
+        update_user_feedback(user_id=user_id, job_id=job_id, feedback=int(feedback))
 
         return JsonResponse({"message": "Feedback updated successfully"}, status=200)
     except json.JSONDecodeError:

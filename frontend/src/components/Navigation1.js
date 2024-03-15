@@ -40,48 +40,43 @@ const Navigation1 = () => {
   
 
   return (
-    <header className={styles.navigation}>
-      <div className={styles.navigation1}>
-        <div className={styles.button}>
-          <img className={styles.buttonChild} alt="" src="/ellipse-18@2x.png" />
-        </div>
-        <div className={styles.loaction}>
-          <div className={styles.categoryIconGroup}>
-            <div className={styles.sitelogo}>
-              <div className={styles.digitalMarketing} />
-              <div className={styles.digitalMarketing1} />
-              <div className={styles.digitalMarketing2} />
-              <div className={styles.sitelogo1} />
-            </div>
-            <h3 className={styles.jobsync}>JobSync</h3>
+    <div className={styles.navigation1}>
+      <div className={styles.categoryIconGroup}>
+          <div className={styles.sitelogo}>
+            <div className={styles.digitalMarketing} />
+            <div className={styles.digitalMarketing1} />
+            <div className={styles.digitalMarketing2} />
+            <div className={styles.sitelogo1} />
           </div>
-        </div>
-        <div className={styles.videoAnimation}>
-          <div className={styles.search}>
-            <div className={styles.searchChild} />
-            <img className={styles.fisearchIcon} alt="" src="/fisearch.svg" />
-            <input
-              className={styles.jobTitleKeyword}
-              placeholder="Job title, keyword, company"
-              type="text"
-              value={searchQuery} // Controlled input
-              onChange={(e) => setSearchQuery(e.target.value)}
-            />
-            <button className={styles.findJobButton} onClick={handleFindJob}>Find Job</button> {/* Added find job button */}
-          </div>
-        </div>
-        <div className={styles.science}>
-          <button className={styles.navButton} onClick={() => navigate('/candidate-homepage')}>Home</button>
-          <button className={styles.navButton} onClick={() => navigate('/candidate-liked-jobs')}>Liked Jobs</button>
-          <button className={styles.navButton} onClick={() => navigate('/candidate-my-profile')}>My Profile</button>
-          <button className={styles.navButton} onClick={handleLogout}>Log-out</button>
-          <div className={styles.quickLink}>
-            {/* Other links or buttons */}
-          </div>
+          <h3 className={styles.jobsync}>JobSync</h3>
+      </div>
+      <div className={styles.videoAnimation}>
+        <div className={styles.search}>
+          <img className={styles.fisearchIcon} alt="" src="/fisearch.svg" />
+          <input
+            className={styles.jobTitleKeyword}
+            placeholder="Job title, keyword, company"
+            type="text"
+            value={searchQuery} // Controlled input
+            onChange={(e) => setSearchQuery(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter') {
+                handleFindJob();
+              }
+            }}
+          />
+          <button className={styles.findJobButton} onClick={handleFindJob}>Search</button> {/* Added find job button */}
         </div>
       </div>
-    </header>
-  );
+      <div className={styles.science}>
+        <button className={styles.navButton} onClick={() => navigate('/candidate-homepage')}>Home</button>
+        <button className={styles.navButton} onClick={() => navigate('/candidate-liked-jobs')}>Liked Jobs</button>
+        <button className={styles.navButton} onClick={() => navigate('/candidate-my-profile')}>My Profile</button>
+        <button className={styles.navButton} onClick={handleLogout}>Log-out</button>
+      </div>
+    </div>
+
+);
 };
 
 export default Navigation1;

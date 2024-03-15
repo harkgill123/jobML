@@ -51,6 +51,29 @@
     font-weight: bold;
     margin-bottom: 1.5rem; /* Increase margin */
   }
-  
+  .list {
+    margin-left: 20px;
+  }
+
+  .listItem {
+    background-color: #fff;
+    font-size: 1.25rem;
+    font-family: 'Roboto', sans-serif;
+    color: #333;
+    line-height: 1.5;
+  }
   /* Add additional styles as necessary */
-  
+  .workExperienceList {
+    font-size: 1.25rem;
+    font-family: 'Roboto', sans-serif;
+    color: #333;
+    line-height: 1.5;
+
+  }
+
+  .workExperienceTitle {
+    font-family: 'Roboto', sans-serif;
+    color: #333;
+    line-height: 1.5;
+    margin-top: 30px;
+  }

@@ -5,13 +5,15 @@
 }
 
 .jobsYouMight {
+  user-select: none;
+  cursor: default;
   font-size: 2rem; /* Size of the heading */
   line-height: 1.2; /* Line height for the heading */
   font-weight: 500; /* Font weight for the heading */
   padding-bottom: 16px; /* Space below the heading */
   font-family: 'Roboto', sans-serif; /* Roboto font */
-  padding-left: 32%; /* Adjust the percentage as needed to align the heading with the job cards */
   margin-left: 0;
+  text-align: center;
   width: auto; /* Auto width to only take up the required space */
 }
 
@@ -46,6 +48,8 @@
 
 /* Individual job cards */
 .job {
+  user-select: none;
+  cursor: default;
   width: 360px; /* Width of each card */
   padding: 25px; /* Padding inside the cards */
   border-radius: 6px; /* Rounded corners */

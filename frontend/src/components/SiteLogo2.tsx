@@ -34,11 +34,11 @@ const SiteLogo: FunctionComponent<SiteLogoType> = ({
   const [searchQuery, setSearchQuery] = useState(""); // State to keep track of the search query
 
   const handleFindJob = async () => {
-    console.log("Finding candidate...");
+    console.log("Finding job...");
     console.log("Search query:", searchQuery); // Print the search query
   
     try {
-      const response = await fetch('http://localhost:8000/Applicant/search_jobs/', {
+      const response = await fetch('http://127.0.0.1:8000/Recruiter/search_applicants/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -49,11 +49,15 @@ const SiteLogo: FunctionComponent<SiteLogoType> = ({
       });
   
       if (!response.ok) {
+        // const data = await response.json();
+        // console.log(data.jobs)
         throw new Error(`HTTP error! status: ${response.status}`);
       }
   
       const data = await response.json();
-      navigate('/employer-search-page', { state: { searchQuery, jobs: data.jobs } });
+
+      console.log(data.applicants)
+      navigate('/employer-search-page', { state: { searchQuery, applicants: data.applicants } });
     } catch (error) {
       console.error("There was an error with the search:", error);
     }
@@ -72,10 +76,15 @@ const SiteLogo: FunctionComponent<SiteLogoType> = ({
             <img className={styles.fisearchIcon} alt="" src="/fisearch.svg" />
             <input
               className={styles.jobTitleKeyword}
-              placeholder="Candidate, skills, experience"
+              placeholder="Candidate, skills, experience..."
               type="text"
               value={searchQuery} // Controlled input
               onChange={(e) => setSearchQuery(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') {
+                  handleFindJob();
+                }
+              }}
             />
             <button className={styles.findJobButton} onClick={handleFindJob}>Search</button> {/* Added find job button */}
           </div>

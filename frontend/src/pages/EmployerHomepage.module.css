@@ -283,13 +283,15 @@
 /* Job Card Styles */
 .yourJobPostingsHeading {
   /* Add styles for the job postings heading here, similar to .searchResultsTitle */
+  user-select: none;
+  cursor: default;
   font-size: 2rem;
   font-weight: 590;
   color: #333;
   margin-top: 20px;
   margin-bottom: 20px;
   width: 100%;
-  text-align: left;
+  text-align: center;
 }
 
 .jobListingsContainer {
@@ -303,6 +305,8 @@
 }
 
 .jobCard {
+  user-select: none;
+  cursor: default;
   background-color: white;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   border-radius: 10px;

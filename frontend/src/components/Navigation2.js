@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom"; // Import useNavigate hook for programmatic navigation
-import styles from "./Navigation1.module.css";
+import styles from "./Navigation2.module.css";
 
 const Navigation2 = () => {
   const navigate = useNavigate(); // useNavigate hook for navigation
@@ -44,13 +44,8 @@ const Navigation2 = () => {
   
 
   return (
-    <header className={styles.navigation}>
       <div className={styles.navigation1}>
-        <div className={styles.button}>
-          <img className={styles.buttonChild} alt="" src="/ellipse-18@2x.png" />
-        </div>
-        <div className={styles.loaction}>
-          <div className={styles.categoryIconGroup}>
+        <div className={styles.categoryIconGroup}>
             <div className={styles.sitelogo}>
               <div className={styles.digitalMarketing} />
               <div className={styles.digitalMarketing1} />
@@ -58,18 +53,21 @@ const Navigation2 = () => {
               <div className={styles.sitelogo1} />
             </div>
             <h3 className={styles.jobsync}>JobSync</h3>
-          </div>
         </div>
         <div className={styles.videoAnimation}>
           <div className={styles.search}>
-            <div className={styles.searchChild} />
             <img className={styles.fisearchIcon} alt="" src="/fisearch.svg" />
             <input
               className={styles.jobTitleKeyword}
-              placeholder="Candidate, skills, experience..."
+              placeholder="Candidate, skills, experience"
               type="text"
               value={searchQuery} // Controlled input
               onChange={(e) => setSearchQuery(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') {
+                  handleFindJob();
+                }
+              }}
             />
             <button className={styles.findJobButton} onClick={handleFindJob}>Search</button> {/* Added find job button */}
           </div>
@@ -79,12 +77,9 @@ const Navigation2 = () => {
           <button className={styles.navButton} onClick={() => navigate('/employer-dashboard')}>Liked Applicants</button>
           <button className={styles.navButton} onClick={() => navigate('/employer-my-profile')}>My Profile</button>
           <button className={styles.navButton} onClick={handleLogout}>Log-out</button>
-          <div className={styles.quickLink}>
-            {/* Other links or buttons */}
-          </div>
         </div>
       </div>
-    </header>
+
   );
 };
 
