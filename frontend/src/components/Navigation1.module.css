@@ -26,10 +26,12 @@
 .digitalMarketing1,
 .digitalMarketing2 {
   height: 16px;
+  
   border-right: 4px solid var(--gradient-orange-gradient-10);
 }
 .digitalMarketing2 {
   height: 12px;
+  margin-right: 4px;
   border-right: 4px solid var(--gradient-blue-gradient-19);
 }
 .sitelogo1 {
@@ -59,7 +61,8 @@
   font-family: var(--button-button);
   color: var(--gray-900);
   white-space: nowrap;
-  margin: 0 0 0-2px;
+  margin: 0 0 0 0px;
+  margin-left: 8px;
 }
 .categoryIconGroup,
 .loaction {

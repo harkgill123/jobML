@@ -16,7 +16,7 @@ from django.core import serializers
 from Recruiter.recommendations_resume import give_suggestions, update_user_feedback
 from Recruiter.ML_model_resume import MODEL_VERSION
 from .serializers import UserSerializer
-
+import traceback
 
 
 def getUserFromRequest(request):
@@ -176,6 +176,7 @@ def update_feedback(request):
     except json.JSONDecodeError:
         return JsonResponse({"error": "Invalid JSON"}, status=400)
     except Exception as e:
+        traceback.print_exc()
         return JsonResponse({"error": str(e)}, status=500)
 
 def get_recommendations(request):

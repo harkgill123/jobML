@@ -158,6 +158,54 @@ const EmployerRecommendedCandidates: React.FC = () => {
     }
   };
 
+  const handleLike = async (jobId: any) => {
+    try {
+      console.log('Token:', token);
+      console.log(jobId);
+      const response = await fetch('http://localhost:8000/Recruiter/update_feedback/', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ job_id: jobId, feedback: '1' }),
+      });
+  
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      window.location.reload();
+      const data = await response.json();
+      console.log('Like response:', data);
+    } catch (error) {
+      console.error('Error sending like:', error);
+    }
+  };
+
+
+  const handleDislike = async (jobId: any) => {
+    try {
+      const response = await fetch('http://localhost:8000/Recruiter/update_feedback/', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ job_id: jobId, feedback: '-1' }),
+      });
+  
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      window.location.reload();
+      const data = await response.json();
+      console.log('Dislike response:', data);
+    } catch (error) {
+      console.error('Error sending dislike:', error);
+    }
+  };
+
+
   return (
     <div className={styles.jobPage}>
       <Navigation2 />
@@ -185,22 +233,45 @@ const EmployerRecommendedCandidates: React.FC = () => {
   
         {/* Right Column for Additional Content */}
         <div className={styles.additionalContentColumn}>
-        {recommendedCandidates.map((user) => (
-          <div key={user.id} className={styles.candidateCard}>
-            <div className={styles.candidateDetails}>
-              <h2 className={styles.candidateName}>{user.name}</h2>
-              <p className={styles.candidatePhoneNumber}>{user.phone_number}</p>
-              <p className={styles.candidateEmail}>{user.email}</p>
-            </div>
-            <button
-              className={styles.viewCandidateButton}
-              onClick={() =>viewapplicant(user)}
-            >
-              View Candidate
-            </button>
-          </div>
-        ))}
+        <h2 className={styles.recommendationsHeading}>Candidates you might like...</h2>
+  {recommendedCandidates.map((user) => (
+    <div key={user.id} className={styles.candidateCard}>
+      <div className={styles.candidateDetails}>
+        <h2 className={styles.candidateName}>{user.name}</h2>
+        <p className={styles.candidatePhoneNumber}>{user.phone_number}</p>
+        <p className={styles.candidateEmail}>{user.email}</p>
       </div>
+      {/* New container for all action buttons */}
+      <div className={styles.actionButtons}>
+        {/* Like and Dislike buttons */}
+        <div className={styles.interactionIcons}>
+          <button className={styles.likeButton} onClick={() => handleLike(jobId)}>
+            <img
+              className={styles.thumbsupIcon}
+              loading="lazy"
+              alt="Like"
+              src="/thumbsup.svg"
+            />
+          </button>
+          <button className={styles.dislikeButton} onClick={() => handleDislike(jobId)}>
+            <img
+              className={styles.thumbsdownIcon}
+              loading="lazy"
+              alt="Dislike"
+              src="/thumbsdown.svg"
+            />
+          </button>
+        </div>
+        <button
+          className={styles.viewCandidateButton}
+          onClick={() => viewapplicant(user)}
+        >
+          View Candidate
+        </button>
+      </div>
+    </div>
+  ))}
+</div>
     </div>
   
       <Footer />

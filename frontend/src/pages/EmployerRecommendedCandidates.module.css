@@ -103,3 +103,58 @@
   .viewCandidateButton:hover {
     background-color: var(--color-dodgerblue);
   }
+
+  .interactionIcons {
+    align-self: center; /* Center the icons container */
+    display: flex;
+    gap: 8px; /* Space between buttons */
+    margin-bottom: 16px;
+    margin-left: 50px; /* Space above the View Candidate button */
+  }
+  
+  /* Button styles */
+  .likeButton,
+  .dislikeButton {
+    background: none;
+    border: none;
+    cursor: pointer;
+    display: inline-flex; /* Flex container for the buttons */
+    justify-content: center; /* Center the icons horizontally */
+    align-items: center; /* Center the icons vertically */
+    padding: 4px; /* Padding around the icons */
+    border-radius: 4px; /* Rounded corners for the buttons */
+    transition: background-color 0.3s ease; /* Smooth transition for the hover effect */
+  }
+  
+  .likeButton:hover {
+    background-color: #4CAF50; /* Green background on hover for like button */
+  }
+  
+  .dislikeButton:hover {
+    background-color: #F44336; /* Red background on hover for dislike button */
+  }
+  
+  /* Icon styles */
+  .thumbsupIcon,
+  .thumbsdownIcon {
+    width: 24px; /* Set your desired icon size */
+    height: auto;
+  }
+  
+
+  .actionButtons {
+    display: flex; /* Use flexbox to lay out the children */
+    flex-direction: column; /* Stack children vertically */
+    align-items: right; /* Center children horizontally */
+    width: 15%; /* Take the full width of the parent */
+  }
+
+  .recommendationsHeading {
+
+    font-size: 2rem;
+    font-weight: 590;
+    color: #333;
+    margin-bottom: 20px;
+    width: 100%;
+    text-align: left;
+  }
