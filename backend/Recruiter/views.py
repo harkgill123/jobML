@@ -215,4 +215,4 @@ class DisplayUserInfo(APIView):
             user_data['work_experiences'] = list(resume.work_experiences.values('company_name', 'job_title', 'start_date', 'end_date', 'job_description'))
             user_data['projects'] = list(resume.projects.values('title', 'description')) if hasattr(resume, 'projects') else []
 
-        return JsonResponse(user_data)
+        return JsonResponse({'applicants': user_data})
