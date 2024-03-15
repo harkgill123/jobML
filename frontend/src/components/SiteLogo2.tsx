@@ -1,7 +1,7 @@
 import { FunctionComponent, useMemo, type CSSProperties } from "react";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom"; 
-import styles from "./SiteLogo.module.css";
+import styles from "./SiteLogo2.module.css";
 
 export type SiteLogoType = {
   findAJobThatSuitsYourInte?: string;
