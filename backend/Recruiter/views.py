@@ -193,27 +193,32 @@ def get_recommendations(request):
         return JsonResponse({"error": "user couldn't be found"}, status=400)
     
 
-class DisplayUserInfo(APIView):
-    def post(self, request):
+@csrf_exempt
+def display_user_info(request):
+    try:
         data = json.loads(request.body)
         user_id = data['user_id']
         user = User.objects.get(id=user_id)
+
         user_data = {
-        'name': user.name,
-        'email': user.email,
-        'phone_number': user.phone_number,
-        'skills': [],
-        'educations': [],
-        'work_experiences': [],
-        'projects': []
-    }
-        users = []
-        resume = user.resumes.first()  
+            'name': user.name,
+            'email': user.email,
+            'phone_number': user.phone_number,
+            'skills': [],
+            'educations': [],
+            'work_experiences': [],
+            'projects': []
+        }
+
+        resume = user.resumes.first()  # Assuming a user has only one resume
         if resume:
             user_data['skills'] = list(resume.resume_skills.values('skill_name'))
             user_data['educations'] = list(resume.educations.values('school_name', 'degree', 'start_date', 'end_date', 'gpa'))
             user_data['work_experiences'] = list(resume.work_experiences.values('company_name', 'job_title', 'start_date', 'end_date', 'job_description'))
+            # Assuming you have a 'projects' relation in Resume model similar to skills, educations, and work experiences
             user_data['projects'] = list(resume.projects.values('title', 'description')) if hasattr(resume, 'projects') else []
 
-        users.append(user_data)
-        return JsonResponse({'applicants': users})
+        return JsonResponse(user_data)
+
+    except User.DoesNotExist:
+        return JsonResponse({'error': 'User not found'}, status=404)
