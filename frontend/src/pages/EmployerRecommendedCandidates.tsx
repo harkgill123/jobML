@@ -36,6 +36,33 @@ type User = {
   email: string;
   phone_number: string;
 };
+type Skill = {
+  skill_name: string;
+};
+type WorkExperience = {
+  company_name: string;
+  end_date: string;
+  job_description: string;
+  job_title: string;
+  start_date: string;
+};
+type Education = {
+  school_name: string;
+  degree: string;
+  start_date: string; // or Date
+  end_date: string;   // or Date
+  gpa?: string;
+};
+type Applicant = {
+
+name: string;
+email?: string;
+phone_number?: string;
+skills?: Skill[];
+educations?: Education[];
+work_experiences?: WorkExperience[];
+projects?: string[];
+};
 
 const EmployerRecommendedCandidates: React.FC = () => {
   const { jobId } = useParams<{ jobId: string }>();
@@ -44,7 +71,7 @@ const EmployerRecommendedCandidates: React.FC = () => {
   const state = location.state as LocationState;
   const token = localStorage.getItem('token');
   const [recommendedCandidates, setRecommendedCandidates] = useState<User[]>([]);
-
+  const [applicant, setApplicant] = useState<Applicant[]>([]);
 
 
   const {
@@ -96,7 +123,7 @@ const EmployerRecommendedCandidates: React.FC = () => {
     }
   }, [jobId, token]);
   
-  const viewapplicant = async (user_id: number) => {
+  const viewapplicant = async (user: User) => {
     try {
       // Assuming 'applicant.id' is the ID of the user you want to fetch details for
       // and 'http://localhost:8000/user-info/' is the endpoint to your Django view.
@@ -106,7 +133,7 @@ const EmployerRecommendedCandidates: React.FC = () => {
           'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ user_id: user_id }),
+        body: JSON.stringify({ user_id: user.id }),
       });
   
       if (!response.ok) {
@@ -116,9 +143,13 @@ const EmployerRecommendedCandidates: React.FC = () => {
       const data = await response.json();
       console.log("data.applicants",data.applicants)
       console.log("data",data)
-
+      const temp = data.applicants
+      console.log("temp",temp)
+      setApplicant(temp[1])
+      console.log(applicant)
+      
       // If you want to navigate to the candidate page and pass the user info
-      navigate(`/candidatepage/${user_id}`, { state: { applicants: data.applicants } });
+      navigate(`/candidatepage/${user.id}`, { state: { applicant } });
       
     } catch (error) {
       console.error('Error fetching user details:', error);
@@ -162,7 +193,7 @@ const EmployerRecommendedCandidates: React.FC = () => {
             </div>
             <button
               className={styles.viewCandidateButton}
-              onClick={() =>viewapplicant(user.id)}
+              onClick={() =>viewapplicant(user)}
             >
               View Candidate
             </button>

@@ -13,7 +13,7 @@ const CandidateSearchPage: FunctionComponent = () => {
   const viewapplicant = (applicant: any) => {
     // This will navigate to a new route and add the job ID to the URL path.
     // It will also pass the job data to the route so it can be displayed on the next page.
-    navigate(`/candidatepage`, { state: { applicant } });
+    navigate(`/candidatepage/${applicant.id}`, { state: { applicant } });
   };
 
   return (

@@ -114,7 +114,7 @@ const CandidatePage: React.FC = () => {
 //   const { jobId } = useParams<{ jobId: string }>();
   const location = useLocation();
   const state = location.state as LocationState;
-
+  console.log("State:", state.applicant)
   if (!state?.applicant) {
     return <Navigate to="/employer-search-page" />;
   }
