@@ -27,7 +27,7 @@ rcParams['figure.figsize'] = 50, 20
 start=time.time()
 nltk.download('stopwords')
 
-MODEL_VERSION = 0
+MODEL_VERSION = 1
 
 # Functions to clean skills data and make a vocabulary for skills vectorization
 common_placeholders = [
@@ -187,10 +187,15 @@ def update_model_version_database(MODEL_VERSION):
             }
         )
 
+# print(f"----- MODEL VERSION {MODEL_VERSION} -----")
 # jobs = create_model()
+# print(jobs)
 # df = pd.DataFrame(jobs)
+# print("----- Training Model -----")
 # train_model()
+# print("----- Deleting all Job to Cluster Table -----")
 # JobToClusters.objects.all().delete()
+# print("----- Updating Job to Cluster Table -----")
 # populate_job_clusters()
+# print("----- Updating Model Version Resume Table -----")
 # update_model_version_database(MODEL_VERSION)
-# df.to_json('model_settings/df.json')
