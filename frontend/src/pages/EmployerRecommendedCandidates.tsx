@@ -96,10 +96,34 @@ const EmployerRecommendedCandidates: React.FC = () => {
     }
   }, [jobId, token]);
   
-  const viewapplicant = (applicant: any) => {
-    // This will navigate to a new route and add the job ID to the URL path.
-    // It will also pass the job data to the route so it can be displayed on the next page.
-    navigate(`/cadidatepage`, { state: { applicant } });
+  const viewapplicant = async (user_id: number) => {
+    try {
+      // Assuming 'applicant.id' is the ID of the user you want to fetch details for
+      // and 'http://localhost:8000/user-info/' is the endpoint to your Django view.
+      const response = await fetch(`http://localhost:8000/Recruiter/display_user_info/`, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ user_id: user_id }),
+      });
+  
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+  
+      const data = await response.json();
+      console.log("data.applicants",data.applicants)
+      console.log("data",data)
+
+      // If you want to navigate to the candidate page and pass the user info
+      navigate(`/candidatepage/${user_id}`, { state: { applicants: data.applicants } });
+      
+    } catch (error) {
+      console.error('Error fetching user details:', error);
+      // Handle any additional error logic here, such as showing a notification to the user
+    }
   };
 
   return (
@@ -138,7 +162,7 @@ const EmployerRecommendedCandidates: React.FC = () => {
             </div>
             <button
               className={styles.viewCandidateButton}
-              onClick={() =>viewapplicant(user)}
+              onClick={() =>viewapplicant(user.id)}
             >
               View Candidate
             </button>

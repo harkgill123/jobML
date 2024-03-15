@@ -54,7 +54,7 @@ function App() {
         title = "";
         metaDescription = "";
         break;
-      case "/cadidatepage":
+      case "/candidatepage":
           title = "";
           metaDescription = "";
           break;
@@ -162,7 +162,7 @@ function App() {
       <Route path="/candidate-my-profile" element={<CandidateMyProfile />} />
       <Route path="/candidate-search-page" element={<CandidateSearchPage />} />
       <Route path="/candidate-dashboard" element={<CandidateDashboard />} />
-      <Route path="/cadidatepage" element={<CandidatePage />} />
+      <Route path="/candidatepage/:user_id" element={<CandidatePage />} />
       <Route
         path="/candidate-applied-jobs"
         element={<CandidateAppliedJobs />}

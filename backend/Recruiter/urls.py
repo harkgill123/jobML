@@ -8,6 +8,6 @@ urlpatterns = [
     path('jobPostingCreateView/', JobPostingCreateView.as_view(), name='jobPostingCreateView'),
     path('search_applicants/', search_applicants, name='search_applicants'),
     path('candidate-recommendations/', sendRecommendationsToFrontEnd, name='candidate-recommendations'),
-    path('user/<int:user_id>/', DisplayUserInfo.as_view(), name='display_user_info'),
+    path('display_user_info/', DisplayUserInfo.as_view(), name='display_user_info'),
 
 ]

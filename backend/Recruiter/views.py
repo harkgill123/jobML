@@ -187,7 +187,6 @@ def get_recommendations(request):
         users = User.objects.filter(id__in=user_ids)
         
         serialized_users = serializers.serialize('json', users, fields=('id', 'name','email','phone_number'))
-        print(serialized_users)
         
         return JsonResponse({"recommended_users": json.loads(serialized_users)})
     except User.DoesNotExist: 
@@ -195,10 +194,13 @@ def get_recommendations(request):
     
 
 class DisplayUserInfo(APIView):
-    def get(self, request):
+    def post(self, request):
         try:
-            user = User.objects.get(id=request.user_id)
+            data = json.loads(request.body)
+            user_id = data['user_id']
+            user = User.objects.get(id=user_id)
             serializer = UserSerializer(user)
+            print
             return Response(serializer.data)
         except User.DoesNotExist:
             return Response({"error": "User not found"}, status=status.HTTP_404_NOT_FOUND)
