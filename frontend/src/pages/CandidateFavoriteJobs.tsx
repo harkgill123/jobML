@@ -2,7 +2,7 @@ import { FunctionComponent } from "react";
 import { useLocation , useNavigate} from "react-router-dom";
 import Navigation1 from "../components/Navigation1";
 import Footer from "../components/Footer";
-import styles from "./CandidateSearchPage.module.css";
+import styles from "./CandidateFavoriteJobs.module.css";
 import { useEffect, useState } from "react";
 
 const CandidateFavouriteJobs: FunctionComponent = () => {
@@ -45,14 +45,17 @@ const CandidateFavouriteJobs: FunctionComponent = () => {
   };
 
 
-  return (
-    <div className={styles.candidateSearchPage}>
-      <Navigation1 />
-      <div className={styles.jobListingsContainer}>
-        {jobs.map((job: any) => (
+return (
+  <div className={styles.candidateSearchPage}>
+    <Navigation1 />
+    {/* New heading for liked jobs */}
+    <div className={styles.jobListingsContainer}>
+    <h2 className={styles.searchResultsTitle}>Your liked jobs...</h2>
+      {jobs.length > 0 ? (
+        jobs.map((job: any) => (
           <div key={job.id} className={styles.jobCard}>
             <div>
-              <h2 className={styles.jobTitle}>{job.title}</h2>
+              <h3 className={styles.jobTitle}>{job.title}</h3>
               <div className={styles.jobDetails}>
                 <span className={styles.companyName}>{job.company_name}</span>
                 <span className={styles.location}>{job.location}</span>
@@ -65,11 +68,17 @@ const CandidateFavouriteJobs: FunctionComponent = () => {
               View Job
             </button>
           </div>
-        ))}
-      </div>
-      <Footer />
+        ))
+      ) : (
+        <div className={styles.noResults}>No liked jobs to display.</div>
+      )}
     </div>
-  );
+    <div className={styles.footer}>
+    <Footer />
+    </div>
+  </div>
+);
+
 };
 
 export default CandidateFavouriteJobs;
