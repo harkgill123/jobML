@@ -15,6 +15,8 @@ from django.core.serializers import serialize
 from django.core import serializers
 from Recruiter.recommendations_resume import give_suggestions, update_user_feedback
 from Recruiter.ML_model_resume import MODEL_VERSION
+from .serializers import UserSerializer
+
 
 
 def getUserFromRequest(request):
@@ -190,3 +192,13 @@ def get_recommendations(request):
         return JsonResponse({"recommended_users": json.loads(serialized_users)})
     except User.DoesNotExist: 
         return JsonResponse({"error": "user couldn't be found"}, status=400)
+    
+
+class DisplayUserInfo(APIView):
+    def get(self, request):
+        try:
+            user = User.objects.get(id=request.user_id)
+            serializer = UserSerializer(user)
+            return Response(serializer.data)
+        except User.DoesNotExist:
+            return Response({"error": "User not found"}, status=status.HTTP_404_NOT_FOUND)
