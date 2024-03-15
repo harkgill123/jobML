@@ -1,7 +1,8 @@
-from rest_framework.serializers import ModelSerializer
-from .models import User
+from .models import User, Education, WorkExperience, Resume
+from rest_framework import serializers
 
-class UserSerializer(ModelSerializer):
+
+class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = (
@@ -27,3 +28,22 @@ class UserSerializer(ModelSerializer):
             instance.set_password(password)
         instance.save()
         return instance
+    
+
+class EducationSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Education
+        fields = ['id', 'school_name', 'degree', 'start_date', 'end_date', 'gpa']
+
+class WorkExperienceSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = WorkExperience
+        fields = ['id', 'company_name', 'job_title', 'start_date', 'end_date', 'job_description']
+
+class ResumeSerializer(serializers.ModelSerializer):
+    educations = EducationSerializer(many=True, read_only=True)
+    work_experiences = WorkExperienceSerializer(many=True, read_only=True)
+
+    class Meta:
+        model = Resume
+        fields = ['id', 'user', 'educations', 'work_experiences']
