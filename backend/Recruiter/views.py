@@ -184,7 +184,7 @@ def get_recommendations(request):
         user_ids = [suggestion['user_id'] for suggestion in top_entries]
         users = User.objects.filter(id__in=user_ids)
         
-        serialized_users = serializers.serialize('json', users, fields=('id', 'name'))
+        serialized_users = serializers.serialize('json', users, fields=('id', 'name','email','phone_number'))
         print(serialized_users)
         
         return JsonResponse({"recommended_users": json.loads(serialized_users)})

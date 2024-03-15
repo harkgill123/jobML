@@ -123,7 +123,7 @@ def give_suggestions(job_id, job_title, job_description, job_skills):
     resumes = create_clustered_model()
     df = pd.DataFrame(resumes)
 
-    Model_Version = get_object_or_404(ModelVersionResume, user_id=user_id)
+    Model_Version = get_object_or_404(ModelVersionResume, job_posting_id=job_id)
     Model_Version = Model_Version.latest_version
 
     # Load your model components
