@@ -71,7 +71,12 @@ const EmployerRecommendedCandidates: React.FC = () => {
   const state = location.state as LocationState;
   const token = localStorage.getItem('token');
   const [recommendedCandidates, setRecommendedCandidates] = useState<User[]>([]);
-  const [applicant, setApplicant] = useState<Applicant[]>([]);
+  const [applicant, setApplicant] = useState<Applicant | null>(null);
+
+  useEffect(() => {
+    console.log("Applicant state updated:", applicant);
+  }, [applicant]);
+  
 
 
   const {
@@ -141,16 +146,12 @@ const EmployerRecommendedCandidates: React.FC = () => {
       }
   
       const data = await response.json();
-      console.log("data.applicants",data.applicants)
       console.log("data",data)
-      const temp = data.applicants
-      console.log("temp",temp)
-      setApplicant(temp[1])
-      console.log(applicant)
+      setApplicant(data)
       
       // If you want to navigate to the candidate page and pass the user info
-      navigate(`/candidatepage/${user.id}`, { state: { applicant } });
-      
+      navigate(`/candidatepage/${user.id}`, { state: { applicant: data } });
+
     } catch (error) {
       console.error('Error fetching user details:', error);
       // Handle any additional error logic here, such as showing a notification to the user
