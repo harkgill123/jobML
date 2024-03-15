@@ -32,6 +32,7 @@ class JobPostingListView(APIView):
 
     def get(self, request, *args, **kwargs):
         user = getUserFromRequest(request=request)
+        print(user)
         job_postings = JobPosting.objects.filter(user_id=user.id)
 
         job_postings_list = []
