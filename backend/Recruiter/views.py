@@ -195,12 +195,24 @@ def get_recommendations(request):
 
 class DisplayUserInfo(APIView):
     def post(self, request):
-        try:
-            data = json.loads(request.body)
-            user_id = data['user_id']
-            user = User.objects.get(id=user_id)
-            serializer = UserSerializer(user)
-            print
-            return Response(serializer.data)
-        except User.DoesNotExist:
-            return Response({"error": "User not found"}, status=status.HTTP_404_NOT_FOUND)
+        data = json.loads(request.body)
+        user_id = data['user_id']
+        user = User.objects.get(id=user_id)
+        user_data = {
+        'name': user.name,
+        'email': user.email,
+        'phone_number': user.phone_number,
+        'skills': [],
+        'educations': [],
+        'work_experiences': [],
+        'projects': []
+    }
+
+        resume = user.resumes.first()  
+        if resume:
+            user_data['skills'] = list(resume.resume_skills.values('skill_name'))
+            user_data['educations'] = list(resume.educations.values('school_name', 'degree', 'start_date', 'end_date', 'gpa'))
+            user_data['work_experiences'] = list(resume.work_experiences.values('company_name', 'job_title', 'start_date', 'end_date', 'job_description'))
+            user_data['projects'] = list(resume.projects.values('title', 'description')) if hasattr(resume, 'projects') else []
+
+        return JsonResponse(user_data)
