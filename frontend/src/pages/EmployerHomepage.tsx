@@ -40,7 +40,10 @@ const EmployerHomepage: FunctionComponent = () => {
     // You can pass additional state to the route as needed
     navigate(`/recommended-candidates/${jobId}`, { state: { job } });
   };
-
+  const editJob = (jobId: number , job: any) => {
+    // You can pass additional state to the route as needed
+    navigate(`/edit-job/${jobId}`, { state: { job } });
+  };
 
   return (
     <div className={styles.employerHomepage}>
@@ -58,12 +61,21 @@ const EmployerHomepage: FunctionComponent = () => {
                   <span className={styles.location}>{job.location}</span>
                 </div>
               </div>
+              <div className={styles.buttonsContainer}> 
+              <button
+              
+            className={styles.editJobButton}
+            onClick={() => editJob(job.id, job)} // Use the viewCandidates function here
+          >
+            Edit Job
+          </button>
               <button
             className={styles.viewJobButton}
             onClick={() => viewCandidates(job.id, job)} // Use the viewCandidates function here
           >
             View Candidates
           </button>
+            </div>
             </div>
           ))
         ) : (

@@ -359,6 +359,25 @@
   background-color: var(--color-dodgerblue);
 }
 
+.editJobButton {
+  /* Align this button to the right */
+  padding: 10px 15px;
+  background-color: var(--primary-500);
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  font-size: 1.15rem;
+  justify-self: right;
+}
+
+.editJobButton:hover {
+  background-color: var(--color-dodgerblue);
+}
+
+
+
 .createJobButton2 {
   padding: 15px 30px; /* Adjust padding as needed */
   font-size: 1.5rem;
@@ -375,4 +394,10 @@
 
 .createJobButton2:hover {
   background-color: var(--color-dodgerblue);
+}
+
+.buttonsContainer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px; /* Adjust the gap between the buttons */
 }

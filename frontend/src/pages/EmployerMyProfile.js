@@ -1,17 +1,17 @@
 import { FunctionComponent } from "react";
-import Navigation1 from "../components/Navigation1";
-import CandidateProfile from "../components/CandidateProfile";
-import styles from "./CandidateMyProfile.module.css";
+import Navigation2 from "../components/Navigation2";
+import EmployerProfile from "../components/EmployerProfile";
+import styles from "./EmployerMyProfile.module.css";
 
-const CandidateMyProfile = () => {
+const EmployerMyProfile = () => {
   return (
     <div className={styles.candidateSettingAccount}>
-      <Navigation1 />
+      <Navigation2 />
       <section className={styles.candidateSettingsWrapper}>
-        <CandidateProfile />
+        <EmployerProfile />
       </section>
     </div>
   );
 };
 
-export default CandidateMyProfile;
+export default EmployerMyProfile;

@@ -34,6 +34,18 @@
   align-items: center; /* Center-align the job cards */
 }
 
+.jobContainer {
+  width: 100%;
+  max-width: 1200px; /* Or whatever max-width you prefer */
+  margin: 0 auto; /* Center the container */
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Center-align the job cards */
+}
+
+
+
 .jobCard {
   background-color: white;
   border-radius: 10px;
@@ -59,7 +71,7 @@
   flex-direction: column;
 }
 
-.companyName, .location, .postedDate {
+.companyName, .location {
   font-size: 1.25rem;
   color: #666;
   margin: 4px 0; /* Vertical spacing */
@@ -108,7 +120,7 @@ footer {
     font-size: 1.5rem; /* Larger font size for title */
     font-weight: 590;
     color: #333;
-    margin-top: 20px;
+    margin-top: 10px;
     margin-bottom: 20px; /* Provide space between title and job listings */
     width: 100%; /* Full width */
     text-align: left; /* Center title text */

@@ -16,7 +16,7 @@ import CandidateFavoriteJobs from "./pages/CandidateFavoriteJobs";
 import CandidateSettingAccount from "./pages/CandidateSettingAccount";
 import EmployerHomepage from "./pages/EmployerHomepage";
 import EmployerDashboard from "./pages/EmployerDashboard";
-import EmployerMyJobs from "./pages/EmployerMyJobs";
+import EmployerLikedApplicants from "./pages/EmployerLikedApplicants";
 import EmployerSavedCandidates from "./pages/EmployerSavedCandidates";
 import EmployerPostAJob from "./pages/EmployerPostAJob";
 import EmployerSettingsPersonal from "./pages/EmployerSettingsPersonal";
@@ -29,6 +29,7 @@ import EmployerCreateJob from "./pages/EmployerCreateJob";
 import CandidatePage from "./pages/candidatepage";
 import EmployerRecommendedCandidates from "./pages/EmployerRecommendedCandidates";
 import EmployerMyProfile from "./pages/EmployerMyProfile";
+import EditJobPage from "./pages/EditJobPage";
 
 function App() {
   const action = useNavigationType();
@@ -126,18 +127,26 @@ function App() {
         title = "";
         metaDescription = "";
         break;
-        case "/employer-create-account":
-          title = "";
-          metaDescription = "";
-          break;
-          case "/create-job":
-          title = "";
-          metaDescription = "";
-          break;
-        case "/resume-upload":
-          title = "";
-           metaDescription = "";
-          break;
+      case "/employer-create-account":
+       title = "";
+        metaDescription = "";
+        break;
+        case "/create-job":
+        title = "";
+        metaDescription = "";
+        break;
+      case "/resume-upload":
+        title = "";
+        metaDescription = "";
+        break;
+      case "/employer-liked-applicants":
+        title = "";
+        metaDescription = "";
+        break;
+      case "/edit-job/:jobId":
+        title = "";
+        metaDescription = "";
+        break;
     }
 
     if (title) {
@@ -177,7 +186,7 @@ function App() {
       />
       <Route path="/employer-homepage" element={<EmployerHomepage />} />
       <Route path="/employer-dashboard" element={<EmployerDashboard />} />
-      <Route path="/employer-my-jobs" element={<EmployerMyJobs />} />
+      <Route path="/employer-liked-applicants" element={<EmployerLikedApplicants />} />
       <Route
         path="/employer-saved-candidates"
         element={<EmployerSavedCandidates />}
@@ -191,7 +200,7 @@ function App() {
         path="/employer-my-profile"
         element={<EmployerMyProfile />}
       />
-      
+      <Route path="/edit-job/:jobId" element={<EditJobPage />} />
       <Route path="/employer-my-profile" element={<EmployerMyProfile />} />
       <Route path="/employer-search-page" element={<EmployerSearchPage />} />
       <Route path="/create-job" element={<EmployerCreateJob />} />

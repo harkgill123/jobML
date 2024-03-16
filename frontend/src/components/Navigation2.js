@@ -5,6 +5,7 @@ import styles from "./Navigation2.module.css";
 const Navigation2 = () => {
   const navigate = useNavigate(); // useNavigate hook for navigation
   const [searchQuery, setSearchQuery] = useState(""); // State to keep track of the search query
+  const token = localStorage.getItem('token');
 
   const handleLogout = () => {
     console.log("Logging out...");
@@ -36,12 +37,39 @@ const Navigation2 = () => {
       const data = await response.json();
 
       console.log(data.applicants)
-      navigate('/employer-search-page', { state: { searchQuery, applicants: data.applicants } });
+      navigate('/employer-search-page', { state: { applicants: data.applicants } });
     } catch (error) {
       console.error("There was an error with the search:", error);
     }
   };
   
+
+  const handleLikedApplicants = async () => {
+    console.log("Finding liked applicants...");
+  
+    try {
+      const response = await fetch('http://127.0.0.1:8000/Recruiter/liked_applicants/', {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+      });
+  
+      if (!response.ok) {
+        // const data = await response.json();
+        // console.log(data.jobs)
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+  
+      const data = await response.json();
+
+      console.log(data.applicants)
+      navigate('/employer-liked-applicants', { state: { applicants: data.applicants } });
+    } catch (error) {
+      console.error("There was an error with the search:", error);
+    }
+  };
+
 
   return (
       <div className={styles.navigation1}>
@@ -74,7 +102,7 @@ const Navigation2 = () => {
         </div>
         <div className={styles.science}>
           <button className={styles.navButton} onClick={() => navigate('/employer-homepage')}>Home</button>
-          <button className={styles.navButton} onClick={() => navigate('/employer-dashboard')}>Liked Applicants</button>
+          <button className={styles.navButton} onClick={handleLikedApplicants}>Liked Applicants</button>
           <button className={styles.navButton} onClick={() => navigate('/employer-my-profile')}>My Profile</button>
           <button className={styles.navButton} onClick={handleLogout}>Log-out</button>
         </div>
