@@ -208,12 +208,21 @@ const CandidateProfile = () => {
 
   const handleUpdateResumeClick = async (event) => {
     event.preventDefault();
-    // Add your logic for updating resume
+   
     console.log('Update Resume Clicked');
 
     event.preventDefault();
-    // const payload = { password: oldPassword, new_password: newPassword };
-    const payload = {"work_experiences" :["company_name" : companyName1]}}
+   
+    const payload = {"resume" : {"work_experiences" :[
+                      {"company_name" : companyName1,"end_date" :startWorkDate1,"end_date" :endWorkDate1,"job_title" : jobTitle1,"job_description":desc  },
+                      {"company_name" : companyName2,"end_date" :startWorkDate2,"end_date" :endWorkDate2,"job_title" : jobTitle2,"job_description":desc2  }
+                    ],
+                    "educations" : [
+                      {"school_name" : school1,"degree" :degree1 , "start_date" : startDate1, "end_date" :endDate1},
+                      {"school_name" : school2,"degree" :degree2 , "start_date" : startDate2, "end_date" :endDate2}
+                    ],
+                    "resume_skills": skillsArray,
+                  }}
 
 
 
