@@ -28,7 +28,7 @@ import ResumeUpload from "./pages/ResumeUpload";
 import EmployerCreateJob from "./pages/EmployerCreateJob";
 import CandidatePage from "./pages/candidatepage";
 import EmployerRecommendedCandidates from "./pages/EmployerRecommendedCandidates";
-
+import EmployerMyProfile from "./pages/EmployerMyProfile";
 
 function App() {
   const action = useNavigationType();
@@ -188,9 +188,11 @@ function App() {
         element={<EmployerSettingsPersonal />}
       />
       <Route
-        path="/employer-settings-account"
-        element={<EmployerSettingsAccount />}
+        path="/employer-my-profile"
+        element={<EmployerMyProfile />}
       />
+      
+      <Route path="/employer-my-profile" element={<EmployerMyProfile />} />
       <Route path="/employer-search-page" element={<EmployerSearchPage />} />
       <Route path="/create-job" element={<EmployerCreateJob />} />
       <Route path="/recommended-candidates/:jobId" element={<EmployerRecommendedCandidates />} />

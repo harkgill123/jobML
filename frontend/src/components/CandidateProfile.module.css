@@ -782,7 +782,7 @@ body, html {
   background-color: #fff;
   max-width: 1800px; /* Adjust width as needed */
   margin: 100px auto; /* Center the form with top margin */
-  padding: 0px;
+  padding: 60px;
   
 }
 
@@ -850,9 +850,9 @@ body, html {
 }
 
 /* Responsive adjustments */
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 1600px) {
   .candidateSettings {
     width: 100%;
-    margin: 20px auto;
+    padding: 50px auto;
   }
 }
