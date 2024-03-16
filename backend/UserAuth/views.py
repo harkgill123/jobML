@@ -128,7 +128,7 @@ class DisplayResumeInfo(APIView):
         educations = []
 
         for resume in resumes:
-            work_experiences.extend(list(resume.work_experience.all()))
+            work_experiences.extend(list(resume.work_experiences.all()))
             educations.extend(list(resume.educations.all()))
 
         resumes_data = serialize('json', resumes)

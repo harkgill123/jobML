@@ -1,4 +1,4 @@
-import { FunctionComponent, useState } from "react";
+import { FunctionComponent, useState,useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import styles from "./CandidateProfile.module.css";
 
@@ -43,7 +43,7 @@ const CandidateProfile = () => {
   }, []);
   const token = localStorage.getItem('token');
   const get_resume_data = async (event) => {
-    event.preventDefault();
+    
  
   
     // Create a FormData object to build the multipart/form-data request
@@ -59,52 +59,62 @@ const CandidateProfile = () => {
         },
         // Headers may be configured as needed by your backend
       });
-  
+      // event.preventDefault();
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
   
       const result = await response.json();
-      console.log('File uploaded successfully', result);
-      console.log(result)
-            // Assuming result contains the structured data as described
-      // Corrected for case sensitivity and key names
-      if (result['educations'] && result['educations'].length > 0) {
-        // Update for first education entry
-        setSchool1(result['educations'][0]['school_name']);
-        setDegree1(result['educations'][0]['degree']);
-        // Add handling for start and end dates if present in your JSON data
-      }
+      // console.log('File uploaded successfully', result);
+      // console.log(result)
+      console.log(result["work_experiences"])
+      // if (result['educations'] && result['educations'].length > 0) {
+      //   // Update for first education entry
+      //   console.log("education")
+      //   console.log(result['educations'][0]['school_name'])
+      //   setSchool1(result['educations'][0]['school_name']);
+      //   setDegree1(result['educations'][0]['degree']);
+      //   // Add handling for start and end dates if present in your JSON data
+      // }
 
-      if (result['educations'] && result['educations'].length > 1) {
-        // Update for first education entry
-        setSchool2(result['educations'][1]['school_name']);
-        setDegree2(result['educations'][1]['degree']);
-        // Add handling for start and end dates if present in your JSON data
-      }
+      // if (result['educations'] && result['educations'].length > 1) {
+      //   // Update for first education entry
+      //   console.log("education")
+      //   console.log(result['educations'][1]['school_name'])
+      //   setSchool2(result['educations'][1]['school_name']);
+      //   setDegree2(result['educations'][1]['degree']);
+      //   // Add handling for start and end dates if present in your JSON data
+      // }
 
-      if (result['work_experiences'] && result['work_experiences'].length > 0) {
-        // Update for first work experience entry
-        setCompanyName1(result['work_experiences'][0]['company_name']);
-        setJobTitle1(result['work_experiences'][0]['job_title']);
-        setDesc(result['work_experiences'][0]['job_description']);
+      // if (result['work_experiences'] && result['work_experiences'].length > 0) {
+      //   // Update for first work experience entry
+      //   console.log("experience")
+      //   console.log(result['work_experiences'][0]['company_name'])
+      //   setCompanyName1(result['work_experiences'][0]['company_name']);
+      //   setJobTitle1(result['work_experiences'][0]['job_title']);
+      //   setDesc(result['work_experiences'][0]['job_description']);
 
-        // Add handling for start and end dates if present in your JSON data
-      }
+      //   // Add handling for start and end dates if present in your JSON data
+      // }
 
-      if (result['work_experiences'] && result['work_experiences'].length > 1) {
-        // Update for first work experience entry
-        setCompanyName2(result['work_experiences'][1]['company_name']);
-        setJobTitle2(result['work_experiences'][1]['job_title']);
-        setDesc2(result['work_experiences'][0]['job_description']);
-      }
+      // if (result['work_experiences'] && result['work_experiences'].length > 1) {
+      //   // Update for first work experience entry
+      //   console.log("experience")
+      //   console.log(result['work_experiences'][0]['company_name'])
+      //   setCompanyName2(result['work_experiences'][1]['company_name']);
+      //   setJobTitle2(result['work_experiences'][1]['job_title']);
+      //   setDesc2(result['work_experiences'][0]['job_description']);
+      // }
 
-      // Correct handling for skills (assuming you modify your JSON or parse the string)
-      setSkills(result['resume_skills']);
-
-      setAddress(result['Address']);
+      // // Correct handling for skills (assuming you modify your JSON or parse the string)
+      // console.log("skills")
+      // console.log(result['resume_skills'])
+      // setSkills(result['resume_skills']);
+      // console.log("address")
+      // console.log(result['Address'])
+      // setAddress(result['Address']);
   
-      setFileUploaded(true); // Indicate that the file upload and data extraction were successful
+      
     } catch (error) {
       console.error('There was an error uploading the file', error);
     }
@@ -246,7 +256,7 @@ const CandidateProfile = () => {
 
     {/* Resume Section - Placeholder for resume update functionality */}
     <h2 className={styles.settings}>Resume</h2>
-    <form onSubmit={handleSubmit} className={styles.resumeForm}>
+    <form  className={styles.resumeForm}>
             {/* Education 1 inputs */}
             <div className={styles.inputGroup}>
               <h3 className={styles.inputTitle}>Education 1</h3>
