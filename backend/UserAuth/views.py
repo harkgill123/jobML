@@ -7,7 +7,7 @@ from rest_framework.response import Response
 from django.core.serializers import serialize
 from django.http import JsonResponse
 from .forms import SignupForm
-from .serializers import UserSerializer, ResumeSerializer, EducationSerializer, WorkExperienceSerializer, UserSerializer
+from .serializers import UserSerializer, ResumeSerializer, EducationSerializer, WorkExperienceSerializer, UserSerializer, JobPostingSerializer
 from .models import ModelVersion, Education, WorkExperience, Resume, JobPosting
 from Applicant.ML_model import MODEL_VERSION
 from Applicant.views import getUserFromRequest
@@ -215,3 +215,16 @@ class DisplayAllJobsInfo(APIView):
             job_postings_list.append(job_dict)
         
         return JsonResponse({'job_postings': job_postings_list})
+    
+class EditJobPosting(APIView):
+    def patch(self, request, job_id):
+        user = getUserFromRequest(request)
+        job_posting = JobPosting.objects.filter(pk=job_id, user=user).first()
+        if not job_posting:
+            return Response({'error': 'Job posting not found or not owned by user'}, status=status.HTTP_404_NOT_FOUND)
+        
+        serializer = JobPostingSerializer(job_posting, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
