@@ -213,12 +213,11 @@ def display_user_info(request):
             'projects': []
         }
 
-        resume = user.resumes.first()  # Assuming a user has only one resume
+        resume = user.resumes.first()  
         if resume:
             user_data['skills'] = list(resume.resume_skills.values('skill_name'))
             user_data['educations'] = list(resume.educations.values('school_name', 'degree', 'start_date', 'end_date', 'gpa'))
             user_data['work_experiences'] = list(resume.work_experiences.values('company_name', 'job_title', 'start_date', 'end_date', 'job_description'))
-            # Assuming you have a 'projects' relation in Resume model similar to skills, educations, and work experiences
             user_data['projects'] = list(resume.projects.values('title', 'description')) if hasattr(resume, 'projects') else []
 
         return JsonResponse(user_data)
@@ -228,8 +227,7 @@ def display_user_info(request):
 
 def liked_applicants(request):
     user = getUserFromRequest(request=request)
-    # Fetch all jobs created by the user
-    user_jobs = JobPosting.objects.filter(creator=user)
+    user_jobs = JobPosting.objects.filter(user_id=user.id)
 
     liked_feedbacks = FeedbackforResume.objects.filter(
         job_posting__in=user_jobs,
