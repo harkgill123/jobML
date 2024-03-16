@@ -68,3 +68,10 @@ class ResumeSerializer(serializers.ModelSerializer):
     educations = EducationSerializer(many=True, read_only=True)
     work_experiences = WorkExperienceSerializer(many=True, read_only=True)
     resume_skills = ResumeToSkillsSerializer(many=True, read_only=True)
+
+class CompleteUserSerializer(serializers.ModelSerializer):
+    resumes = ResumeSerializer(many=True, read_only=True)
+
+    class Meta:
+        model = User
+        fields = ['username', 'name', 'email', 'phone_number', 'user_type', 'resumes']

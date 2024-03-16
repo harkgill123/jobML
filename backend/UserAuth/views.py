@@ -7,7 +7,7 @@ from rest_framework.response import Response
 from django.core.serializers import serialize
 from django.http import JsonResponse
 from .forms import SignupForm
-from .serializers import UserSerializer, ResumeSerializer, EducationSerializer, WorkExperienceSerializer, UserSerializer, JobPostingSerializer
+from .serializers import CompleteUserSerializer, UserSerializer, ResumeSerializer, EducationSerializer, WorkExperienceSerializer, UserSerializer, JobPostingSerializer
 from .models import ModelVersion, Education, WorkExperience, Resume, JobPosting
 from Applicant.ML_model import MODEL_VERSION
 from Applicant.views import getUserFromRequest
@@ -122,7 +122,7 @@ class UpdateEmailView(APIView):
 class DisplayResumeInfo(APIView):
     def get(self, request):
         user = getUserFromRequest(request)
-        serializer = UserSerializer(user)
+        serializer = CompleteUserSerializer(user)
         return Response(serializer.data)
 
 
