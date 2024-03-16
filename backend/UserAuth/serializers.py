@@ -1,4 +1,4 @@
-from .models import User, Education, WorkExperience, Resume, JobPosting, ListOfSkills
+from .models import User, Education, WorkExperience, Resume, ResumeToSkills, JobPosting, ListOfSkills
 from rest_framework import serializers
 
 
@@ -58,3 +58,13 @@ class JobPostingSerializer(serializers.ModelSerializer):
     class Meta:
         model = JobPosting
         fields = '__all__'
+
+class ResumeToSkillsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ResumeToSkills
+        fields = ['skill_name']
+
+class ResumeSerializer(serializers.ModelSerializer):
+    educations = EducationSerializer(many=True, read_only=True)
+    work_experiences = WorkExperienceSerializer(many=True, read_only=True)
+    resume_skills = ResumeToSkillsSerializer(many=True, read_only=True)

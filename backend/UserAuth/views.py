@@ -122,26 +122,8 @@ class UpdateEmailView(APIView):
 class DisplayResumeInfo(APIView):
     def get(self, request):
         user = getUserFromRequest(request)
-        resumes = user.resumes.all()
-
-        work_experiences = []
-        educations = []
-
-        for resume in resumes:
-            work_experiences.extend(list(resume.work_experience.all()))
-            educations.extend(list(resume.educations.all()))
-
-        resumes_data = serialize('json', resumes)
-        user_data = serialize('json', [user,])
-        work_experiences_data = serialize('json', work_experiences, ensure_ascii=False)
-        educations_data = serialize('json', educations, ensure_ascii=False)
-
-        return JsonResponse({
-            'user': user_data,
-            'resumes': resumes_data,
-            'work_experiences': work_experiences_data,
-            'educations': educations_data
-        })
+        serializer = UserSerializer(user)
+        return Response(serializer.data)
 
 
 class UpdateResumeInfo(APIView):
