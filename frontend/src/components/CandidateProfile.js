@@ -33,7 +33,7 @@ const CandidateProfile = () => {
   const [jobTitle2, setJobTitle2] = useState("");
   const [startWorkDate2, setStartWorkDate2] = useState("");
   const [endWorkDate2, setEndWorkDate2] = useState("");
-  const [skills, setSkills] = useState("");
+  const [skills, setSkills] = useState([]);
   const [address, setAddress] = useState("");
   const [desc, setDesc] = useState("");
   const [desc2, setDesc2] = useState("");
@@ -65,54 +65,73 @@ const CandidateProfile = () => {
       }
   
       const result = await response.json();
+      console.log("result")
+      console.log(result)
       // console.log('File uploaded successfully', result);
-      // console.log(result)
-      console.log(result["work_experiences"])
-      // if (result['educations'] && result['educations'].length > 0) {
-      //   // Update for first education entry
-      //   console.log("education")
-      //   console.log(result['educations'][0]['school_name'])
-      //   setSchool1(result['educations'][0]['school_name']);
-      //   setDegree1(result['educations'][0]['degree']);
-      //   // Add handling for start and end dates if present in your JSON data
-      // }
+      console.log(result)
+      const resume = result['resumes'][0]
+      
+      console.log(resume)
+      console.log(resume['educations'][0]['school_name'])
+      if (resume['educations'] && resume['educations'].length > 0) {
+        // Update for first education entry
+        console.log("education")
+        
+        setSchool1(resume['educations'][0]['school_name']);
+        setDegree1(resume['educations'][0]['degree']);
+        setStartDate1(resume['educations'][0]['start_date']);
+        setEndDate1(resume['educations'][0]['end_date']);
+        // Add handling for start and end dates if present in your JSON data
+      }
 
-      // if (result['educations'] && result['educations'].length > 1) {
-      //   // Update for first education entry
-      //   console.log("education")
-      //   console.log(result['educations'][1]['school_name'])
-      //   setSchool2(result['educations'][1]['school_name']);
-      //   setDegree2(result['educations'][1]['degree']);
-      //   // Add handling for start and end dates if present in your JSON data
-      // }
+      if (resume['educations'] && resume['educations'].length > 1) {
+        // Update for first education entry
+        console.log("education")
+        console.log(resume['educations'][1]['school_name'])
+        setSchool2(resume['educations'][1]['school_name']);
+        setDegree2(resume['educations'][1]['degree']);
+        setStartDate2(resume['educations'][1]['start_date']);
+        setEndDate2(resume['educations'][1]['end_date']);
+        // Add handling for start and end dates if present in your JSON data
+      }
 
-      // if (result['work_experiences'] && result['work_experiences'].length > 0) {
-      //   // Update for first work experience entry
-      //   console.log("experience")
-      //   console.log(result['work_experiences'][0]['company_name'])
-      //   setCompanyName1(result['work_experiences'][0]['company_name']);
-      //   setJobTitle1(result['work_experiences'][0]['job_title']);
-      //   setDesc(result['work_experiences'][0]['job_description']);
+      if (resume['work_experiences'] && resume['work_experiences'].length > 0) {
+        // Update for first work experience entry
+        console.log("experience")
+        console.log(resume['work_experiences'][0]['company_name'])
+        setCompanyName1(resume['work_experiences'][0]['company_name']);
+        setJobTitle1(resume['work_experiences'][0]['job_title']);
+        setDesc(resume['work_experiences'][0]['job_description']);
+        setStartWorkDate1(resume['work_experiences'][0]['start_date']);
+        setEndWorkDate1(resume['work_experiences'][0]['end_date']);
 
-      //   // Add handling for start and end dates if present in your JSON data
-      // }
+        // Add handling for start and end dates if present in your JSON data
+      }
 
-      // if (result['work_experiences'] && result['work_experiences'].length > 1) {
-      //   // Update for first work experience entry
-      //   console.log("experience")
-      //   console.log(result['work_experiences'][0]['company_name'])
-      //   setCompanyName2(result['work_experiences'][1]['company_name']);
-      //   setJobTitle2(result['work_experiences'][1]['job_title']);
-      //   setDesc2(result['work_experiences'][0]['job_description']);
-      // }
+      if (resume['work_experiences'] && resume['work_experiences'].length > 1) {
+        // Update for first work experience entry
+        console.log("experience")
+        console.log(resume['work_experiences'][0]['company_name'])
+        setCompanyName2(resume['work_experiences'][1]['company_name']);
+        setJobTitle2(resume['work_experiences'][1]['job_title']);
+        setDesc2(resume['work_experiences'][0]['job_description']);
+        setStartWorkDate1(resume['work_experiences'][0]['start_date']);
+        setStartWorkDate2(resume['work_experiences'][1]['start_date']);
+        setEndWorkDate1(resume['work_experiences'][0]['end_date']);
+        setEndWorkDate2(resume['work_experiences'][1]['end_date']);
+      }
 
-      // // Correct handling for skills (assuming you modify your JSON or parse the string)
+      // Correct handling for skills (assuming you modify your JSON or parse the string)
+      
+
+      setSkills(resume['resume_skills'].map(skill => skill.skill_name));
+      console.log(skills)
       // console.log("skills")
-      // console.log(result['resume_skills'])
-      // setSkills(result['resume_skills']);
+      // console.log(resume['resume_skills'])
+      // setSkills(resume['resume_skills']);
       // console.log("address")
-      // console.log(result['Address'])
-      // setAddress(result['Address']);
+      // console.log(resume['Address'])
+      // setAddress(resume['Address']);
   
       
     } catch (error) {
@@ -187,10 +206,40 @@ const CandidateProfile = () => {
   };
   
 
-  const handleUpdateResumeClick = (event) => {
+  const handleUpdateResumeClick = async (event) => {
     event.preventDefault();
     // Add your logic for updating resume
     console.log('Update Resume Clicked');
+
+    event.preventDefault();
+    // const payload = { password: oldPassword, new_password: newPassword };
+    const payload = {"work_experiences" :["company_name" : companyName1]}}
+
+
+
+    try {
+      const response = await fetch('http://localhost:8000/UserAuth/edit-resume/', {
+        method: 'PUT',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+
+          'Content-Type': 'application/json',
+      
+        },
+        body: JSON.stringify(payload),
+      });
+
+      // const data = await response.json();
+
+      if (response.ok) {
+        console.log('update success:');
+
+      } else {
+        console.error('update error:', data.result);
+      }
+    } catch (error) {
+      console.error('update failed:', error);
+    }
   };
 
 
@@ -301,11 +350,11 @@ const CandidateProfile = () => {
               <h3 className={styles.inputTitle}>Address</h3>
               <input type="text" placeholder="Address" value={address} onChange={e => setAddress(e.target.value)} />
             </div>
-            <button type="submit" className={styles.submitFinalButton}>Submit</button>
+            <button onClick={handleUpdateResumeClick} className={styles.button}>
+              Update Resume
+            </button>
           </form>
-    <button onClick={handleUpdateResumeClick} className={styles.button}>
-      Update Resume
-    </button>
+  
 
 
   </form>
