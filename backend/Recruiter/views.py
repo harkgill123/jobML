@@ -228,14 +228,17 @@ def display_user_info(request):
 
 def liked_applicants(request):
     user = getUserFromRequest(request=request)
-    liked_applicants = FeedbackforResume.objects.filter(user_id=user.id, feedback='1')
-    
-    applicant_ids = []
-    
-    for applicant in liked_applicants:
-        applicant_ids.append(applicant.user_id)
-    
+    user_jobs = JobPosting.objects.filter(user_id=user.id)
+
+    liked_feedbacks = FeedbackforResume.objects.filter(
+        job_posting__in=user_jobs,
+        feedback='1'
+    ).select_related('user').distinct()
+
+    applicant_ids = set(feedback.user_id for feedback in liked_feedbacks if feedback.user_id)
+
     applicants = User.objects.filter(id__in=applicant_ids)
+    
     applicants_list = []
     for applicant in applicants:
         applicant_dict = {
