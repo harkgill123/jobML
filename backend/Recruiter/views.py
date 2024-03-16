@@ -17,6 +17,8 @@ from Recruiter.recommendations_resume import give_suggestions, update_user_feedb
 from Recruiter.ML_model_resume import MODEL_VERSION
 from .serializers import UserSerializer
 import traceback
+from collections import defaultdict
+
 
 
 def getUserFromRequest(request):
@@ -234,38 +236,29 @@ def liked_applicants(request):
         feedback='1'
     ).prefetch_related('user', 'job_posting').distinct()
 
-    applicants_info = {}
+    jobs_with_applicants = defaultdict(list)
     for feedback in liked_feedbacks:
-        if feedback.user_id and feedback.job_posting:
-            if feedback.user_id not in applicants_info:
-                applicants_info[feedback.user_id] = {
-                    'liked_jobs': [feedback.job_posting.title],
-                }
-            else:
-                applicants_info[feedback.user_id]['liked_jobs'].append(feedback.job_posting.title)
+        if feedback.user and feedback.job_posting:
+            applicant_dict = {
+                'id': feedback.user.id,
+                'name': feedback.user.name,
+                'email': feedback.user.email,
+                'phone_number': feedback.user.phone_number,
+                'skills': [],
+                'educations': [],
+                'work_experiences': [],
+                'projects': []
+            }
 
-    applicants = User.objects.filter(id__in=applicants_info.keys())
-    
-    applicants_list = []
-    for applicant in applicants:
-        applicant_dict = {
-            'name': applicant.name,
-            'email': applicant.email,
-            'phone_number': applicant.phone_number,
-            'liked_job_titles': applicants_info[applicant.id]['liked_jobs'],
-            'skills': [],
-            'educations': [],
-            'work_experiences': [],
-            'projects': []
-        }
-        
-        resume = applicant.resumes.first()
-        if resume:
-            applicant_dict['skills'] = list(resume.resume_skills.values('skill_name'))
-            applicant_dict['educations'] = list(resume.educations.values('school_name', 'degree', 'start_date', 'end_date', 'gpa'))
-            applicant_dict['work_experiences'] = list(resume.work_experiences.values('company_name', 'job_title', 'start_date', 'end_date', 'job_description'))
-            applicant_dict['projects'] = list(resume.projects.values('title', 'description'))
+            resume = feedback.user.resumes.first()
+            if resume:
+                applicant_dict['skills'] = list(resume.resume_skills.values('skill_name'))
+                applicant_dict['educations'] = list(resume.educations.values('school_name', 'degree', 'start_date', 'end_date', 'gpa'))
+                applicant_dict['work_experiences'] = list(resume.work_experiences.values('company_name', 'job_title', 'start_date', 'end_date', 'job_description'))
+                applicant_dict['projects'] = list(resume.projects.values('title', 'description'))
 
-        applicants_list.append(applicant_dict)
+            jobs_with_applicants[feedback.job_posting.title].append(applicant_dict)
 
-    return JsonResponse({'applicants': applicants_list})
+    jobs_with_applicants = dict(jobs_with_applicants)
+
+    return JsonResponse({'applicants': jobs_with_applicants})
