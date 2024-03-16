@@ -855,6 +855,8 @@ body, html {
   width: 100%; /* Adjust width as necessary */
   max-width: 600px; /* Or whatever maximum width you prefer */
   margin: 0 auto; /* Keeps the entire group centered */
+
+
 }
 .inputGroup input, .inputGroup select, .inputGroup textarea {
   width: 100%; /* Full width within the .inputGroup */
@@ -864,6 +866,13 @@ body, html {
   border: 1px solid #ccc;
   border-radius: 4px;
   box-sizing: border-box;
+}
+.resumeForm {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  
 }
 /* Responsive adjustments */
 @media screen and (max-width: 1600px) {
