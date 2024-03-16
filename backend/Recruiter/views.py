@@ -228,16 +228,25 @@ def display_user_info(request):
 
 def liked_applicants(request):
     user = getUserFromRequest(request=request)
-    user_jobs = JobPosting.objects.filter(user_id=user.id)
+    # Fetch all jobs created by the user
+    user_jobs = JobPosting.objects.filter(creator=user)
 
     liked_feedbacks = FeedbackforResume.objects.filter(
         job_posting__in=user_jobs,
         feedback='1'
-    ).select_related('user').distinct()
+    ).prefetch_related('user', 'job_posting').distinct()
 
-    applicant_ids = set(feedback.user_id for feedback in liked_feedbacks if feedback.user_id)
+    applicants_info = {}
+    for feedback in liked_feedbacks:
+        if feedback.user_id and feedback.job_posting:
+            if feedback.user_id not in applicants_info:
+                applicants_info[feedback.user_id] = {
+                    'liked_jobs': [feedback.job_posting.title],
+                }
+            else:
+                applicants_info[feedback.user_id]['liked_jobs'].append(feedback.job_posting.title)
 
-    applicants = User.objects.filter(id__in=applicant_ids)
+    applicants = User.objects.filter(id__in=applicants_info.keys())
     
     applicants_list = []
     for applicant in applicants:
@@ -245,6 +254,7 @@ def liked_applicants(request):
             'name': applicant.name,
             'email': applicant.email,
             'phone_number': applicant.phone_number,
+            'liked_job_titles': applicants_info[applicant.id]['liked_jobs'],
             'skills': [],
             'educations': [],
             'work_experiences': [],
@@ -261,4 +271,3 @@ def liked_applicants(request):
         applicants_list.append(applicant_dict)
 
     return JsonResponse({'applicants': applicants_list})
-
