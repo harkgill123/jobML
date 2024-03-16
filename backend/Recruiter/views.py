@@ -262,3 +262,5 @@ def liked_applicants(request):
     jobs_with_applicants = dict(jobs_with_applicants)
 
     return JsonResponse({'applicants': jobs_with_applicants})
+
+

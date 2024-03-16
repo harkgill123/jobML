@@ -7,8 +7,8 @@ from rest_framework.response import Response
 from django.core.serializers import serialize
 from django.http import JsonResponse
 from .forms import SignupForm
-from .serializers import UserSerializer, ResumeSerializer, EducationSerializer, WorkExperienceSerializer, UserSerializer
-from .models import ModelVersion, Education, WorkExperience, Resume
+from .serializers import CompleteUserSerializer, UserSerializer, ResumeSerializer, EducationSerializer, WorkExperienceSerializer, UserSerializer, JobPostingSerializer
+from .models import ModelVersion, Education, WorkExperience, Resume, JobPosting
 from Applicant.ML_model import MODEL_VERSION
 from Applicant.views import getUserFromRequest
 from django.core.exceptions import ObjectDoesNotExist
@@ -122,26 +122,8 @@ class UpdateEmailView(APIView):
 class DisplayResumeInfo(APIView):
     def get(self, request):
         user = getUserFromRequest(request)
-        resumes = user.resumes.all()
-
-        work_experiences = []
-        educations = []
-
-        for resume in resumes:
-            work_experiences.extend(list(resume.work_experience.all()))
-            educations.extend(list(resume.educations.all()))
-
-        resumes_data = serialize('json', resumes)
-        user_data = serialize('json', [user,])
-        work_experiences_data = serialize('json', work_experiences, ensure_ascii=False)
-        educations_data = serialize('json', educations, ensure_ascii=False)
-
-        return JsonResponse({
-            'user': user_data,
-            'resumes': resumes_data,
-            'work_experiences': work_experiences_data,
-            'educations': educations_data
-        })
+        serializer = CompleteUserSerializer(user)
+        return Response(serializer.data)
 
 
 class UpdateResumeInfo(APIView):
@@ -190,3 +172,41 @@ class UpdateResumeInfo(APIView):
             return Response({"error": "Object not found"}, status=status.HTTP_404_NOT_FOUND)
         except Exception as e:
             return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+        
+
+class DisplayAllJobsInfo(APIView):
+    def get(self, request):
+        user = getUserFromRequest(request=request)  
+        
+        job_postings = JobPosting.objects.filter(user=user).prefetch_related('skills')
+        
+        job_postings_list = []
+        for job in job_postings:
+            job_dict = {
+                'title': job.title,
+                'company_name': job.company_name,
+                'location': job.location,
+                'job_description': job.job_description,
+                'posted_date': job.posted_date,
+                'application_deadline': job.application_deadline,
+                'experience_required': job.experience_required,
+                'benefits': job.benefits,
+                'employment_type': job.employment_type,
+                'skills': [skill.skill_name for skill in job.skills.all()],  # List comprehension to get skill names
+            }
+            job_postings_list.append(job_dict)
+        
+        return JsonResponse({'job_postings': job_postings_list})
+    
+class UpdateJobPosting(APIView):
+    def patch(self, request, job_id):
+        user = getUserFromRequest(request)
+        job_posting = JobPosting.objects.filter(pk=job_id, user=user).first()
+        if not job_posting:
+            return Response({'error': 'Job posting not found or not owned by user'}, status=status.HTTP_404_NOT_FOUND)
+        
+        serializer = JobPostingSerializer(job_posting, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
