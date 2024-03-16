@@ -8,7 +8,7 @@ from django.views.decorators.csrf import csrf_exempt
 import json
 from django.http import JsonResponse
 from django.db.models import Q
-from UserAuth.models import User, Resume, ResumeToSkills, Education, WorkExperience, Project, ModelVersionResume
+from UserAuth.models import User, Resume, ResumeToSkills, Education, WorkExperience, Project, ModelVersionResume, FeedbackforResume
 from django.contrib.auth import get_user_model
 import jwt,os
 from django.core.serializers import serialize
@@ -225,3 +225,37 @@ def display_user_info(request):
 
     except User.DoesNotExist:
         return JsonResponse({'error': 'User not found'}, status=404)
+
+def liked_applicants(request):
+    user = getUserFromRequest(request=request)
+    liked_applicants = FeedbackforResume.objects.filter(user_id=user.id, feedback='1')
+    
+    applicant_ids = []
+    
+    for applicant in liked_applicants:
+        applicant_ids.append(applicant.user_id)
+    
+    applicants = User.objects.filter(id__in=applicant_ids)
+    applicants_list = []
+    for applicant in applicants:
+        applicant_dict = {
+            'name': applicant.name,
+            'email': applicant.email,
+            'phone_number': applicant.phone_number,
+            'skills': [],
+            'educations': [],
+            'work_experiences': [],
+            'projects': []
+        }
+        
+        resume = applicant.resumes.first()
+        if resume:
+            applicant_dict['skills'] = list(resume.resume_skills.values('skill_name'))
+            applicant_dict['educations'] = list(resume.educations.values('school_name', 'degree', 'start_date', 'end_date', 'gpa'))
+            applicant_dict['work_experiences'] = list(resume.work_experiences.values('company_name', 'job_title', 'start_date', 'end_date', 'job_description'))
+            applicant_dict['projects'] = list(resume.projects.values('title', 'description'))
+
+        applicants_list.append(applicant_dict)
+
+    return JsonResponse({'applicants': applicants_list})
+

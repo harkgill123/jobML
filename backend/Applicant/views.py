@@ -171,18 +171,14 @@ def liked_jobs(request):
     user = getUserFromRequest(request=request)
     liked_jobs = FeedbackforJob.objects.filter(user_id=user.id, feedback='1')
     
-    # Initialize job_ids as an empty list before the loop
     job_ids = []
     
-    # Use a loop to append each job_posting_id to job_ids list
     for job in liked_jobs:
         job_ids.append(job.job_posting_id)
     
-    # Proceed with the query only if job_ids is not empty
     if job_ids:
         jobs = JobPosting.objects.filter(id__in=job_ids)
     else:
-        # If job_ids is empty, prepare an empty queryset
         jobs = JobPosting.objects.none()
     
     jobs_list = list(jobs.values(
