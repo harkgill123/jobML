@@ -8,7 +8,7 @@ from django.core.serializers import serialize
 from django.http import JsonResponse
 from .forms import SignupForm
 from .serializers import UserSerializer, ResumeSerializer, EducationSerializer, WorkExperienceSerializer, UserSerializer
-from .models import ModelVersion, Education, WorkExperience, Resume
+from .models import ModelVersion, Education, WorkExperience, Resume, JobPosting
 from Applicant.ML_model import MODEL_VERSION
 from Applicant.views import getUserFromRequest
 from django.core.exceptions import ObjectDoesNotExist
@@ -190,3 +190,28 @@ class UpdateResumeInfo(APIView):
             return Response({"error": "Object not found"}, status=status.HTTP_404_NOT_FOUND)
         except Exception as e:
             return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+        
+
+class DisplayAllJobsInfo(APIView):
+    def get(self, request):
+        user = getUserFromRequest(request=request)  
+        
+        job_postings = JobPosting.objects.filter(user=user).prefetch_related('skills')
+        
+        job_postings_list = []
+        for job in job_postings:
+            job_dict = {
+                'title': job.title,
+                'company_name': job.company_name,
+                'location': job.location,
+                'job_description': job.job_description,
+                'posted_date': job.posted_date,
+                'application_deadline': job.application_deadline,
+                'experience_required': job.experience_required,
+                'benefits': job.benefits,
+                'employment_type': job.employment_type,
+                'skills': [skill.skill_name for skill in job.skills.all()],  # List comprehension to get skill names
+            }
+            job_postings_list.append(job_dict)
+        
+        return JsonResponse({'job_postings': job_postings_list})
