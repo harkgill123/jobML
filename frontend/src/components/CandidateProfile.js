@@ -89,11 +89,6 @@ const CandidateProfile = () => {
     console.log('Update Resume Clicked');
   };
 
-  const handleCloseAccountClick = (event) => {
-    event.preventDefault();
-    // Add your logic for closing account
-    console.log('Close Account Clicked');
-  };
 
   return (
   <form className={styles.candidateSettings}>
@@ -159,12 +154,6 @@ const CandidateProfile = () => {
     <h2 className={styles.settings}>Resume</h2>
     <button onClick={handleUpdateResumeClick} className={styles.button}>
       Update Resume
-    </button>
-
-    {/* Delete Account Section */}
-    <h2 className={styles.settings}>Delete Your Account</h2>
-    <button onClick={handleCloseAccountClick} className={styles.deleteButton}>
-      Close Account
     </button>
 
   </form>
