@@ -216,7 +216,7 @@ class DisplayAllJobsInfo(APIView):
         
         return JsonResponse({'job_postings': job_postings_list})
     
-class EditJobPosting(APIView):
+class UpdateJobPosting(APIView):
     def patch(self, request, job_id):
         user = getUserFromRequest(request)
         job_posting = JobPosting.objects.filter(pk=job_id, user=user).first()
