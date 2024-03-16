@@ -848,7 +848,23 @@ body, html {
 .no-border {
   border: none;
 }
-
+.inputGroup {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start; /* Aligns children (title and inputs) to the start of the flex container */
+  width: 100%; /* Adjust width as necessary */
+  max-width: 600px; /* Or whatever maximum width you prefer */
+  margin: 0 auto; /* Keeps the entire group centered */
+}
+.inputGroup input, .inputGroup select, .inputGroup textarea {
+  width: 100%; /* Full width within the .inputGroup */
+  padding: 8px 10px;
+  margin-bottom: 10px;
+  display: block; /* Ensures the input takes up the full width of its parent */
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
 /* Responsive adjustments */
 @media screen and (max-width: 1600px) {
   .candidateSettings {

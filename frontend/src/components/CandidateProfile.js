@@ -13,8 +13,102 @@ const CandidateProfile = () => {
   const [confirmNewPassword, setConfirmNewPassword] = useState('');
   const [emailUpdateMessage, setEmailUpdateMessage] = useState('');
   const [passwordUpdateMessage, setPasswordUpdateMessage] = useState('');
-  const token = localStorage.getItem('token');
 
+
+  // stuf to edit resume
+
+  const [school1, setSchool1] = useState("");
+  const [degree1, setDegree1] = useState("");
+  const [startDate1, setStartDate1] = useState("");
+  const [endDate1, setEndDate1] = useState("");
+  const [school2, setSchool2] = useState("");
+  const [degree2, setDegree2] = useState("");
+  const [startDate2, setStartDate2] = useState("");
+  const [endDate2, setEndDate2] = useState("");
+  const [companyName1, setCompanyName1] = useState("");
+  const [jobTitle1, setJobTitle1] = useState("");
+  const [startWorkDate1, setStartWorkDate1] = useState("");
+  const [endWorkDate1, setEndWorkDate1] = useState("");
+  const [companyName2, setCompanyName2] = useState("");
+  const [jobTitle2, setJobTitle2] = useState("");
+  const [startWorkDate2, setStartWorkDate2] = useState("");
+  const [endWorkDate2, setEndWorkDate2] = useState("");
+  const [skills, setSkills] = useState("");
+  const [address, setAddress] = useState("");
+  const [desc, setDesc] = useState("");
+  const [desc2, setDesc2] = useState("");
+  useEffect(() => {
+    
+    get_resume_data();
+  }, []);
+  const token = localStorage.getItem('token');
+  const get_resume_data = async (event) => {
+    event.preventDefault();
+ 
+  
+    // Create a FormData object to build the multipart/form-data request
+   
+  
+    // Send the request
+    try {
+      const response = await fetch('http://localhost:8000/UserAuth/display-resume/', {
+        method: 'get',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+        // Headers may be configured as needed by your backend
+      });
+  
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+  
+      const result = await response.json();
+      console.log('File uploaded successfully', result);
+      console.log(result)
+            // Assuming result contains the structured data as described
+      // Corrected for case sensitivity and key names
+      if (result['educations'] && result['educations'].length > 0) {
+        // Update for first education entry
+        setSchool1(result['educations'][0]['school_name']);
+        setDegree1(result['educations'][0]['degree']);
+        // Add handling for start and end dates if present in your JSON data
+      }
+
+      if (result['educations'] && result['educations'].length > 1) {
+        // Update for first education entry
+        setSchool2(result['educations'][1]['school_name']);
+        setDegree2(result['educations'][1]['degree']);
+        // Add handling for start and end dates if present in your JSON data
+      }
+
+      if (result['work_experiences'] && result['work_experiences'].length > 0) {
+        // Update for first work experience entry
+        setCompanyName1(result['work_experiences'][0]['company_name']);
+        setJobTitle1(result['work_experiences'][0]['job_title']);
+        setDesc(result['work_experiences'][0]['job_description']);
+
+        // Add handling for start and end dates if present in your JSON data
+      }
+
+      if (result['work_experiences'] && result['work_experiences'].length > 1) {
+        // Update for first work experience entry
+        setCompanyName2(result['work_experiences'][1]['company_name']);
+        setJobTitle2(result['work_experiences'][1]['job_title']);
+        setDesc2(result['work_experiences'][0]['job_description']);
+      }
+
+      // Correct handling for skills (assuming you modify your JSON or parse the string)
+      setSkills(result['resume_skills']);
+
+      setAddress(result['Address']);
+  
+      setFileUploaded(true); // Indicate that the file upload and data extraction were successful
+    } catch (error) {
+      console.error('There was an error uploading the file', error);
+    }
+  };
   const handleEmailClick = async (event) => {
     event.preventDefault();
     const payload = { new_email: newEmail, password: password };
@@ -152,9 +246,57 @@ const CandidateProfile = () => {
 
     {/* Resume Section - Placeholder for resume update functionality */}
     <h2 className={styles.settings}>Resume</h2>
+    <form onSubmit={handleSubmit} className={styles.resumeForm}>
+            {/* Education 1 inputs */}
+            <div className={styles.inputGroup}>
+              <h3 className={styles.inputTitle}>Education 1</h3>
+              <input type="text" placeholder="School" value={school1} onChange={e => setSchool1(e.target.value)} />
+              <input type="text" placeholder="Degree" value={degree1} onChange={e => setDegree1(e.target.value)} />
+              <input type="date" placeholder="Start Date" value={startDate1} onChange={e => setStartDate1(e.target.value)} />
+              <input type="date" placeholder="End Date" value={endDate1} onChange={e => setEndDate1(e.target.value)} />
+            </div>
+            {/* Education 2 inputs */}
+            <div className={styles.inputGroup}>
+              <h3 className={styles.inputTitle}>Education 2</h3>
+              <input type="text" placeholder="School" value={school2} onChange={e => setSchool2(e.target.value)} />
+              <input type="text" placeholder="Degree" value={degree2} onChange={e => setDegree2(e.target.value)} />
+              <input type="date" placeholder="Start Date" value={startDate2} onChange={e => setStartDate2(e.target.value)} />
+              <input type="date" placeholder="End Date" value={endDate2} onChange={e => setEndDate2(e.target.value)} />
+            </div>
+            {/* Work Experience 1 inputs */}
+            <div className={styles.inputGroup}>
+              <h3 className={styles.inputTitle}>Work Experience 1</h3>
+              <input type="text" placeholder="Company Name" value={companyName1} onChange={e => setCompanyName1(e.target.value)} />
+              <input type="text" placeholder="Job Title" value={jobTitle1} onChange={e => setJobTitle1(e.target.value)} />
+              <input type="text" placeholder="Job Description" value={desc} onChange={e => setDesc(e.target.value)} />
+              <input type="date" placeholder="Start Date" value={startWorkDate1} onChange={e => setStartWorkDate1(e.target.value)} />
+              <input type="date" placeholder="End Date" value={endWorkDate1} onChange={e => setEndWorkDate1(e.target.value)} />
+            </div>
+            {/* Work Experience 2 inputs */}
+            <div className={styles.inputGroup}>
+              <h3 className={styles.inputTitle}>Work Experience 2</h3>
+              <input type="text" placeholder="Company Name" value={companyName2} onChange={e => setCompanyName2(e.target.value)} />
+              <input type="text" placeholder="Job Title" value={jobTitle2} onChange={e => setJobTitle2(e.target.value)} />
+              <input type="text" placeholder="Job Description" value={desc2} onChange={e => setDesc2(e.target.value)} />
+              <input type="date" placeholder="Start Date" value={startWorkDate2} onChange={e => setStartWorkDate2(e.target.value)} />
+              <input type="date" placeholder="End Date" value={endWorkDate2} onChange={e => setEndWorkDate2(e.target.value)} />
+            </div>
+            {/* Skills input */}
+            <div className={styles.inputGroup}>
+              <h3 className={styles.inputTitle}>Skills</h3>
+              <input type="text" placeholder="Skills" value={skills} onChange={e => setSkills(e.target.value)} />
+            </div>
+            {/* Address input */}
+            <div className={styles.inputGroup}>
+              <h3 className={styles.inputTitle}>Address</h3>
+              <input type="text" placeholder="Address" value={address} onChange={e => setAddress(e.target.value)} />
+            </div>
+            <button type="submit" className={styles.submitFinalButton}>Submit</button>
+          </form>
     <button onClick={handleUpdateResumeClick} className={styles.button}>
       Update Resume
     </button>
+
 
   </form>
 );
