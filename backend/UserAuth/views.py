@@ -8,10 +8,11 @@ from django.core.serializers import serialize
 from django.http import JsonResponse
 from .forms import SignupForm
 from .serializers import CompleteUserSerializer, ResumeToSkillsSerializer, UserSerializer, ResumeSerializer, EducationSerializer, WorkExperienceSerializer, UserSerializer, JobPostingSerializer
-from .models import ModelVersion, Education, WorkExperience, Resume, JobPosting
+from .models import ModelVersion, Education, WorkExperience, Resume, JobPosting, ListOfSkills, ResumeToSkills
 from Applicant.ML_model import MODEL_VERSION
 from Applicant.views import getUserFromRequest
 from django.core.exceptions import ObjectDoesNotExist
+import pprint
 
 
 class SignUpView(APIView):
@@ -128,62 +129,61 @@ class DisplayResumeInfo(APIView):
 
 class UpdateResumeInfo(APIView):
     def put(self, request):
-        try:
-            user = getUserFromRequest(request)
-
-            user_data = request.data.get('user', {})
+        user = getUserFromRequest(request)
+        #pprint.pprint(request.data)
+        user_data = request.data.get('user', {})
+        resume_skills = request.data.get('resume_skills', [])
+        if user_data:
             user_serializer = UserSerializer(user, data=user_data, partial=True)
             if user_serializer.is_valid():
                 user_serializer.save()
+              #  print('User Info Updated')
             else:
+                print(f"user_serializer  {user_serializer.errors}")
                 return Response(user_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-            resume = user.resumes.first()
-            if resume:
-                resume_data = request.data.get('resume', {})
-                if resume_data:
-                    resume_serializer = ResumeSerializer(resume, data=resume_data, partial=True)
-                    if resume_serializer.is_valid():
-                        resume_serializer.save()
-                    else:
-                        return Response(resume_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        resume = user.resumes.first()
+        print(resume.work_experiences.all())
+        if resume:
+            resume_data = request.data.get('resume', {})
+            if resume_data:
+                resume_serializer = ResumeSerializer(resume, data=resume_data, partial=True)
+                if resume_serializer.is_valid():
+                    resume_serializer.save()
+                   # print('Resume Info Updated')
+                else:
+                    print(f"RESUME SERIAZLIER  {resume_serializer.errors}")
+                    return Response(resume_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-                for work_experience_data in request.data.get('work_experiences', []):
-                    for work_experience in resume.work_experiences.all():
-                        work_experience_serializer = WorkExperienceSerializer(work_experience, data=work_experience_data, partial=True)
-                        if work_experience_serializer.is_valid():
-                            work_experience_serializer.save()
-                        else:
-                            return Response(work_experience_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-                        break 
+            
+            
+            existing_experiences = list(resume.work_experiences.all())
+            work_experience_data_list = request.data.get('work_experiences', [])
 
-                for education_data in request.data.get('educations', []):
-                    for education in resume.educations.all():
-                        education_serializer = EducationSerializer(education, data=education_data, partial=True)
-                        if education_serializer.is_valid():
-                            education_serializer.save()
-                        else:
-                            return Response(education_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-                        break  
+            for i, work_experience_data in enumerate(work_experience_data_list):
+                    for key, value in work_experience_data.items():
+                        setattr(existing_experiences[i], key, value)
+                    existing_experiences[i].save()
+                
 
-                if 'resume_skills' in request.data:
-                    # Remove existing skills
+            existing_education = list(resume.educations.all())
+            education_data_list = request.data.get('educations', [])
+
+            for i, education_data_list in enumerate(education_data_list):
+                    for key, value in education_data_list.items():
+                        setattr(existing_education[i], key, value)
+                    existing_education[i].save()
+
+            if 'resume_skills' in request.data:
+                resume_skills = request.data.get('resume_skills', [])
+                if resume_skills and resume_skills[0]['skill_name'] != '':
                     resume.resume_skills.all().delete()
-
-                    for skill_data in request.data.get('resume_skills', []):
-                        skill_serializer = ResumeToSkillsSerializer(data=skill_data)
-                        if skill_serializer.is_valid():
-                            skill = skill_serializer.save()
-                            resume.resume_skills.add(skill)
-                        else:
-                            return Response(skill_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
+                    for skill_data in resume_skills:
+                        skill_name = skill_data['skill_name']
+                        skill_instance, _ = ListOfSkills.objects.get_or_create(skill_name=skill_name)
+                        test = ResumeToSkills.objects.create(resume=resume, skill_name=skill_instance.skill_name)
             return Response({"message": "User and resume information updated successfully"}, status=status.HTTP_200_OK)
 
-        except ObjectDoesNotExist:
-            return Response({"error": "Object not found"}, status=status.HTTP_404_NOT_FOUND)
-        except Exception as e:
-            return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
 class DisplayAllJobsInfo(APIView):
     def get(self, request):
