@@ -37,6 +37,7 @@ const CandidateProfile = () => {
   const [address, setAddress] = useState("");
   const [desc, setDesc] = useState("");
   const [desc2, setDesc2] = useState("");
+  const [skills_display,setskills_display] = useState("");
   useEffect(() => {
     
     get_resume_data();
@@ -126,6 +127,9 @@ const CandidateProfile = () => {
 
       setSkills(resume['resume_skills'].map(skill => skill.skill_name));
       console.log(skills)
+      
+      setskills_display(skills.join(","));
+      console.log(skills_display)
       // console.log("skills")
       // console.log(resume['resume_skills'])
       // setSkills(resume['resume_skills']);
@@ -207,13 +211,16 @@ const CandidateProfile = () => {
   
 
   const handleUpdateResumeClick = async (event) => {
-    event.preventDefault();
+    // event.preventDefault();
    
     console.log('Update Resume Clicked');
-
+    let skill_list = skills_display.split(",") 
     event.preventDefault();
-   
-    const payload = {"resume" : {"work_experiences" :[
+    let resumeSkills = skill_list.map(skill => ({
+      "skill_name": skill
+    }));
+    console.log(resumeSkills)
+    const payload = {"work_experiences" :[
                       {"company_name" : companyName1,"end_date" :startWorkDate1,"end_date" :endWorkDate1,"job_title" : jobTitle1,"job_description":desc  },
                       {"company_name" : companyName2,"end_date" :startWorkDate2,"end_date" :endWorkDate2,"job_title" : jobTitle2,"job_description":desc2  }
                     ],
@@ -221,13 +228,13 @@ const CandidateProfile = () => {
                       {"school_name" : school1,"degree" :degree1 , "start_date" : startDate1, "end_date" :endDate1},
                       {"school_name" : school2,"degree" :degree2 , "start_date" : startDate2, "end_date" :endDate2}
                     ],
-                    "resume_skills": skillsArray,
-                  }}
+                    "resume_skills": resumeSkills,
+                  }
 
 
 
     try {
-      const response = await fetch('http://localhost:8000/UserAuth/edit-resume/', {
+      const response = await fetch('http://localhost:8000/UserAuth/update-resume/', {
         method: 'PUT',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -238,13 +245,13 @@ const CandidateProfile = () => {
         body: JSON.stringify(payload),
       });
 
-      // const data = await response.json();
+      const data = await response.json();
 
       if (response.ok) {
         console.log('update success:');
 
       } else {
-        console.error('update error:', data.result);
+        console.error('update error:', data.error);
       }
     } catch (error) {
       console.error('update failed:', error);
@@ -352,7 +359,7 @@ const CandidateProfile = () => {
             {/* Skills input */}
             <div className={styles.inputGroup}>
               <h3 className={styles.inputTitle}>Skills</h3>
-              <input type="text" placeholder="Skills" value={skills} onChange={e => setSkills(e.target.value)} />
+              <input type="text" placeholder="Skills" value={skills_display} onChange={e => setskills_display(e.target.value)} />
             </div>
             {/* Address input */}
             <div className={styles.inputGroup}>
