@@ -7,7 +7,7 @@ from rest_framework.response import Response
 from django.core.serializers import serialize
 from django.http import JsonResponse
 from .forms import SignupForm
-from .serializers import CompleteUserSerializer, UserSerializer, ResumeSerializer, EducationSerializer, WorkExperienceSerializer, UserSerializer, JobPostingSerializer
+from .serializers import CompleteUserSerializer, ResumeToSkillsSerializer, UserSerializer, ResumeSerializer, EducationSerializer, WorkExperienceSerializer, UserSerializer, JobPostingSerializer
 from .models import ModelVersion, Education, WorkExperience, Resume, JobPosting
 from Applicant.ML_model import MODEL_VERSION
 from Applicant.views import getUserFromRequest
@@ -166,13 +166,24 @@ class UpdateResumeInfo(APIView):
                             return Response(education_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
                         break  
 
+                if 'resume_skills' in request.data:
+                    # Remove existing skills
+                    resume.resume_skills.all().delete()
+
+                    for skill_data in request.data.get('resume_skills', []):
+                        skill_serializer = ResumeToSkillsSerializer(data=skill_data)
+                        if skill_serializer.is_valid():
+                            skill = skill_serializer.save()
+                            resume.resume_skills.add(skill)
+                        else:
+                            return Response(skill_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
             return Response({"message": "User and resume information updated successfully"}, status=status.HTTP_200_OK)
 
         except ObjectDoesNotExist:
             return Response({"error": "Object not found"}, status=status.HTTP_404_NOT_FOUND)
         except Exception as e:
             return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
-        
 
 class DisplayAllJobsInfo(APIView):
     def get(self, request):
