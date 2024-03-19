@@ -33,7 +33,7 @@ const CandidateProfile = () => {
   const [jobTitle2, setJobTitle2] = useState("");
   const [startWorkDate2, setStartWorkDate2] = useState("");
   const [endWorkDate2, setEndWorkDate2] = useState("");
-  const [skills, setSkills] = useState([]);
+  const [skills, setskills] = useState([]);
   const [address, setAddress] = useState("");
   const [desc, setDesc] = useState("");
   const [desc2, setDesc2] = useState("");
@@ -115,7 +115,8 @@ const CandidateProfile = () => {
         console.log(resume['work_experiences'][0]['company_name'])
         setCompanyName2(resume['work_experiences'][1]['company_name']);
         setJobTitle2(resume['work_experiences'][1]['job_title']);
-        setDesc2(resume['work_experiences'][0]['job_description']);
+        setDesc(resume['work_experiences'][0]['job_description']);
+        setDesc2(resume['work_experiences'][1]['job_description']);
         setStartWorkDate1(resume['work_experiences'][0]['start_date']);
         setStartWorkDate2(resume['work_experiences'][1]['start_date']);
         setEndWorkDate1(resume['work_experiences'][0]['end_date']);
@@ -124,18 +125,16 @@ const CandidateProfile = () => {
 
       // Correct handling for skills (assuming you modify your JSON or parse the string)
       
-
-      setSkills(resume['resume_skills'].map(skill => skill.skill_name));
+      console.log("skills")
+      const list_of_skills = resume['resume_skills']
+      const list = list_of_skills.map(skill => skill.skill_name)
+      console.log(list)
+      setskills(list);
       console.log(skills)
       
-      setskills_display(skills.join(","));
+      setskills_display(list.join(","));
       console.log(skills_display)
-      // console.log("skills")
-      // console.log(resume['resume_skills'])
-      // setSkills(resume['resume_skills']);
-      // console.log("address")
-      // console.log(resume['Address'])
-      // setAddress(resume['Address']);
+
   
       
     } catch (error) {
