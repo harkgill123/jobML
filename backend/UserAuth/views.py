@@ -203,7 +203,7 @@ class DisplayAllJobsInfo(APIView):
                 'experience_required': job.experience_required,
                 'benefits': job.benefits,
                 'employment_type': job.employment_type,
-                'skills': [skill.skill_name for skill in job.skills.all()],  # List comprehension to get skill names
+                'skills': [skill.skill_name for skill in job.skills.all()],  
             }
             job_postings_list.append(job_dict)
         
@@ -212,16 +212,28 @@ class DisplayAllJobsInfo(APIView):
 class UpdateJobPosting(APIView):
     def patch(self, request):
         data = json.loads(request.body)
-        print(data)
         job_id = data.get('job_id')
+        form = data['formDataWithSkillsArray']
         user = getUserFromRequest(request)
         job_posting = JobPosting.objects.filter(pk=job_id, user=user).first()
-        if not job_posting:
-            return Response({'error': 'Job posting not found or not owned by user'}, status=status.HTTP_404_NOT_FOUND)
+
+
+        fields_to_update = ['title', 'posted_date', 'location', 'job_description', 
+                            'employment_type', 'company_name', 'benefits', 'application_deadline']
         
-        serializer = JobPostingSerializer(job_posting, data=request.data, partial=True)
-        if serializer.is_valid():
-            serializer.save()
-            print(serializer.data)
-            return Response(serializer.data)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        for field in fields_to_update:
+            if field in form:
+                setattr(job_posting, field, form[field])
+
+        job_posting.save()
+
+        if 'skills' in form:
+            job_posting.skills.clear()
+
+            skill_names = form['skills']
+
+            for skill_name in skill_names:
+                skill_instance, created = ListOfSkills.objects.get_or_create(skill_name=skill_name)      
+                job_posting.skills.add(skill_instance)
+
+        return Response({'message': 'Job posting updated successfully.'}, status=status.HTTP_200_OK)
