@@ -13,7 +13,7 @@ from Applicant.ML_model import MODEL_VERSION
 from Applicant.views import getUserFromRequest
 from django.core.exceptions import ObjectDoesNotExist
 import pprint
-
+import json
 
 class SignUpView(APIView):
     def post(self, request):
@@ -210,7 +210,10 @@ class DisplayAllJobsInfo(APIView):
         return JsonResponse({'job_postings': job_postings_list})
     
 class UpdateJobPosting(APIView):
-    def patch(self, request, job_id):
+    def patch(self, request):
+        data = json.loads(request.body)
+        print(data)
+        job_id = data.get('job_id')
         user = getUserFromRequest(request)
         job_posting = JobPosting.objects.filter(pk=job_id, user=user).first()
         if not job_posting:
@@ -219,5 +222,6 @@ class UpdateJobPosting(APIView):
         serializer = JobPostingSerializer(job_posting, data=request.data, partial=True)
         if serializer.is_valid():
             serializer.save()
+            print(serializer.data)
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
