@@ -62,7 +62,13 @@ class JobPostingSerializer(serializers.ModelSerializer):
 class ResumeToSkillsSerializer(serializers.ModelSerializer):
     class Meta:
         model = ResumeToSkills
-        fields = ['skill_name']
+        fields = '__all__'
+        extra_kwargs = {'resume': {'read_only': True}}
+
+    def create(self, validated_data):
+        resume = self.context.get('resume')
+        skill_instance = ResumeToSkills.objects.create(**validated_data, resume=resume)
+        return skill_instance
 
 class ResumeSerializer(serializers.ModelSerializer):
     educations = EducationSerializer(many=True, read_only=True)

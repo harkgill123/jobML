@@ -33,10 +33,11 @@ const CandidateProfile = () => {
   const [jobTitle2, setJobTitle2] = useState("");
   const [startWorkDate2, setStartWorkDate2] = useState("");
   const [endWorkDate2, setEndWorkDate2] = useState("");
-  const [skills, setSkills] = useState([]);
+  const [skills, setskills] = useState([]);
   const [address, setAddress] = useState("");
   const [desc, setDesc] = useState("");
   const [desc2, setDesc2] = useState("");
+  const [skills_display,setskills_display] = useState("");
   useEffect(() => {
     
     get_resume_data();
@@ -114,7 +115,8 @@ const CandidateProfile = () => {
         console.log(resume['work_experiences'][0]['company_name'])
         setCompanyName2(resume['work_experiences'][1]['company_name']);
         setJobTitle2(resume['work_experiences'][1]['job_title']);
-        setDesc2(resume['work_experiences'][0]['job_description']);
+        setDesc(resume['work_experiences'][0]['job_description']);
+        setDesc2(resume['work_experiences'][1]['job_description']);
         setStartWorkDate1(resume['work_experiences'][0]['start_date']);
         setStartWorkDate2(resume['work_experiences'][1]['start_date']);
         setEndWorkDate1(resume['work_experiences'][0]['end_date']);
@@ -123,15 +125,16 @@ const CandidateProfile = () => {
 
       // Correct handling for skills (assuming you modify your JSON or parse the string)
       
-
-      setSkills(resume['resume_skills'].map(skill => skill.skill_name));
+      console.log("skills")
+      const list_of_skills = resume['resume_skills']
+      const list = list_of_skills.map(skill => skill.skill_name)
+      console.log(list)
+      setskills(list);
       console.log(skills)
-      // console.log("skills")
-      // console.log(resume['resume_skills'])
-      // setSkills(resume['resume_skills']);
-      // console.log("address")
-      // console.log(resume['Address'])
-      // setAddress(resume['Address']);
+      
+      setskills_display(list.join(","));
+      console.log(skills_display)
+
   
       
     } catch (error) {
@@ -207,13 +210,16 @@ const CandidateProfile = () => {
   
 
   const handleUpdateResumeClick = async (event) => {
-    event.preventDefault();
+    // event.preventDefault();
    
     console.log('Update Resume Clicked');
-
+    let skill_list = skills_display.split(",") 
     event.preventDefault();
-   
-    const payload = {"resume" : {"work_experiences" :[
+    let resumeSkills = skill_list.map(skill => ({
+      "skill_name": skill
+    }));
+    console.log(resumeSkills)
+    const payload = {"work_experiences" :[
                       {"company_name" : companyName1,"end_date" :startWorkDate1,"end_date" :endWorkDate1,"job_title" : jobTitle1,"job_description":desc  },
                       {"company_name" : companyName2,"end_date" :startWorkDate2,"end_date" :endWorkDate2,"job_title" : jobTitle2,"job_description":desc2  }
                     ],
@@ -221,13 +227,13 @@ const CandidateProfile = () => {
                       {"school_name" : school1,"degree" :degree1 , "start_date" : startDate1, "end_date" :endDate1},
                       {"school_name" : school2,"degree" :degree2 , "start_date" : startDate2, "end_date" :endDate2}
                     ],
-                    "resume_skills": skillsArray,
-                  }}
+                    "resume_skills": resumeSkills,
+                  }
 
 
 
     try {
-      const response = await fetch('http://localhost:8000/UserAuth/edit-resume/', {
+      const response = await fetch('http://localhost:8000/UserAuth/update-resume/', {
         method: 'PUT',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -238,13 +244,13 @@ const CandidateProfile = () => {
         body: JSON.stringify(payload),
       });
 
-      // const data = await response.json();
+      const data = await response.json();
 
       if (response.ok) {
         console.log('update success:');
 
       } else {
-        console.error('update error:', data.result);
+        console.error('update error:', data.error);
       }
     } catch (error) {
       console.error('update failed:', error);
@@ -352,7 +358,7 @@ const CandidateProfile = () => {
             {/* Skills input */}
             <div className={styles.inputGroup}>
               <h3 className={styles.inputTitle}>Skills</h3>
-              <input type="text" placeholder="Skills" value={skills} onChange={e => setSkills(e.target.value)} />
+              <input type="text" placeholder="Skills" value={skills_display} onChange={e => setskills_display(e.target.value)} />
             </div>
             {/* Address input */}
             <div className={styles.inputGroup}>
