@@ -167,6 +167,52 @@ def search_jobs(request):
     print(jobs_list)
     return JsonResponse({'jobs': jobs_list})
 
+@csrf_exempt
+def get_jobposting(request):
+    if request.method =='POST':
+        data = json.loads(request.body)
+        print(data)
+        query = data.get('job_id',None)
+    else:
+        query = request.get('job_id',None)
+    
+    if query is None:
+        return JsonResponse({"error": "no query found"}, status=400)
+    else:
+        job = JobPosting.objects.filter(
+            Q(id=query)
+        ).first()
+        job_skills = JobPosting.objects.filter(
+            Q(id=query)
+        ).prefetch_related('skills').all()
+        skill_lists = []
+        for skill in job_skills:
+            skills = list(skill.skills.all().values_list('skill_name'))
+
+            for sk in skills:
+                try:
+                    if sk[0][0]==' ':
+
+                        skill_lists.append(sk[0][1:])
+                    else:
+                        skill_lists.append(sk[0])
+                except:
+                    skill_lists.append(sk[0])
+
+        print("printing skills")
+        print(skill_lists)
+        job_result = {'title' : job.title,
+                      'company_name' : job.company_name,
+                      'location' : job.location,
+                      'description' : job.job_description,
+                      'posted_date' : job.posted_date,
+                      'application_deadline' : job.application_deadline,
+                      'employment_type' : job.employment_type,
+                      'skills' : skill_lists,
+                      'experience_required': job.experience_required}
+        print(f"sending data")
+        print(job_result)
+        return JsonResponse({'job_post': job_result})
 
 
 def liked_jobs(request):
