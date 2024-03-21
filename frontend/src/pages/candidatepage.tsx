@@ -5,79 +5,7 @@ import Footer from "../components/Footer";
 import styles from './candidatepage.module.css';
 
 
-/*<div className={styles.jobDetailSection}>
-<div className={styles.jobDetail}>
-  {posted_date && <p className={styles.jobPostedDate}>Posted: {new Date(posted_date).toLocaleDateString()}</p>}
-  {application_deadline && <p className={styles.jobApplicationDeadline}>Deadline: {new Date(application_deadline).toLocaleDateString()}</p>}
-  {experience_required && <p className={styles.jobExperienceRequired}>Experience: {experience_required}</p>}
-</div>
-</div>
 
-*/
-
-
-/*
-   <div className={styles.jobDescriptionSection}>
-          <h2 className={styles.sectionTitle}>Description</h2>
-          {educations && <p className={styles.jobDescription}>{educations}</p>}
-        </div>
-        <div className={styles.jobDescriptionSection}>
-        <h2 className={styles.sectionTitle}>Skills</h2>
-        <ul className={styles.jobDescription}>
-          {skills && skills.map((skill, index) => (
-            <li key={index} className={styles.jobDescription}>
-              {skill}
-            </li>
-          ))}
-        </ul>
-      </div>
-
-    */
-
-
-      /*
-      <div className={styles.jobDescriptionSection}>
-          <h2 className={styles.sectionTitle}>Work Experience</h2>
-          {filteredWorkExperiences && filteredWorkExperiences.length > 0 ? (
-            <div className={styles.workExperienceList}>
-              {filteredWorkExperiences.map((experience, index) => (
-                <div key={index} className={styles.workExperienceItem}>
-                  <h3 className={styles.workExperienceTitle}>{experience.job_title} at {experience.company_name}</h3>
-                  <p className={styles.workExperienceDates}>{experience.start_date} to {experience.end_date}</p>
-                  <p className={styles.workExperienceDescription}>{experience.job_description}</p>
-                </div>
-              ))}
-            </div>
-          ) : (
-            <p>No work experience information provided.</p>
-          )}
-        </div>*/
-
-
-
-        /*
-           <div className={styles.jobDescriptionSection}>
-          <h2 className={styles.sectionTitle}>Work Experience</h2>
-          {work_experiences && work_experiences.length > 0 ? (
-  <div className={styles.workExperienceList}>
-    {work_experiences.map((experience, index) => (
-      <div key={index} className={styles.workExperienceItem}>
-        <h3 className={styles.workExperienceTitle}>
-          {experience.company_name === "Default Company" ? 
-            experience.job_title : 
-            `${experience.job_title} at ${experience.company_name}`
-          }
-        </h3>
-        <p className={styles.workExperienceDates}>{experience.start_date} to {experience.end_date}</p>
-        <p className={styles.workExperienceDescription}>{experience.job_description}</p>
-      </div>
-    ))}
-            </div>
-          ) : (
-            <p>No work experience information provided.</p>
-          )}
-        </div>
-        */
 type Skill = {
     skill_name: string;
 };
