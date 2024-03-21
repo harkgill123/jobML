@@ -93,11 +93,11 @@ const FeaturedJobsPage: React.FC = () => {
           <h2 className={styles.sectionTitle}>Deadline</h2>
           {application_deadline && <p className={styles.jobApplicationDeadline}>Deadline: {new Date(application_deadline).toLocaleDateString()}</p>}
         </div>
-        <button className={styles.findJobButton} onClick={HandleApply}>Apply</button> {/* Added find job button */}
-        </div>
-            {/* Add more job details here */}
-          </div>
         
+        </div>
+            <button className={styles.findJobButton} onClick={HandleApply}>Apply</button> {/* Added find job button */}
+          </div>
+          
     
         <Footer />
       </div>);
