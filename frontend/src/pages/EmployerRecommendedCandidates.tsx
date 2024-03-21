@@ -73,6 +73,7 @@ const EmployerRecommendedCandidates: React.FC = () => {
   const token = localStorage.getItem('token');
   const [recommendedCandidates, setRecommendedCandidates] = useState<User[]>([]);
   const [applicant, setApplicant] = useState<Applicant | null>(null);
+  const [isLoading, setIsLoading] = useState(true); // State to track loading status
 
   useEffect(() => {
     console.log("Applicant state updated:", applicant);
@@ -120,6 +121,7 @@ const EmployerRecommendedCandidates: React.FC = () => {
 
         setRecommendedCandidates(users);
         console.log(recommendedCandidates)
+        setIsLoading(false);
       } catch (error) {
         console.error('Error fetching recommended candidates:', error);
       }
@@ -207,6 +209,20 @@ const EmployerRecommendedCandidates: React.FC = () => {
     }
   };
 
+  const LoadingIcon = () => (
+    <div className={styles.loadingContainer}>
+      <div className={styles.categoryIconGroup}>
+        <div className={styles.sitelogo}>
+          <div className={styles.digitalMarketing} />
+          <div className={styles.digitalMarketing1} />
+          <div className={styles.digitalMarketing2} />
+          <div className={styles.sitelogo1} />
+        </div>
+        <h3 className={styles.jobsync}>JobSync</h3>
+    </div>
+  </div>
+  );
+
 
   return (
     <div className={styles.jobPage}>
@@ -226,19 +242,19 @@ const EmployerRecommendedCandidates: React.FC = () => {
             {job_description && <p className={styles.jobDescription}>{job_description}</p>}
           </div>
           <div className={styles.jobDescriptionSection}>
-          <h2 className={styles.sectionTitle}>Skills</h2>
-          {skills && skills.length > 0 ? (
-            <ul className={styles.list}>
-              {skills.map((skill, index) => (
-                <li key={index} className={styles.listItem}>
-                  {skill}
-                </li>
-              ))}
-            </ul>
-          ) : (
-            <p>No skills information provided.</p>
-          )}
-        </div>
+            <h2 className={styles.sectionTitle}>Skills</h2>
+            {skills && skills.length > 0 ? (
+              <ul className={styles.list}>
+                {skills.map((skill, index) => (
+                  <li key={index} className={styles.listItem}>
+                    {skill}
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <p>No skills information provided.</p>
+            )}
+          </div>
   
           <div className={styles.jobDetailSection}>
             {posted_date && <p className={styles.jobPostedDate}>Posted: {new Date(posted_date).toLocaleDateString()}</p>}
@@ -249,50 +265,57 @@ const EmployerRecommendedCandidates: React.FC = () => {
   
         {/* Right Column for Additional Content */}
         <div className={styles.additionalContentColumn}>
-        <h2 className={styles.recommendationsHeading}>Candidates you might like...</h2>
-  {recommendedCandidates.map((user) => (
-    <div key={user.id} className={styles.candidateCard}>
-      <div className={styles.candidateDetails}>
-        <h2 className={styles.candidateName}>{user.name}</h2>
-        <p className={styles.candidatePhoneNumber}>{user.phone_number}</p>
-        <p className={styles.candidateEmail}>{user.email}</p>
-      </div>
-      {/* New container for all action buttons */}
-      <div className={styles.actionButtons}>
-        {/* Like and Dislike buttons */}
-        <div className={styles.interactionIcons}>
-          <button className={styles.likeButton} onClick={() => handleLike(user.id)}>
-            <img
-              className={styles.thumbsupIcon}
-              loading="lazy"
-              alt="Like"
-              src="/thumbsup.svg"
-            />
-          </button>
-          <button className={styles.dislikeButton} onClick={() => handleDislike(user.id)}>
-            <img
-              className={styles.thumbsdownIcon}
-              loading="lazy"
-              alt="Dislike"
-              src="/thumbsdown.svg"
-            />
-          </button>
+          {isLoading ? (
+            <LoadingIcon />
+          ) : (
+            <>
+              <h2 className={styles.recommendationsHeading}>Candidates you might like...</h2>
+              {recommendedCandidates.map((user) => (
+                <div key={user.id} className={styles.candidateCard}>
+                  <div className={styles.candidateDetails}>
+                    <h2 className={styles.candidateName}>{user.name}</h2>
+                    <p className={styles.candidatePhoneNumber}>{user.phone_number}</p>
+                    <p className={styles.candidateEmail}>{user.email}</p>
+                  </div>
+                  {/* New container for all action buttons */}
+                  <div className={styles.actionButtons}>
+                    {/* Like and Dislike buttons */}
+                    <div className={styles.interactionIcons}>
+                      <button className={styles.likeButton} onClick={() => handleLike(user.id)}>
+                        <img
+                          className={styles.thumbsupIcon}
+                          loading="lazy"
+                          alt="Like"
+                          src="/thumbsup.svg"
+                        />
+                      </button>
+                      <button className={styles.dislikeButton} onClick={() => handleDislike(user.id)}>
+                        <img
+                          className={styles.thumbsdownIcon}
+                          loading="lazy"
+                          alt="Dislike"
+                          src="/thumbsdown.svg"
+                        />
+                      </button>
+                    </div>
+                    <button
+                      className={styles.viewCandidateButton}
+                      onClick={() => viewapplicant(user)}
+                    >
+                      View Candidate
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </>
+          )}
         </div>
-        <button
-          className={styles.viewCandidateButton}
-          onClick={() => viewapplicant(user)}
-        >
-          View Candidate
-        </button>
       </div>
-    </div>
-  ))}
-</div>
-    </div>
   
       <Footer />
     </div>
   );
+  
   
   
   

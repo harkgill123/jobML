@@ -1,12 +1,10 @@
 .createAccountFrame {
-    align-self: stretch;
-    display: flex;
-    flex-direction: row;
-    align-items: flex-start;
-    justify-content: flex-start;
-    padding: 0;
-    box-sizing: border-box;
-    max-width: 100%;
+  width: 600px;
+  flex-direction: column;
+  padding: 0; /* Adjust if needed */
+  box-sizing: border-box;
+  gap: var(--gap-13xl);
+  margin: 262px auto; 
   }
   .alreadyHaveAccount,
   .createAnEmployer,
@@ -18,7 +16,7 @@
   .createAnEmployer {
     margin: 0;
     align-self: stretch;
-    font-size: var(--font-size-4xl);
+    font-size: 25px;
     line-height: 40px;
     font-weight: 500;
     color: var(--gray-900);
@@ -65,19 +63,20 @@
   }
   .select {
     border-radius: var(--br-7xs);
-    background-color: var(--gray-scale-white);
+    background-color: var(--primary-500);
     border: 1px solid var(--gray-100);
     justify-content: center;
     padding: var(--padding-sm) var(--padding-4xs) var(--padding-sm)
-      var(--padding-2xs);
+      var(--padding-xs);
     white-space: nowrap;
+  
   }
   .selectionFrameParent {
     align-self: stretch;
     flex-wrap: wrap;
     justify-content: flex-start;
     gap: 14px;
-    max-width: 100%;
+    width: 100%;
   }
   .emailAddress {
     width: 100%;
@@ -105,6 +104,7 @@
     justify-content: flex-start;
     padding: var(--padding-xs) var(--padding-lg);
     min-width: 168px;
+    width: 100%;
   }
   .emailAddress1 {
     width: 100%;
@@ -302,31 +302,24 @@
   .button:hover {
     background-color: var(--color-dodgerblue);
   }
-  .anotherFrame,
-  .employerCreateAccount {
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    box-sizing: border-box;
-  }
+
   .anotherFrame {
     margin: 0;
-    width: 576px;
+    width: 620px;
     align-items: flex-start;
     padding: 0 var(--padding-xl);
     gap: var(--gap-13xl);
     max-width: 100%;
   }
 .employerCreateAccount {
-  width: 100%; /* Take the full width */
-  height: 100vh; /* Take the full height of the viewport */
   display: flex;
-  flex-direction: column;
-  align-items: center; /* Center horizontally */
-  padding: 0; /* Reset any padding if not needed */
-  box-sizing: border-box; /* Include padding and border in the element's total width and height */
-  gap: var(--gap-100xl);
-  background-color: var(--gray-scale-white);
+  justify-content: center;
+  align-items: flex-start; /* This will align the form to the top */
+  height: calc(100vh - 60px); /* Adjusted for navbar, replace 60px with your navbar's height */
+  width: 100%;
+  padding-top: 0; /* Replace this variable with your desired margin top value */
+  box-sizing: border-box;
+  overflow-y: auto; /* Allows scrolling if content is taller than the screen */
 }
 .logIn {
   /* Add styles to make it look more like a clickable link or button */
@@ -340,8 +333,16 @@
 }
 .selected {
   /* Add styles to make it look more like a clickable link or button */
-  color: #0066ff; /* Example: blue color for link text */
+  position: relative;
+  font-size: var(--button-button-size);
+  line-height: 24px;
+  text-transform: capitalize;
+  font-weight: 600;
+  font-family: var(--button-button);
+  color: var(--gray-scale-white);
+  text-align: left;
   cursor: pointer; /* Change cursor to indicate it's clickable */
+
 }
 
 .selected:hover {

@@ -8,7 +8,7 @@
 .createAnApplicant {
   margin: 0;
   align-self: stretch;
-  font-size: var(--font-size-4xl);
+  font-size: 25px;
   line-height: 40px;
   font-weight: 500;
   color: var(--gray-900);
@@ -39,23 +39,7 @@
   min-width: 224px;
   max-width: 100%;
 }
-.selected {
-  position: relative;
-  font-size: var(--body-small-500-size);
-  line-height: 20px;
-  font-family: var(--button-button);
-  color: var(--color-darkslategray-100);
-  text-align: left;
-}
-.fichevronDownIcon {
-  height: 20px;
-  width: 20px;
-  position: relative;
-  overflow: hidden;
-  flex-shrink: 0;
-  display: none;
-  min-height: 20px;
-}
+
 .frameParent,
 .select {
   display: flex;
@@ -64,13 +48,33 @@
 }
 .select {
   border-radius: var(--br-7xs);
-  background-color: var(--gray-scale-white);
+  background-color: var(--primary-500);
   border: 1px solid var(--gray-100);
   justify-content: center;
   padding: var(--padding-sm) var(--padding-4xs) var(--padding-sm)
     var(--padding-xs);
   white-space: nowrap;
+
 }
+.selected {
+  /* Add styles to make it look more like a clickable link or button */
+  position: relative;
+  font-size: var(--button-button-size);
+  line-height: 24px;
+  text-transform: capitalize;
+  font-weight: 600;
+  font-family: var(--button-button);
+  color: var(--gray-scale-white);
+  text-align: left;
+  cursor: pointer; /* Change cursor to indicate it's clickable */
+
+}
+
+.selected:hover {
+  text-decoration: none; /* Remove underline on hover for a button-like effect */
+}
+
+
 .frameParent {
   align-self: stretch;
   flex-wrap: wrap;
@@ -358,14 +362,12 @@
   background-color: var(--color-dodgerblue);
 }
 .createFrame {
-  margin: 0;
-  width: 576px;
+  width: 577px;
   flex-direction: column;
-  justify-content: flex-start;
-  padding: 0 var(--padding-xl);
+  padding: 0; /* Adjust if needed */
   box-sizing: border-box;
   gap: var(--gap-13xl);
-  max-width: 100%;
+  margin: 200px auto; /* This will center the form horizontally and remove top margin */
 }
 .logIn {
   /* Add styles to make it look more like a clickable link or button */
@@ -377,15 +379,7 @@
 .logIn:hover {
   text-decoration: none; /* Remove underline on hover for a button-like effect */
 }
-.selected {
-  /* Add styles to make it look more like a clickable link or button */
-  color: #0066ff; /* Example: blue color for link text */
-  cursor: pointer; /* Change cursor to indicate it's clickable */
-}
 
-.selected:hover {
-  text-decoration: none; /* Remove underline on hover for a button-like effect */
-}
 @media screen and (max-width: 700px) {
   .createFrame {
     gap: var(--gap-13xl);
@@ -396,4 +390,14 @@
     font-size: var(--body-large-500-size);
     line-height: 32px;
   }
+}
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start; /* This will align the form to the top */
+  height: calc(100vh - 60px); /* Adjusted for navbar, replace 60px with your navbar's height */
+  width: 100%;
+  padding-top: var(--margin-top-value); /* Replace this variable with your desired margin top value */
+  box-sizing: border-box;
+  overflow-y: auto; /* Allows scrolling if content is taller than the screen */
 }

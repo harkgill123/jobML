@@ -74,11 +74,13 @@ def sendRecommendationsToFrontEnd(request):
     ModelVersionEntry = ModelVersion.objects.get(user=user)
     userModel = ModelVersionEntry.model_version
     latestModel = ModelVersionEntry.latest_version
+    print("Getting recommendations")
     if userModel != latestModel:
         recommended_jobs(request)
     return get_recommendations(request)
 
 def recommended_jobs(request):
+    print("Generating recommendations")
     job_ids = []
     user = getUserFromRequest(request=request)
     try:

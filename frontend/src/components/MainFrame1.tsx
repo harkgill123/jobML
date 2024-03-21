@@ -1,11 +1,11 @@
 import { FunctionComponent } from "react";
-import Navigation14 from "./Navigation14";
+import Navigation3 from "./Navigation3";
 import styles from "./MainFrame1.module.css";
 
 const MainFrame1: FunctionComponent = () => {
   return (
     <section className={styles.mainFrame}>
-      <Navigation14 />
+      <Navigation3 />
     </section>
   );
 };

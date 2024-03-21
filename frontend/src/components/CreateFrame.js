@@ -82,6 +82,7 @@ const CreateFrame = () => {
   };
 
   return (
+    <div className={styles.container}>
     <form className={styles.createFrame} onSubmit={handleFormSubmit}>
       <div className={styles.frameParent}>
         <div className={styles.createAnApplicantAccountParent}>
@@ -90,7 +91,7 @@ const CreateFrame = () => {
           </h3>
           <div className={styles.logInText}>
             <div className={styles.alreadyHaveAccount}>
-              Already have account? 
+              Already have account?&nbsp; 
             </div>
             <div className={styles.logIn}
             onClick={handleLogInClick}
@@ -172,6 +173,7 @@ const CreateFrame = () => {
         {/* Icon for the button */}
       </button>
     </form>
+    </div>
   );
 };
 

@@ -138,11 +138,13 @@ def sendRecommendationsToFrontEnd(request):
     ModelVersionEntry = ModelVersionResume.objects.get(job_posting_id=job_id)
     resumeModel = ModelVersionEntry.model_version
     latestModel = ModelVersionEntry.latest_version
+    print("Getting recommendations")
     if resumeModel != latestModel:
         recommended_jobs(request)
     return get_recommendations(request) 
 
 def recommended_jobs(request):
+    print("Generating recommendations")
     user_ids = []
     user = getUserFromRequest(request=request)
     data = json.loads(request.body)

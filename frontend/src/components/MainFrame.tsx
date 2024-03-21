@@ -65,18 +65,19 @@ const MainFrame: React.FunctionComponent = () => {
   };
 
   return (
+    <div className={styles.container}>
     <form className={styles.mainFrame} onSubmit={handleSignIn}>
       <div className={styles.signInFrame}>
         <h1 className={styles.signIn}>Sign in</h1>
         <div className={styles.textNode}>
-          <div className={styles.dontHaveAccount}>Don’t have account</div>
+          <div className={styles.dontHaveAccount}>Don’t have an account?&nbsp;</div>
           <div 
             className={styles.createAccount}
             onClick={handleCreateAccountClick}
             role="button"
             tabIndex={0}
           >
-            Create Account
+            Create an Account
           </div>
         </div>
       </div>
@@ -98,16 +99,9 @@ const MainFrame: React.FunctionComponent = () => {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
-          <img className={styles.fieyeIcon} alt="" src="/fieye.svg" />
         </div>
       </div>
-      <div className={styles.buttonInstance}>
-        <div className={styles.reminderCheck}>
-          <input className={styles.check} type="checkbox" />
-          <div className={styles.rememberMe}>Remember Me</div>
-        </div>
-        <div className={styles.forgetPassword}>Forget password</div>
-      </div>
+
       <button className={styles.button} type="submit">
         <div className={styles.primary}>Sign in</div>
         <img
@@ -117,6 +111,7 @@ const MainFrame: React.FunctionComponent = () => {
         />
       </button>
     </form>
+    </div>
   );
 };
 
