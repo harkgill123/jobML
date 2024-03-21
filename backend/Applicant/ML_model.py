@@ -189,7 +189,6 @@ def update_model_version_database(MODEL_VERSION):
 
 # print(f"----- MODEL VERSION {MODEL_VERSION} -----")
 # jobs = create_model()
-# print(jobs)
 # df = pd.DataFrame(jobs)
 # print("----- Training Model -----")
 # train_model()
