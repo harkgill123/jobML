@@ -68,6 +68,7 @@ class JobPostingCreateView(APIView):
                 defaults={
                     'latest_version': model_version_str  
                 })
+            job.skill_list_save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         else:
             print("Errors:", serializer.errors)  
