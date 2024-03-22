@@ -151,11 +151,13 @@ def give_suggestions(job_id, job_title, job_description, job_skills):
 
     # Calculate cosine similarity
     cos_sim = pd.DataFrame(cosine_similarity(job_comps, comps[comps.index == predicted_cluster]))
+    print(cos_sim)
 
     # Get job titles from df to associate cosine similarity scores with jobs
     df['cluster_no'] = pd.to_numeric(df['cluster_no'], errors='coerce')
-    print(df)
     samp_for_cluster = df[df['cluster_no'] == predicted_cluster]
+    print(samp_for_cluster)
+
     cos_sim = cos_sim.T.set_index(samp_for_cluster['user_id'])
     cos_sim.columns = ['score']
 
@@ -172,8 +174,8 @@ def give_suggestions(job_id, job_title, job_description, job_skills):
             "score": score,
             "feedback": 0  # Initial feedback value
         })
-    update_feedback_database(job_id, new_suggestions_list)
-    update_model_version_database(job_id, Model_Version)
+    # update_feedback_database(job_id, new_suggestions_list)
+    # update_model_version_database(job_id, Model_Version)
     return new_suggestions_list
 
 #Todo: have jasdeep update these values in the database
@@ -198,14 +200,14 @@ def top_recommendations(job_id):
 
 # ------------- initial rec -------------
 # placeholder
-# sel_job_id = 1
-# user_skills = "python, css, html"
-# user_title = "Frontend Developer"
-# user_description = "Write code in css and html"
-# print(f"Resume input: {user_skills}, {user_title}, {user_description}")
+sel_job_id = 1
+user_skills = "python, css, html"
+user_title = "Frontend Developer"
+user_description = "Write code in css and html"
+print(f"Resume input: {user_skills}, {user_title}, {user_description}")
 
-# cos_sim_result = give_suggestions(sel_job_id, user_skills, user_description, user_title)
-# print(f"--- Reccomendations: {cos_sim_result} ---")
+cos_sim_result = give_suggestions(sel_job_id, user_skills, user_description, user_title)
+print(f"--- Reccomendations: {cos_sim_result} ---")
 
 # ------------- getting top rec -------------
 # job_id = 1  

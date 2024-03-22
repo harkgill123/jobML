@@ -230,53 +230,55 @@ def create_model_with_feedback():
     return df
 
 def logisticReg(df, comps):
-    pca = PCA(n_components=2,random_state=42)  # Reduce to 2 dimensions for plotting
-    reduced_features = pca.fit_transform(comps)
-    reduced_features = pd.DataFrame(reduced_features)
-
     X = comps
     y = df['cluster_no']
 
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
-    lr = LogisticRegression(C=10, penalty='l2', multi_class='multinomial', solver='sag', max_iter=1000)
-    lr.fit(X_train, y_train)
-    y_pred = lr.predict(X_test)
-    print("Accuracy:", accuracy_score(y_test, y_pred))
+    cluster_lr = LogisticRegression(C=10, penalty='l2', multi_class='multinomial', solver='sag', max_iter=1000)
+    
+    cluster_lr.fit(X_train, y_train)
+    y_pred = cluster_lr.predict(X_test)
+    
+    print("Accuracy for cluster:", accuracy_score(y_test, y_pred))
     print(classification_report(y_test, y_pred))
 
     # Assign cluster number to each job title in comps to pull particular cluster out for comparison
     comps['cluster_no'] = y.values
     comps.set_index('cluster_no', inplace=True)
 
+    return cluster_lr
+
 def logisticRegFeedback(df, comps):
-    X = comps  # Your features
-    df['feedback'].to_csv("feed.csv")
-    # y = df['feedback']  # Your labels now come from user feedback
+    X = comps  
 
     y = df['feedback'].replace([np.inf, -np.inf], np.nan)  # Replace Inf with NaN
-    y = y.dropna()  # Drop NaN values
-
-    # Make sure y is of a type that the logistic regression can handle (e.g., int)
+    y = y.dropna()  
+    y = y.astype(int)
     if y.dtype == object or not np.issubdtype(y.dtype, np.integer):
-        # Use LabelEncoder if y is categorical but not in integer format
         le = LabelEncoder()
         y = le.fit_transform(y)
 
-    # Split your data into training and testing sets
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
-    lr = LogisticRegression(C=10, penalty='l2', multi_class='multinomial', solver='sag', max_iter=1000)
+    feedback_lr = LogisticRegression(max_iter=1000, random_state=42) #LogisticRegression(C=10, penalty='l2', multi_class='multinomial', solver='sag', max_iter=1000)
 
-    # Train the model using the training set
-    lr.fit(X_train, y_train)
+    feedback_lr.fit(X_train, y_train)
+    y_pred = feedback_lr.predict(X_test)
 
-    # Predict the feedback for the testing set
-    y_pred = lr.predict(X_test)
-
-    # Evaluate the accuracy of the model using the testing set
-    print("Accuracy:", accuracy_score(y_test, y_pred))
+    print("Accuracy for probability:", accuracy_score(y_test, y_pred))
     print(classification_report(y_test, y_pred))
+    return feedback_lr
 
-def train_model():
+def settingsDump(MODEL_VERSION,vectorizer_title,vectorizer_skills,cluster_lr,comps,feedback_lr):
+    dir_path = f'model_settings_ver{MODEL_VERSION}'
+    if not os.path.exists(dir_path):
+        os.makedirs(dir_path)
+    dump(vectorizer_title, os.path.join(dir_path, 'vectorizer_title.joblib'))
+    dump(vectorizer_skills, os.path.join(dir_path, 'vectorizer_skills.joblib'))
+    dump(cluster_lr, os.path.join(dir_path, 'cluster_lr.joblib'))
+    dump(feedback_lr, os.path.join(dir_path, 'feedback_lr.joblib'))
+    dump(comps, os.path.join(dir_path, 'comps.joblib'))
+
+def train_model(df):
     # -------------- Start Script --------------
     print("---- Starting to train model ----")
 
@@ -301,8 +303,11 @@ def train_model():
     df['cluster_no'] = kmeans.fit_predict(comps)
 
     # # -------------- LogisticRegression --------------
-    logisticReg(df,comps)
-    # logisticRegFeedback(df,comps)
+    cluster_lr = logisticReg(df,comps)
+    feedback_lr = logisticRegFeedback(df,comps)
+    MODEL_VERSION = 0
+    settingsDump(MODEL_VERSION,vectorizer_title,vectorizer_skills,cluster_lr,comps,feedback_lr)
+
 
     # ------------------- Visualizing Clusters ----------------------
     # visualCluster(comps)
@@ -326,6 +331,6 @@ def train_model():
 print(f"----- MODEL VERSION TESTING -----")
 # jobs = create_model()
 data = create_model_with_feedback()
-df = pd.DataFrame(data[:1015])
+df = pd.DataFrame(data)
 print("----- Training Model -----")
-train_model()
+train_model(df)

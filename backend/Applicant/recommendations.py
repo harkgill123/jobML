@@ -2,8 +2,6 @@ import sys, os, django
 from pathlib import Path
 
 from django.shortcuts import get_object_or_404
-from sklearn.linear_model import LogisticRegression
-from sklearn.model_selection import train_test_split
 sys.path.append(Path(__file__).resolve().parent.parent.__str__())
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'coreApp.settings')
@@ -12,32 +10,25 @@ from UserAuth.models import JobPosting,FeedbackforJob,ModelVersion
 
 from joblib import load
 from sklearn.metrics.pairwise import cosine_similarity
+from pylab import rcParams
+
 import pandas as pd
 import warnings; warnings.simplefilter('ignore')
 import os
 import pandas as pd
 
 def create_clustered_model():
-    # Fetch the job postings and prefetch the related skills
-    job_postings = JobPosting.objects.prefetch_related('job_cluster', 'skills').all()
-
-    job_postings_list = []
-    for job in job_postings:
-        # Collecting skills for each job
-        skills = list(job.skills.all().values_list('skill_name', flat=True))
-        
-        # Assuming there is only one cluster per job posting for simplicity
-        # If there are multiple, you might need to handle this differently
-        cluster_no = job.job_cluster.first().cluster if job.job_cluster.exists() else "No Cluster"
-
-        job_postings_list.append({
-            'id': job.id,
-            'title': job.title,
-            'job_description': job.job_description,
-            'skills': skills,
-            'cluster_no': cluster_no,
+    jobpostings = JobPosting.objects.all()
+    jobpostings_list = []
+    for jp in jobpostings:
+        jobpostings_list.append({
+            'id': jp.id,
+            'title': jp.title,
+            'job_description': jp.job_description,
+            'skills': jp.skills_list,
+            'cluster_no':jp.cluster
         })
-    return job_postings_list
+    return jobpostings_list
 
 def feedback_model():
     # Fetch all feedback entries and prefetch the related job postings
@@ -96,102 +87,60 @@ def update_model_version_database(user_id, Model_Version):
             }
         )
 
-def load_user_feedback_and_features():
-    print("start feedback")
-    feedbacks = FeedbackforJob.objects.all()
-    feedback_df = pd.DataFrame(list(feedbacks.values('user_id','job_posting_id','feedback')))
-
-    print("start jobs")
+def give_suggestions(user_id, user_job_title, user_skills):
     jobs = create_clustered_model()
-    job_features_df = pd.DataFrame(jobs)
-    print("done loading")
-    
-    return feedback_df, job_features_df
+    df = pd.DataFrame(jobs)
 
-# Function to train or load a logistic regression model based on user feedback
-def train_or_load_feedback_model(feedback_df,job_features_df):
-    merged_df = feedback_df.merge(job_features_df, left_on='job_posting_id', right_on='id')
-    X = merged_df.drop(columns=['user_id', 'job_posting_id', 'feedback'])
-    y = merged_df['feedback']
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
-    
-    # Train the logistic regression model
-    feedback_lr = LogisticRegression(max_iter=1000, random_state=42)
-    print(feedback_lr)
-    feedback_lr.fit(X_train, y_train)
-    
-    return feedback_lr
-
-def give_suggestions(user_id, user_job_title, user_job_description, user_skills):
-
-    Model_Version = get_object_or_404(ModelVersion, user_id=user_id)
-    Model_Version = Model_Version.latest_version
+    # Model_Version = get_object_or_404(ModelVersion, user_id=user_id)
+    # Model_Version = Model_Version.latest_version
+    Model_Version = 2
 
     # Load your model components
     vec_title = load(f'Applicant/model_settings_ver{Model_Version}/vectorizer_title.joblib')
-    vec_desc = load(f'Applicant/model_settings_ver{Model_Version}/vectorizer_description.joblib')
     vec_skills = load(f'Applicant/model_settings_ver{Model_Version}/vectorizer_skills.joblib')
-    lr = load(f'Applicant/model_settings_ver{Model_Version}/lr.joblib')
-    comps = load(f'Applicant/model_settings_ver{Model_Version}/comps.joblib')
+    cluster_lr = load(f'Applicant/model_settings_ver{Model_Version}/cluster_lr.joblib')
+    feedback_lr = load(f'Applicant/model_settings_ver{Model_Version}/feedback_lr.joblib')
+    comps_original = load(f'Applicant/model_settings_ver{Model_Version}/comps_original.joblib')
+    comps_cluster = load(f'Applicant/model_settings_ver{Model_Version}/comps_cluster.joblib')
 
     # Vectorize user's skills and job descriptions
-    user_description = pd.DataFrame(vec_desc.transform([user_job_description]).todense())
-    user_description.columns = vec_desc.get_feature_names_out()
     user_skills = pd.DataFrame(vec_skills.transform([user_skills]).todense())
     user_skills.columns = vec_skills.get_feature_names_out()
     user_title = pd.DataFrame(vec_title.transform([user_job_title]).todense())
     user_title.columns = vec_title.get_feature_names_out()
-    mat = pd.concat([user_title, user_skills, user_description], axis=1) #, user_skills, user_description
+    mat = pd.concat([user_title, user_skills], axis=1) #, user_skills, user_description
     
     # Transform feature matrix with pca
     user_comps = pd.DataFrame(mat)
 
-    # --------- First Logistics Regression: Predict cluster for user ---------
-    predicted_cluster = lr.predict(user_comps)[0]
+    # Predict cluster for user and print cluster number
+    predicted_cluster = cluster_lr.predict(user_comps)[0]
     print(f"Users CLUSTER NUMBER: {predicted_cluster}")
 
-    # --------- Cosine Similarity: Find distance of each job to user ---------
-    cos_sim = pd.DataFrame(cosine_similarity(user_comps, comps[comps.index == predicted_cluster]))
+    # Calculate cosine similarity
+    cos_sim = pd.DataFrame(cosine_similarity(user_comps, comps_original[comps_original.index == predicted_cluster]))
 
     # Get job titles from df to associate cosine similarity scores with jobs
-    feedback_df, df = load_user_feedback_and_features()
-    feedback_lr = train_or_load_feedback_model(feedback_df,df)
-
     df['cluster_no'] = pd.to_numeric(df['cluster_no'], errors='coerce')
     samp_for_cluster = df[df['cluster_no'] == predicted_cluster]
     cos_sim = cos_sim.T.set_index(samp_for_cluster['id'])
     cos_sim.columns = ['score']
-    print(f"cos_sim 2: {cos_sim}")
 
     # top suggested jobs for the user's cluster after adjustment
     top_cos_sim = cos_sim.sort_values('score', ascending=False)[:30]
-    print(f"top_cos_sim: {top_cos_sim}")
-
-    # --------- Second Logistics Regression: Predicted probability of user liking Job ---------
-    print(f"feedback_lr: {feedback_lr}")
-
-    top_jobs_features = comps.loc[top_cos_sim.index]  # Assuming 'comps' has job features indexed by job ID
-    print(f"top_jobs_features: {top_jobs_features}")
-
-    probabilities = feedback_lr.predict_proba(top_jobs_features)[:, 1]  # Assuming 1 is the label for 'like'
-    print(f"probabilities: {probabilities}")
-    
-    # Add probabilities to top_cos_sim and sort by it
-    top_cos_sim['like_probability'] = probabilities
-    top_cos_sim_sorted = top_cos_sim.sort_values('like_probability', ascending=False)
     
     new_suggestions_list = []
-    for job_id, score in top_cos_sim_sorted.to_dict()['score'].items():
+    for job_id, score in top_cos_sim.to_dict()['score'].items():
         job_title = samp_for_cluster[samp_for_cluster['id'] == job_id]['title'].values[0]
         new_suggestions_list.append({
             "user_id": user_id,
             "job_id": job_id,
             "suggestions": job_title,
             "score": score,
-            "feedback": 0  
+            "feedback": 0  # Initial feedback value
         })
-    # update_feedback_database(user_id, new_suggestions_list)
-    # update_model_version_database(user_id, Model_Version)
+    update_feedback_database(user_id, new_suggestions_list)
+    update_model_version_database(user_id, Model_Version)
     return new_suggestions_list
 
 #Todo: have jasdeep update these values in the database
@@ -215,14 +164,12 @@ def top_recommendations(user_id):
     return top_entries_list
 
 # ------------- initial rec -------------
-# placeholder
 sel_user_id = 1
-user_skills = "python, css, html"
+user_skills = "python,css,html,react,javascript,frontend"
 user_job_title = "Frontend Developer"
-user_job_description = "Wrote code in css and hrml"
-print(f"Resume input: {user_skills}, {user_job_title}, {user_job_description}")
+print(f"Resume input: {user_skills}, {user_job_title}")
 
-cos_sim_result = give_suggestions(sel_user_id, user_skills, user_job_description, user_job_title)
+cos_sim_result = give_suggestions(sel_user_id, user_skills, user_job_title)
 print(f"--- Reccomendations: {cos_sim_result} ---")
 
 # ------------- getting top rec -------------
@@ -243,8 +190,3 @@ print(f"--- Reccomendations: {cos_sim_result} ---")
 # job_id='3'
 # feedback=1
 # update_user_feedback(user_id, job_id, feedback)
-
-# print("start script")
-# feedback_df, job_features_df = load_user_feedback_and_features()
-# print(feedback_df)
-# print(job_features_df)
