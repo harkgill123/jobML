@@ -26,20 +26,17 @@ nltk.download('stopwords')
 
 def create_clustered_model():
     # Fetch the job postings and prefetch the related skills
-    jobpostings = JobPosting.objects.prefetch_related('skills')
+    jobpostings = JobPosting.objects.all()
 
     # Transform the job postings into the desired structure
     jobpostings_list = []
     for jp in jobpostings:
-        skills = list(jp.skills.values_list('skill_name', flat=True))
-        cluster = jp.job_cluster.first().cluster if jp.job_cluster.exists() else 'No Cluster'
-
         jobpostings_list.append({
             'id': jp.id,
             'title': jp.title,
             'job_description': jp.job_description,
-            'skills': skills,
-            'cluster_no':cluster
+            'skills': jp.skills_list,
+            'cluster_no':jp.cluster
         })
     return jobpostings_list
 
@@ -175,6 +172,17 @@ def top_recommendations(user_id):
     # Create a list of tuples with user_id and job_id for the top entries
     top_entries_list = [{'user_id': entry.user_id,'job_id': entry.job_posting_id} for entry in top_feedback_entries]
     return top_entries_list
+
+
+# def main():
+#     jobpostings = JobPosting.objects.all()
+#     for jp in jobpostings:
+#         jp.skill_list_save()
+
+if __name__ == "__main__":
+    jobs = create_clustered_model()
+    print(jobs)
+
 
 # ------------- initial rec -------------
 # placeholder

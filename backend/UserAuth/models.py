@@ -93,12 +93,19 @@ class JobPosting(models.Model):
     skills = models.ManyToManyField(ListOfSkills, related_name='job_postings', blank=True)  
     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name='creator')
 
+    skills_list = models.JSONField(default=list)
+
+    cluster = models.IntegerField(max_length=255, default=0)
+
+
+    def skill_list_save(self, *args, **kwargs):
+        self.skills_list = list(self.skills.values_list('skill_name', flat=True))
+        super().save(*args, **kwargs)
+
+    
+
     def __str__(self):
         return self.title
-
-# class JobToSkills(models.Model):
-#     job_posting = models.ForeignKey(JobPosting, on_delete=models.CASCADE, related_name='job_skills')
-#     #skillID = models.CharField(max_length=255, unique=True, default='DefaultSkillID')
 
 class JobToClusters(models.Model):
     job_posting = models.ForeignKey(JobPosting, on_delete=models.CASCADE, related_name='job_cluster')

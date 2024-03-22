@@ -12,6 +12,7 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
+
         migrations.CreateModel(
             name='FeedbackforResume',
             fields=[
@@ -22,4 +23,10 @@ class Migration(migrations.Migration):
                 ('user', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='feedback_resume', to=settings.AUTH_USER_MODEL)),
             ],
         ),
+
+        migrations.AddField(
+            model_name='jobposting',
+            name='skills_list',
+            field=models.JSONField(default=list),
+        )
     ]
