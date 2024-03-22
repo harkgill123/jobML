@@ -109,19 +109,15 @@ def load_user_feedback_and_features():
     return feedback_df, job_features_df
 
 # Function to train or load a logistic regression model based on user feedback
-def train_or_load_feedback_model():
-    feedback_df, job_features_df = load_user_feedback_and_features()
-    
-    # Merge feedback_df with job_features_df to get the features for each job
-    merged_df = feedback_df.merge(job_features_df, on='job_id')
-    
-    # Split the data
-    X = merged_df.drop(columns=['user_id', 'job_id', 'feedback'])
+def train_or_load_feedback_model(feedback_df,job_features_df):
+    merged_df = feedback_df.merge(job_features_df, left_on='job_posting_id', right_on='id')
+    X = merged_df.drop(columns=['user_id', 'job_posting_id', 'feedback'])
     y = merged_df['feedback']
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
     
     # Train the logistic regression model
     feedback_lr = LogisticRegression(max_iter=1000, random_state=42)
+    print(feedback_lr)
     feedback_lr.fit(X_train, y_train)
     
     return feedback_lr
@@ -159,18 +155,26 @@ def give_suggestions(user_id, user_job_title, user_job_description, user_skills)
 
     # Get job titles from df to associate cosine similarity scores with jobs
     feedback_df, df = load_user_feedback_and_features()
+    feedback_lr = train_or_load_feedback_model(feedback_df,df)
+
     df['cluster_no'] = pd.to_numeric(df['cluster_no'], errors='coerce')
     samp_for_cluster = df[df['cluster_no'] == predicted_cluster]
     cos_sim = cos_sim.T.set_index(samp_for_cluster['id'])
     cos_sim.columns = ['score']
+    print(f"cos_sim 2: {cos_sim}")
 
     # top suggested jobs for the user's cluster after adjustment
     top_cos_sim = cos_sim.sort_values('score', ascending=False)[:30]
+    print(f"top_cos_sim: {top_cos_sim}")
 
     # --------- Second Logistics Regression: Predicted probability of user liking Job ---------
-    feedback_lr = train_or_load_feedback_model()
+    print(f"feedback_lr: {feedback_lr}")
+
     top_jobs_features = comps.loc[top_cos_sim.index]  # Assuming 'comps' has job features indexed by job ID
+    print(f"top_jobs_features: {top_jobs_features}")
+
     probabilities = feedback_lr.predict_proba(top_jobs_features)[:, 1]  # Assuming 1 is the label for 'like'
+    print(f"probabilities: {probabilities}")
     
     # Add probabilities to top_cos_sim and sort by it
     top_cos_sim['like_probability'] = probabilities
@@ -184,10 +188,10 @@ def give_suggestions(user_id, user_job_title, user_job_description, user_skills)
             "job_id": job_id,
             "suggestions": job_title,
             "score": score,
-            "feedback": 0  # Initial feedback value
+            "feedback": 0  
         })
-    update_feedback_database(user_id, new_suggestions_list)
-    update_model_version_database(user_id, Model_Version)
+    # update_feedback_database(user_id, new_suggestions_list)
+    # update_model_version_database(user_id, Model_Version)
     return new_suggestions_list
 
 #Todo: have jasdeep update these values in the database
@@ -212,14 +216,14 @@ def top_recommendations(user_id):
 
 # ------------- initial rec -------------
 # placeholder
-# sel_user_id = 1
-# user_skills = "python, css, html"
-# user_job_title = "Frontend Developer"
-# user_job_description = "Wrote code in css and hrml"
-# print(f"Resume input: {user_skills}, {user_job_title}, {user_job_description}")
+sel_user_id = 1
+user_skills = "python, css, html"
+user_job_title = "Frontend Developer"
+user_job_description = "Wrote code in css and hrml"
+print(f"Resume input: {user_skills}, {user_job_title}, {user_job_description}")
 
-# cos_sim_result = give_suggestions(sel_user_id, user_skills, user_job_description, user_job_title)
-# print(f"--- Reccomendations: {cos_sim_result} ---")
+cos_sim_result = give_suggestions(sel_user_id, user_skills, user_job_description, user_job_title)
+print(f"--- Reccomendations: {cos_sim_result} ---")
 
 # ------------- getting top rec -------------
 # user_id = 1  # Replace with the actual user_id you want to query
@@ -240,7 +244,7 @@ def top_recommendations(user_id):
 # feedback=1
 # update_user_feedback(user_id, job_id, feedback)
 
-print("start script")
-feedback_df, job_features_df = load_user_feedback_and_features()
-print(feedback_df)
-print(job_features_df)
+# print("start script")
+# feedback_df, job_features_df = load_user_feedback_and_features()
+# print(feedback_df)
+# print(job_features_df)
