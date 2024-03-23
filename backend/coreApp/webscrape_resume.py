@@ -89,10 +89,13 @@ class ScrapeResume:
                 new_skills = []
                 for skill in skills:
                     od = OrderedDict()
+                    if skill.startswith(' '):
+                        skill = skill[1:]
                     od['skill_name']=skill
                     new_skills.append(od)
 
                 ret["resume_skills"]=new_skills
+                print(ret["resume_skills"])
                 clean_resume_text= self.extractor.read_resume(text=resume_info,pdf=False)
                 name = self.extractor.extract_name(clean_resume_text)
                 create_user= {"username" : name, "name" : name , "email" : self.extractor.extract_email(clean_resume_text) , "password" : "" , "phone_number" : self.extractor.extract_number(clean_resume_text),"user_type": "Applicant"}
@@ -125,29 +128,34 @@ class ScrapeResume:
                 Q(name=create_user["name"]) &
                 Q(email=create_user["email"]) 
                 ).first()
-                if existing_user is None:
-                    form=SignupForm(create_user)
-                    if form.is_valid():
+                try:
+                    if existing_user is None:
+                        form=SignupForm(create_user)
                         
-                        user_serializer = UserSerializer(data=form.cleaned_data)
-                        if user_serializer.is_valid():
+                        if form.is_valid():
+                            
+                            user_serializer = UserSerializer(data=form.cleaned_data)
+                            if user_serializer.is_valid():
 
-                            # print(form.cleaned_data)
-                            instance = user_serializer.save()
-                            # print(instance)
-                        else:
-                            Exception(f"error data is wrong {create_user}")
-            
-                    resume_serializer = ResumeSerializer(data=ret, context={'user': instance})
+                                # print(form.cleaned_data)
+                                instance = user_serializer.save()
+                                # print(instance)
+                            else:
+                                Exception(f"error data is wrong {create_user}")
                 
+                        resume_serializer = ResumeSerializer(data=ret, context={'user': instance})
                     
-                    if resume_serializer.is_valid():
-                        resume_serializer.save()
+                        
+                        if resume_serializer.is_valid():
+                            resume_serializer.save()
+                        else:
+                            print(resume_serializer.errors)
                     else:
-                        print(resume_serializer.errors)
-                else:
-                    print("User found skipping")
-                    print(existing_user)
+                        print("User found skipping")
+                        print(existing_user)
+                except:
+                    print("error")
+                    print(form)
                     
                 
                 self.driver.back()
@@ -166,6 +174,6 @@ class ScrapeResume:
 if __name__ == "__main__":
     test=ScrapeResume()
     test.connect()
-    test.search_resume("software engineer")
+    test.search_resume("electrical engineer")
 
     test.scrape_resume()
