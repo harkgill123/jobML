@@ -153,29 +153,41 @@ def give_suggestions(user_id, user_job_title, user_job_description, user_skills)
     top_jobs_features = comps.loc[top_cos_sim.index]  # Assuming 'comps' has job features indexed by job ID
 
     probabilities = feedback_lr.predict_proba(top_jobs_features)[:, 1]  # Assuming 1 is the label for 'like'
-    print(f"probabilities: {probabilities}")
     
     # Add probabilities to top_cos_sim and sort by it
     top_cos_sim['like_probability'] = probabilities
     top_cos_sim_sorted = top_cos_sim.sort_values('like_probability', ascending=False)
-    print(top_cos_sim_sorted)
 
-    # Add the scores directly
+    # ---------Adding scores ---------
     top_cos_sim['combined_score'] = top_cos_sim['score'] + top_cos_sim['like_probability']
-
-    # Sort the recommendations based on the new combined score
     top_cos_sim_sorted_by_combined = top_cos_sim.sort_values('combined_score', ascending=False)
-    print(top_cos_sim_sorted_by_combined)
+
+    #TO DO: add logic to calculate the confidence rating
+    max_score = top_cos_sim['score'].max()
+    min_score = top_cos_sim['score'].min()
+    max_like_probability = top_cos_sim['like_probability'].max()
+    min_like_probability = top_cos_sim['like_probability'].min()
+
+    top_cos_sim['normalized_score'] = (top_cos_sim['score'] - min_score) / (max_score - min_score)
+    top_cos_sim['normalized_like_probability'] = (top_cos_sim['like_probability'] - min_like_probability) / (max_like_probability - min_like_probability)
+
+    alpha = 0.7
+    beta = 0.3
+
+    top_cos_sim['confidence_rating'] = alpha * top_cos_sim['normalized_score'] + beta * top_cos_sim['normalized_like_probability']
+    print(top_cos_sim['confidence_rating'])
 
     new_suggestions_list = []
-    for job_id, score in top_cos_sim.to_dict()['score'].items():
+    for job_id, details in top_cos_sim.iterrows():
         job_title = samp_for_cluster[samp_for_cluster['id'] == job_id]['title'].values[0]
+        score = details['score']
+        confidence_rating = round(details['confidence_rating'] * 100, 2)
         new_suggestions_list.append({
             "user_id": user_id,
             "job_id": job_id,
             "suggestions": job_title,
             "score": score,
-            "total_score": top_cos_sim_sorted_by_combined,
+            "confidence_rating": confidence_rating,  # Add the confidence rating to the dictionary
             "feedback": 0 
         })
     # update_feedback_database(user_id, new_suggestions_list)

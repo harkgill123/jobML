@@ -364,10 +364,6 @@ def train_model():
 
     # plt.show()
 
-
-
-
-
 print(f"----- MODEL VERSION TESTING -----")
 jobs = create_model()
 df = pd.DataFrame(jobs)
