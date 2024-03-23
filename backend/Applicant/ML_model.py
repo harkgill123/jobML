@@ -1,10 +1,13 @@
+from django.db.models import Avg
 import sys, os, django
 from pathlib import Path
+
+from sklearn.calibration import LabelEncoder
 sys.path.append(Path(__file__).resolve().parent.parent.__str__())
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'coreApp.settings')
 django.setup()
-from UserAuth.models import JobPosting,JobToClusters,ModelVersion,User
+from UserAuth.models import JobPosting,JobToClusters,ModelVersion,User,FeedbackforJob
 
 import pandas as pd
 import numpy as np
@@ -22,90 +25,117 @@ from pylab import rcParams
 from nltk.corpus import stopwords
 from joblib import dump
 from django.conf import settings
+from sklearn.cluster import KMeans
+from sklearn.metrics import accuracy_score, classification_report
 
-rcParams['figure.figsize'] = 50, 20
-start=time.time()
 nltk.download('stopwords')
 
-MODEL_VERSION = 1
+MODEL_VERSION = 2
 
-# Functions to clean skills data and make a vocabulary for skills vectorization
-common_placeholders = [
-    'see job description', 'n/a', 'not applicable', 'none', 'no skills required', 
-    'please see job description', 'refer to job description'
-]
 def create_model():
-    # Fetch the job postings and prefetch the related skills
-    jobpostings = JobPosting.objects.prefetch_related('skills')
 
-    # Transform the job postings into the desired structure
+    jobpostings = JobPosting.objects.all()
     jobpostings_list = []
     for jp in jobpostings:
-        skills = list(jp.skills.values_list('skill_name', flat=True))
+        feedback_entry = FeedbackforJob.objects.filter(job_posting_id=jp.id).first()
+
+        if feedback_entry:
+            feedback_value = feedback_entry.feedback
+        else:
+            feedback_value = 0
         jobpostings_list.append({
             'id': jp.id,
             'title': jp.title,
             'job_description': jp.job_description,
-            'skills': skills,
+            'skills': jp.skills_list,
+            'feedback': feedback_value
         })
-
     return jobpostings_list
 
 def text_scrubber(values):
     result = []
     for item in values:
-        # If 'item' is a list or an array, handle it appropriately
         if isinstance(item, list) or isinstance(item, np.ndarray):
-            item = ', '.join([str(i) for i in item])  # Convert list/array to string
-            temp = item.lower()  # Convert to lowercase
-            temp = re.sub(r'\(.*\)|&#39;|\x92', '', temp)  # Remove unwanted characters
-            temp = re.sub(r' &amp; |&amp;|\x95|:|;|&|\.|/| and ', ',', temp)  # Replace certain characters with comma
-            temp = [skill.strip() for skill in temp.split(',') if skill.strip()] # split the skills into a list and remove empty entries
-            temp = ','.join(temp) # Rejoin the cleaned skills into a string separated by commas
-            result.append(temp)
+            temp = ' '.join(item)
+            result.append(temp.lower()) 
     return result
 
-def vocab(df):
-    all_skills = [] 
-    for index, row in df.iterrows():
-        skills = row['skills']  # Get the skills string
-        if pd.notnull(skills):  # Check if the skills string is not NaN
-            skills_list = skills.split(',')  # Split the string into individual skills
-            cleaned_skills = [skill.strip() for skill in skills_list if skill.strip()]  # Clean and filter empty strings
-            all_skills.extend(cleaned_skills)  # Add to the collective list
-    
-    # Create a set of unique skills, then convert it back to a list
-    vocabulary = list(set(all_skills))
-    
-    return vocabulary
-
-# function to clean the text in each job description
 def clean_text(text):
     cleaned_text = text.replace("&nbsp;", " ").replace("\x92", " ").replace("\x95", " ").replace('&amp;', " ") \
         .replace('*', " ").replace(".", "").replace("co&#39;s", "").replace("\xae&quot;", "") \
         .replace("&#39;s", "").replace("&quot;", "").replace("?", "").replace("&#39;s", "") \
         .replace("@", "").replace("\x96", "").replace("(", "").replace(")", "") \
         .replace("+", "").replace("—", "").replace(":", "").replace(",", "").replace("/", " ")
+    cleaned_text = cleaned_text.lower()
+    # Remove numbers
+    cleaned_text = re.sub(r'\d+', '', cleaned_text)
+    # Remove punctuation
+    cleaned_text = re.sub(r'[^\w\s]', '', cleaned_text)
     return cleaned_text
+
+def populate_job_clusters():
+    # -------------- Update cluster table in database --------------
+    print("updating cluster table")
+    for index, row in df.iterrows():
+        job_id = row['id']
+        cluster_no = row['cluster_no']
+        job, created = JobToClusters.objects.get_or_create(job_posting_id=job_id,cluster=cluster_no)
+    
+    print("updating job posting table with clusters")
+    jobpostings = JobPosting.objects.all()
+    for jp in jobpostings:
+        job_cluster = jp.job_cluster.first() 
+        jp.cluster = job_cluster.cluster if job_cluster else 'No Cluster'
+        jp.save()
+    return job
+
+def update_model_version_database(MODEL_VERSION):
+    model_version_str = str(MODEL_VERSION)
+    users = User.objects.all()
+    for user in users:
+        ModelVersion.objects.update_or_create(
+            user=user,
+            defaults={
+                'latest_version': model_version_str  
+            }
+        )
 
 def train_model():
     # -------------- Start Script --------------
     print("---- Starting to train model ----")
-    # Fetch job data from the database
 
     df['skills'] = text_scrubber(df['skills'])
-    voc = vocab(df)
 
-    # Apply the clean_text function to each element in the 'jobdescription' column
     df['desc'] = df['job_description'].apply(clean_text)
     df.drop('job_description', axis=1, inplace=True)
 
-    #min_df ignores terms that are in more than 20% of documents
-    mine = ['manager', 'amp', 'nbsp', 'responsibilities', 'used', 'skills', 'duties', 'work', 'worked', 'daily','services', 'job', 'using', 'com', 'end', 'prepare', 'prepared', 'lead', 'requirements','summary','Job Role','Position']
+    mine = ['manager', 'amp', 'nbsp', 'responsibilities', 'used', 'skills',
+             'duties', 'work', 'worked', 'daily','services', 'job', 'using',
+            'com', 'end', 'prepare', 'prepared', 'lead', 'requirements',
+            'summary','Job Role','Position', "applicant", "application",
+            "available", "candidate", "career", "commitment", "company",
+            "competitive", "comprehensive", "consideration", "deadline",
+            "degree", "description", "duties", "education", "employer",
+            "employment", "encourage", "equal", "experience", "expertise",
+            "field", "fill", "following", "hire", "hiring", "include",
+            "including", "individual", "industry", "information", "job",
+            "knowledge", "learn", "looking", "management", "manager",
+            "opportunity", "position", "professional", "qualifications",
+            "qualified", "responsibilities", "resume", "role", "salary",
+            "seek", "seeking", "skills", "strong", "submit", "success",
+            "successful", "support", "team", "title", "work", "working",
+            "years", "responsibility", "required", "requirement", "requirements",
+            "benefit", "benefits", "company", "companies", "task", "tasks",
+            "environment", "growth", "goal", "goals", "objective", "objectives",
+            "mission", "vision", "value", "values", "culture", "employee",
+            "employees", "staff", "client", "clients", "customer", "customers",
+            'see job description', 'n/a', 'not applicable', 'none', 'no skills required', 
+            'please see job description', 'refer to job description','you','your',
+            'young','yrs',"apply", "appoint", "appointment",]
 
     vectorizer_title = TfidfVectorizer(max_features=500, ngram_range=(1, 5))
     vectorizer_description = TfidfVectorizer(analyzer='word', ngram_range=(1, 2), token_pattern='[a-zA-z]{3,50}', max_df=0.2, min_df=5, max_features=10000, stop_words=list(text.ENGLISH_STOP_WORDS.union(list(mine))), decode_error='ignore', vocabulary=None, binary=False) #(max_features=1000, ngram_range=(1, 3))
-    vectorizer_skills = TfidfVectorizer(vocabulary=voc, decode_error='ignore') #((max_features=500, ngram_range=(1, 1))
+    vectorizer_skills = TfidfVectorizer(max_features=500, ngram_range=(1, 3))
 
     df['desc_new']=df['desc']
     description_matrix = vectorizer_description.fit_transform(df['desc_new'].values.astype('U'))
@@ -123,79 +153,68 @@ def train_model():
     title_matrix.columns = vectorizer_title.get_feature_names_out()
 
     jobtitle_matrix = pd.concat([title_matrix, skills_matrix, description_matrix], axis=1)
-    jobtitle_matrix
     comps = pd.DataFrame(jobtitle_matrix)
     print("Number of features:", comps.shape[1])
 
     # -------------- K Means --------------
-    from sklearn.cluster import KMeans
-    kmeans = KMeans(n_clusters=10)
+    kmeans = KMeans(n_clusters=20)
     df['cluster_no'] = kmeans.fit_predict(comps)
 
-    # -------------- LogisticRegression --------------
-    from sklearn.metrics import accuracy_score, classification_report
-    pca = PCA(n_components=2,random_state=42)  # Reduce to 2 dimensions for plotting
-    reduced_features = pca.fit_transform(comps)
-    reduced_features = pd.DataFrame(reduced_features)
-
+    # -------------- LogisticRegression Cluster --------------
     X = comps
     y = df['cluster_no']
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
-    # lr = LogisticRegression(max_iter=1000, random_state=42)
-    lr = LogisticRegression(C=10, penalty='l2', multi_class='multinomial', solver='sag', max_iter=1000)
-    lr.fit(X_train, y_train)
-    y_pred = lr.predict(X_test)
+    cluster_lr = LogisticRegression(C=10, penalty='l2', multi_class='multinomial', solver='sag', max_iter=1000)
+    cluster_lr.fit(X_train, y_train)
+    y_pred = cluster_lr.predict(X_test)
+
     print("Accuracy:", accuracy_score(y_test, y_pred))
     print(classification_report(y_test, y_pred))
 
-    # Assign cluster number to each job title in comps to pull particular cluster out for comparison
+    # -------------- LogisticRegression Feedback --------------
+    X = comps  
+    y_feedback = df['feedback'].replace([np.inf, -np.inf], np.nan)  # Replace Inf with NaN
+    y_feedback = y_feedback.dropna()  
+    y_feedback = y_feedback.astype(int)
+    if y_feedback.dtype == object or not np.issubdtype(y_feedback.dtype, np.integer):
+        le = LabelEncoder()
+        y_feedback = le.fit_transform(y_feedback)
+
+    X_train, X_test, y_train, y_test = train_test_split(X, y_feedback, test_size=0.2, random_state=42)
+    feedback_lr = LogisticRegression(max_iter=1000, random_state=42) #LogisticRegression(C=10, penalty='l2', multi_class='multinomial', solver='sag', max_iter=1000)
+
+    feedback_lr.fit(X_train, y_train)
+    y_pred = feedback_lr.predict(X_test)
+
+    print("Accuracy for probability:", accuracy_score(y_test, y_pred))
+    print(classification_report(y_test, y_pred))
+
+    dir_path = f'model_settings_ver{MODEL_VERSION}'
+    if not os.path.exists(dir_path):
+        os.makedirs(dir_path)
+    dump(feedback_lr, os.path.join(dir_path, 'feedback_lr.joblib'))
+    dump(comps, os.path.join(dir_path, 'comps.joblib'))
+
     comps['cluster_no'] = y.values
     comps.set_index('cluster_no', inplace=True)
 
     # -------------- Save Model Components --------------
-    dir_path = f'model_settings_ver{MODEL_VERSION}'
-    if not os.path.exists(dir_path):
-        os.makedirs(dir_path)
     dump(vectorizer_title, os.path.join(dir_path, 'vectorizer_title.joblib'))
     dump(vectorizer_skills, os.path.join(dir_path, 'vectorizer_skills.joblib'))
     dump(vectorizer_description, os.path.join(dir_path, 'vectorizer_description.joblib'))
-    dump(lr, os.path.join(dir_path, 'lr.joblib'))
-    dump(comps, os.path.join(dir_path, 'comps.joblib'))
+    dump(cluster_lr, os.path.join(dir_path, 'cluster_lr.joblib'))
+    dump(comps, os.path.join(dir_path, 'comps_indexed.joblib'))
+    
 
-# -------------- Update cluster table in database --------------
-def populate_job_clusters():
-    for index, row in df.iterrows():
-        job_id = row['id']
-        cluster_no = row['cluster_no']
-        job, created = JobToClusters.objects.get_or_create(job_posting_id=job_id,cluster=cluster_no)
-
-    return job
-
-def update_model_version_database(MODEL_VERSION):
-    # Convert the MODEL_VERSION number to a string, as the model fields are CharFields
-    model_version_str = str(MODEL_VERSION)
-
-    # Get all user instances from the User table
-    users = User.objects.all()
-
-    # Now create or update ModelVersion entries for each user
-    for user in users:
-        ModelVersion.objects.update_or_create(
-            user=user,
-            defaults={
-                'latest_version': model_version_str  # Update the latest model version
-            }
-        )
-
-# print(f"----- MODEL VERSION {MODEL_VERSION} -----")
-# jobs = create_model()
-# print(jobs)
-# df = pd.DataFrame(jobs)
-# print("----- Training Model -----")
-# train_model()
-# print("----- Deleting all Job to Cluster Table -----")
-# JobToClusters.objects.all().delete()
-# print("----- Updating Job to Cluster Table -----")
-# populate_job_clusters()
+print(f"----- MODEL VERSION {MODEL_VERSION} -----")
+jobs = create_model()
+df = pd.DataFrame(jobs)
+print(df)
+print("----- Training Model -----")
+train_model()
+print("----- Deleting all Job to Cluster Table -----")
+JobToClusters.objects.all().delete()
+print("----- Updating Job to Cluster Table -----")
+populate_job_clusters()
 # print("----- Updating Model Version Resume Table -----")
 # update_model_version_database(MODEL_VERSION)
