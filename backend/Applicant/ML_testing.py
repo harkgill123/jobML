@@ -328,9 +328,9 @@ def train_model(df):
     # threeDCluster(comps)
 
 
-print(f"----- MODEL VERSION TESTING -----")
-# jobs = create_model()
-data = create_model_with_feedback()
-df = pd.DataFrame(data)
-print("----- Training Model -----")
-train_model(df)
+# print(f"----- MODEL VERSION TESTING -----")
+# # jobs = create_model()
+# data = create_model_with_feedback()
+# df = pd.DataFrame(data)
+# print("----- Training Model -----")
+# train_model(df)
