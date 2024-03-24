@@ -30,8 +30,7 @@ import CandidatePage from "./pages/candidatepage";
 import EmployerRecommendedCandidates from "./pages/EmployerRecommendedCandidates";
 import EmployerMyProfile from "./pages/EmployerMyProfile";
 import EditJobPage from "./pages/EditJobPage";
-import CandidateStats from "./pages/CandidateStats";
-
+import FeaturedJobsPage from "./pages/FeaturedJobsPage";
 function App() {
   const action = useNavigationType();
   const location = useLocation();
@@ -60,6 +59,10 @@ function App() {
           title = "";
           metaDescription = "";
           break;
+      case "/featured-jobs-page":
+        title=""
+        metaDescription=""
+        break;
       case "/candidate-homepage":
         title = "";
         metaDescription = "";
@@ -177,6 +180,7 @@ function App() {
       <Route path="/candidate-search-page" element={<CandidateSearchPage />} />
       <Route path="/candidate-stats" element={<CandidateStats />} />
       <Route path="/candidatepage/:user_id" element={<CandidatePage />} />
+      <Route path="/featured-jobs-page/" element={<FeaturedJobsPage />} />
       <Route
         path="/candidate-applied-jobs"
         element={<CandidateAppliedJobs />}

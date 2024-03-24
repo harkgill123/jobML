@@ -66,7 +66,29 @@ const FeaturedJob = ({ jobsYouMightLike, featuredJobs }: FeaturedJobProps) => {
       console.error('Error sending dislike:', error);
     }
   };
+  const handlejobclick = async (jobId : number)=>{
+    console.log("job clicked")
+    try {
+      const response = await fetch('http://localhost:8000/Applicant/get_jobpost/', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ job_id: jobId}),
+      });
   
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      
+      const data = await response.json();
+      console.log('job response:', data);
+      navigate("/featured-jobs-page/",{state: {job : data.job_post}})
+    } catch (error) {
+      console.error('Error sending dislike:', error);
+    }
+  }
   return (
     <section className={styles.featuredJob}>
       <div className={styles.heading}>
@@ -75,7 +97,7 @@ const FeaturedJob = ({ jobsYouMightLike, featuredJobs }: FeaturedJobProps) => {
       <div className={styles.jobsContainer}>
         {featuredJobs.map((job) => (
           <div key={job.id} className={styles.job}>
-            <div className={styles.jobTitle}>{job.title}</div>
+            <button onClick={() => handlejobclick(job.id)} className={styles.jobTitle}>{job.title}</button>
             <div className={styles.companyName}>{job.company}</div>
             <div className={styles.locationName}>{job.location}</div>
             <div className={styles.interactionIcons}>

@@ -97,10 +97,13 @@
 
 /* Style for job title */
 .jobTitle {
-  font-size: 20px; /* Size of the job title text */
+  font-size: 15px; /* Size of the job title text */
   color: #333; /* Color of the job title text */
-  margin-bottom: 8px; /* Spacing below the title */
+  margin-bottom: 1px; /* Spacing below the title */
   font-weight: 500; /* Medium weight for Roboto */
+  background: transparent;
+  border: 0cm;
+  font-weight: bold;
 }
 
 /* Style for company name */

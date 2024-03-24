@@ -13,7 +13,20 @@
   max-width: 1200px; /* Adjust max-width as needed */
   margin: 0 auto; /* Center horizontally */
 }
-
+.findJobButton {
+  white-space: nowrap; /* This prevents the text from wrapping */
+  background-color: var(--primary-500);  color: white;
+  border: none;
+  padding: 10px 20px;
+  font-weight: 550;
+  margin-left: 10px; /* Adjust as necessary */
+  border-radius: 5px; /* Adjust as necessary */
+  cursor: pointer;
+  font-size: 1rem; /* Adjust as necessary */
+  justify-content: center;
+  align-items: center;
+  
+}
 .jobDetailHeader,
 .jobDescriptionSection,
 .jobDetailSection {

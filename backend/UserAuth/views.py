@@ -22,7 +22,7 @@ class SignUpView(APIView):
             serializer = UserSerializer(data=form.cleaned_data)
             if serializer.is_valid():
                 instance = serializer.save()
-                ModelVersion.objects.create(user=instance, model_version=MODEL_VERSION, latest_version=MODEL_VERSION)
+                ModelVersion.objects.create(user=instance, model_version=0, latest_version=MODEL_VERSION)
                 return Response({
                     'success': True,
                     'message': 'Registration successful. Welcome to The Job Recommender System!'

@@ -20,7 +20,7 @@ type LocationState = {
 };
 
 const JobPage: React.FC = () => {
-  const { jobId } = useParams<{ jobId: string }>();
+  // const { jobId } = useParams<{ jobId: string }>();
   const location = useLocation();
   const state = location.state as LocationState;
 
@@ -36,7 +36,7 @@ const JobPage: React.FC = () => {
     application_deadline,
     experience_required,
     job_description,
-  } = state.job;
+  } = state.job
 
   return (
     <div className={styles.jobPage}>
