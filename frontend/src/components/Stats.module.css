@@ -1,0 +1,301 @@
+.statistics {
+    position: relative;
+    line-height: 28px;
+    font-weight: 500;
+  }
+  .appliedJobs,
+  .div {
+    width: 180px;
+    position: relative;
+    display: inline-block;
+  }
+  .div {
+    line-height: 32px;
+    font-weight: 600;
+  }
+  .appliedJobs {
+    font-size: var(--body-small-400-size);
+    line-height: 20px;
+    color: var(--color-gray-100);
+  }
+  .funFacts {
+    flex: 1;
+    border-radius: var(--br-5xs);
+    background-color: var(--primary-50);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    padding: var(--padding-5xl-5) var(--padding-xl) var(--padding-5xl-5)
+      var(--padding-5xl);
+    box-sizing: border-box;
+    gap: var(--gap-9xs);
+    min-width: 364px;
+    max-width: 100%;
+  }
+  .div1,
+  .likedJobs {
+    width: 180px;
+    position: relative;
+    display: inline-block;
+  }
+  .div1 {
+    line-height: 32px;
+    font-weight: 600;
+  }
+  .likedJobs {
+    font-size: var(--body-small-400-size);
+    line-height: 20px;
+    color: var(--color-gray-100);
+  }
+  .funFacts1 {
+    flex: 1;
+    border-radius: var(--br-5xs);
+    background-color: var(--warning-50);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    padding: var(--padding-5xl-5) var(--padding-xl) var(--padding-5xl-5)
+      var(--padding-5xl);
+    box-sizing: border-box;
+    gap: var(--gap-9xs);
+    min-width: 364px;
+    max-width: 100%;
+  }
+  .div2,
+  .openHiringPositions {
+    width: 180px;
+    position: relative;
+    display: inline-block;
+  }
+  .div2 {
+    line-height: 32px;
+    font-weight: 600;
+  }
+  .openHiringPositions {
+    font-size: var(--body-small-400-size);
+    line-height: 20px;
+    color: var(--color-gray-100);
+  }
+  .funFacts2,
+  .newJobPostings,
+  .statisticsParent {
+    display: flex;
+    justify-content: flex-start;
+    max-width: 100%;
+  }
+  .funFacts2 {
+    flex: 1;
+    border-radius: var(--br-5xs);
+    background-color: var(--success-50);
+    overflow: hidden;
+    flex-direction: column;
+    align-items: center;
+    padding: var(--padding-5xl-5) var(--padding-xl) var(--padding-5xl-5)
+      var(--padding-5xl);
+    box-sizing: border-box;
+    gap: var(--gap-9xs);
+    min-width: 364px;
+  }
+  .newJobPostings,
+  .statisticsParent {
+    align-self: stretch;
+    align-items: flex-start;
+  }
+  .newJobPostings {
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: var(--gap-19xl);
+    font-size: var(--font-size-5xl);
+  }
+  .statisticsParent {
+    flex-direction: column;
+    gap: var(--gap-base);
+  }
+  .companiesHiring,
+  .newJobPostings1 {
+    width: 180px;
+    position: relative;
+    display: inline-block;
+  }
+  .newJobPostings1 {
+    line-height: 32px;
+    font-weight: 600;
+  }
+  .companiesHiring {
+    font-size: var(--body-small-400-size);
+    line-height: 20px;
+    color: var(--color-gray-100);
+  }
+  .funFacts3 {
+    flex: 1;
+    border-radius: var(--br-5xs);
+    background-color: var(--primary-50);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    padding: var(--padding-5xl-5) var(--padding-xl) var(--padding-5xl-5)
+      var(--padding-5xl);
+    box-sizing: border-box;
+    gap: var(--gap-9xs);
+    min-width: 364px;
+    max-width: 100%;
+  }
+  .div3,
+  .newJobPostings2 {
+    width: 180px;
+    position: relative;
+    display: inline-block;
+  }
+  .div3 {
+    line-height: 32px;
+    font-weight: 600;
+  }
+  .newJobPostings2 {
+    font-size: var(--body-small-400-size);
+    line-height: 20px;
+    color: var(--color-gray-100);
+  }
+  .funFacts4 {
+    flex: 1;
+    border-radius: var(--br-5xs);
+    background-color: var(--warning-50);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    padding: var(--padding-5xl-5) var(--padding-xl) var(--padding-5xl-5)
+      var(--padding-5xl);
+    box-sizing: border-box;
+    gap: var(--gap-9xs);
+    min-width: 364px;
+    max-width: 100%;
+  }
+  .div4,
+  .totalFeedback {
+    width: 180px;
+    position: relative;
+    display: inline-block;
+  }
+  .div4 {
+    line-height: 32px;
+    font-weight: 600;
+  }
+  .totalFeedback {
+    font-size: var(--body-small-400-size);
+    line-height: 20px;
+    color: var(--color-gray-100);
+  }
+  .funFacts5 {
+    flex: 1;
+    border-radius: var(--br-5xs);
+    background-color: var(--success-50);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    padding: var(--padding-5xl-5) var(--padding-xl) var(--padding-5xl-5)
+      var(--padding-5xl);
+    box-sizing: border-box;
+    gap: var(--gap-9xs);
+    min-width: 364px;
+    max-width: 100%;
+  }
+  .funFactsParent {
+    align-self: stretch;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    gap: var(--gap-19xl);
+    font-size: var(--font-size-5xl);
+  }
+  .funFactsParent,
+  .newJobPostingsFunFacts,
+  .totalFeedbackFunFacts {
+    display: flex;
+    align-items: flex-start;
+    max-width: 100%;
+  }
+  .totalFeedbackFunFacts {
+    width: 1531px;
+    flex-direction: column;
+    justify-content: flex-start;
+    gap: var(--gap-5xl);
+  }
+  .newJobPostingsFunFacts {
+    width: 1909px;
+    flex-direction: row;
+    justify-content: center;
+    padding: 0 var(--padding-xl);
+    box-sizing: border-box;
+    text-align: left;
+    font-size: var(--font-size-11xl);
+    color: var(--gray-900);
+    font-family: var(--body-small-400);
+  }
+  @media screen and (max-width: 900px) {
+    .statistics {
+      font-size: var(--font-size-5xl);
+      line-height: 22px;
+    }
+    .funFactsParent,
+    .newJobPostings {
+      gap: var(--gap-lgi);
+    }
+  }
+  @media screen and (max-width: 450px) {
+    .statistics {
+      font-size: var(--font-size-lg);
+      line-height: 17px;
+    }
+    .div {
+      font-size: var(--font-size-lgi);
+      line-height: 26px;
+    }
+    .funFacts {
+      min-width: 100%;
+    }
+    .div1 {
+      font-size: var(--font-size-lgi);
+      line-height: 26px;
+    }
+    .funFacts1 {
+      min-width: 100%;
+    }
+    .div2 {
+      font-size: var(--font-size-lgi);
+      line-height: 26px;
+    }
+    .funFacts2 {
+      min-width: 100%;
+    }
+    .newJobPostings1 {
+      font-size: var(--font-size-lgi);
+      line-height: 26px;
+    }
+    .funFacts3 {
+      min-width: 100%;
+    }
+    .div3 {
+      font-size: var(--font-size-lgi);
+      line-height: 26px;
+    }
+    .funFacts4 {
+      min-width: 100%;
+    }
+    .div4 {
+      font-size: var(--font-size-lgi);
+      line-height: 26px;
+    }
+    .funFacts5 {
+      min-width: 100%;
+    }
+  }
+  

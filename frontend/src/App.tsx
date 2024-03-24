@@ -30,6 +30,7 @@ import CandidatePage from "./pages/candidatepage";
 import EmployerRecommendedCandidates from "./pages/EmployerRecommendedCandidates";
 import EmployerMyProfile from "./pages/EmployerMyProfile";
 import EditJobPage from "./pages/EditJobPage";
+import CandidateStats from "./pages/CandidateStats";
 
 function App() {
   const action = useNavigationType();
@@ -147,6 +148,10 @@ function App() {
         title = "";
         metaDescription = "";
         break;
+      case "/candidate-stats":
+        title = "";
+        metaDescription = "";
+        break;
     }
 
     if (title) {
@@ -170,7 +175,7 @@ function App() {
       <Route path="/candidate-homepage" element={<CandidateHomepage />} />
       <Route path="/candidate-my-profile" element={<CandidateMyProfile />} />
       <Route path="/candidate-search-page" element={<CandidateSearchPage />} />
-      <Route path="/candidate-dashboard" element={<CandidateDashboard />} />
+      <Route path="/candidate-stats" element={<CandidateStats />} />
       <Route path="/candidatepage/:user_id" element={<CandidatePage />} />
       <Route
         path="/candidate-applied-jobs"
