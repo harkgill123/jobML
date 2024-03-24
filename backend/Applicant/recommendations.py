@@ -186,24 +186,23 @@ def give_suggestions(user_id, user_job_title, user_job_description, user_skills)
             "user_id": user_id,
             "job_id": job_id,
             "suggestions": job_title,
-            "score": score,
-            "confidence_rating": confidence_rating,  # Add the confidence rating to the dictionary
+            "score": confidence_rating, # Score is now confidence rating!
             "feedback": 0 
         })
-    # update_feedback_database(user_id, new_suggestions_list)
-    # update_model_version_database(user_id, Model_Version)
+    update_feedback_database(user_id, new_suggestions_list)
+    update_model_version_database(user_id, Model_Version)
     return new_suggestions_list
 
 # ------------- initial rec -------------
 # placeholder
-sel_user_id = 1
-user_skills = "agile, QA"
-user_job_title = "automation test engineer"
-user_job_description = "US Citizens and Green Card Holders and those authorized to work in the US are encouraged to apply. We are unable to sponsor H1b candidates at this timeJob DescriptionWe are seeking a Director of Quality Assurance to be responsible for the overall product quality of all external facing company’s applications.This position will be responsible for leading, driving, designing, and planning the implementation of strategic and operational quality assurance activities for our current customer base of automotive dealers and car rental companies.This person will work closely with Product, Development, and Business Analysts Teams to ensure timely, accurate, and fully tested applications are delivered to our customers that fully meet their business needs.This position will also be responsible for mentoring quality assurance team members and enforcing that proper test planning and execution processes are followed.Skills/Qualifications:Bachelors in Computer Science, Information Systems, or Business AdministrationMinimum 6 years' applicable experience leading and/or directing Software Quality Assurance team(s)Demonstrated consistent leadership effectiveness in technology and business related strategic planning, operations, implementation delivery and overall IT capability (people, process, technology) developmentDemonstrated, proven understanding of both manual and automation testing methodologiesEstablished leadership track record of human capital management principles, practices, and procedures Collect, analyze, and report summarized QA information and trends to President. Guide and train their team to meet and exceed quality standards.Maintain product quality by establishing and enforcing QA policies and proceduresCollaborate with other members of management to develop quality assurance standards for new designs and production methodsMaintain QA staff by recruiting, selecting, orienting, and training employees.Experience with both manual and automation testing using offshore teams"
-print(f"Resume input: {user_skills}, {user_job_title}, {user_job_description}")
+# sel_user_id = 1
+# user_skills = "agile, QA"
+# user_job_title = "automation test engineer"
+# user_job_description = "US Citizens and Green Card Holders and those authorized to work in the US are encouraged to apply. We are unable to sponsor H1b candidates at this timeJob DescriptionWe are seeking a Director of Quality Assurance to be responsible for the overall product quality of all external facing company’s applications.This position will be responsible for leading, driving, designing, and planning the implementation of strategic and operational quality assurance activities for our current customer base of automotive dealers and car rental companies.This person will work closely with Product, Development, and Business Analysts Teams to ensure timely, accurate, and fully tested applications are delivered to our customers that fully meet their business needs.This position will also be responsible for mentoring quality assurance team members and enforcing that proper test planning and execution processes are followed.Skills/Qualifications:Bachelors in Computer Science, Information Systems, or Business AdministrationMinimum 6 years' applicable experience leading and/or directing Software Quality Assurance team(s)Demonstrated consistent leadership effectiveness in technology and business related strategic planning, operations, implementation delivery and overall IT capability (people, process, technology) developmentDemonstrated, proven understanding of both manual and automation testing methodologiesEstablished leadership track record of human capital management principles, practices, and procedures Collect, analyze, and report summarized QA information and trends to President. Guide and train their team to meet and exceed quality standards.Maintain product quality by establishing and enforcing QA policies and proceduresCollaborate with other members of management to develop quality assurance standards for new designs and production methodsMaintain QA staff by recruiting, selecting, orienting, and training employees.Experience with both manual and automation testing using offshore teams"
+# print(f"Resume input: {user_skills}, {user_job_title}, {user_job_description}")
 
-cos_sim_result = give_suggestions(sel_user_id, user_skills, user_job_description, user_job_title)
-print(f"--- Reccomendations: {cos_sim_result} ---")
+# cos_sim_result = give_suggestions(sel_user_id, user_skills, user_job_description, user_job_title)
+# print(f"--- Reccomendations: {cos_sim_result} ---")
 
 # ------------- getting top rec -------------
 # user_id = 1  # Replace with the actual user_id you want to query

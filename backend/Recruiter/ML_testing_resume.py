@@ -364,11 +364,11 @@ def train_model():
 
     # plt.show()
 
-print(f"----- MODEL VERSION TESTING -----")
-jobs = create_model()
-df = pd.DataFrame(jobs)
-print("----- Training Model -----")
-train_model()
+# print(f"----- MODEL VERSION TESTING -----")
+# jobs = create_model()
+# df = pd.DataFrame(jobs)
+# print("----- Training Model -----")
+# train_model()
 # print("----- Deleting all Resume to Cluster Table -----")
 # ResumetoClusters.objects.all().delete()
 # print("----- Updating Resume to Cluster Table -----")
