@@ -300,7 +300,7 @@ def liked_jobs(request):
     print(jobs_list)
     return JsonResponse({'jobs': jobs_list}, safe=False)
 
-
+@csrf_exempt
 def sendEmailtoRecruiter(request):
     data = json.loads(request.body)
     user = getUserFromRequest(request=request) 
@@ -309,12 +309,11 @@ def sendEmailtoRecruiter(request):
     recipient_email = job_posting.user.email
 
     subject = f'{user.name} has applied to your Job Posting: {job_posting.title}'
-    message = f'This is a message regarding your job posting titled {job_posting.title}. {user.name} has applied to this position. To reach the applicant to further the process,
-    the following contact information is available \n Phone Number: {user.phone_number} \n Email Address: {user.email} \n Regards,\n JobSync Team '
+    message = f"This is a message regarding your job posting titled {job_posting.title}. {user.name} has applied to this position. To reach the applicant to further the process,the following contact information is available \n Phone Number: {user.phone_number} \n Email Address: {user.email} \n Regards,\n JobSync Team "
     from_email = 'jobsynccanada@gmail.com'  
     recipient_list = [recipient_email]
 
     send_mail(subject, message, from_email, recipient_list)
-
+    
     return HttpResponse("Email sent successfully.")
 

@@ -278,8 +278,7 @@ def sendEmailtoApplicant(request):
     recipient_email = applicant.user.email
 
     subject = f'{job_posting.company_name} is reaching out to you regarding their opening {job_posting.title}'
-    message = f'This is a message regarding  job posting titled {job_posting.title}. {job_posting.company_name} would like to
-    interview you. Please reply to the following email address with your availability next week. \n Email Address: {user.email} \n Regards,\n JobSync Team '
+    message = f"This is a message regarding  job posting titled {job_posting.title}. {job_posting.company_name} would like tointerview you. Please reply to the following email address with your availability next week. \n Email Address: {user.email} \n Regards,\n JobSync Team "
     from_email = 'jobsynccanada@gmail.com'  
     recipient_list = [recipient_email]
 

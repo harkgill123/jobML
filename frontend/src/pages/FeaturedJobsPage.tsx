@@ -27,15 +27,21 @@ type job = {
 type confidence_rating = {
   score : string;
 }
+type job_id = {
+  jobId : number;
+}
 type LocationState = {
     job: job;
     confidence_rating: confidence_rating;
+    job_id: job_id;
   };
 const FeaturedJobsPage: React.FC = () => {
+    const token = localStorage.getItem('token');
     const location = useLocation();
     const state = location.state as LocationState;
     console.log("State:", state.job)
     console.log("rating:", state.confidence_rating)
+    
     // console.log("score is",state.sc1)
     if (!state?.job) {
         return <Navigate to="/candidate-search-page" />;
@@ -52,10 +58,32 @@ const FeaturedJobsPage: React.FC = () => {
         experience_required,
     } = state.job;
     const score = state.confidence_rating;
+    const jobId = state.job_id;
+    console.log(jobId)
     console.log(score)
     console.log(skills)
-    const HandleApply = () =>{
-        console.log("apply")
+    const HandleApply = async () => {
+      console.log("apply clicked")
+      try {
+        const response = await fetch('http://localhost:8000/Applicant/send_email_to_recruiter/', {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ job_id: jobId}),
+        });
+    
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        
+        const data = await response.json();
+        console.log('email sent response:', data);
+        
+      } catch (error) {
+        console.error('Error sending dislike:', error);
+      }
     }
     return (    <div className={styles.jobPage}>
       <Navigation1 />
@@ -108,7 +136,10 @@ const FeaturedJobsPage: React.FC = () => {
             <button className={styles.findJobButton} onClick={HandleApply}>Apply</button> {/* Added find job button */}
           </div>
           
-    
+          {/* <div className={styles.jobDescriptionSection}>
+          <h2 className={styles.sectionTitle}>Confidence Rating</h2>
+          {email && <p className={styles.jobExperienceRequired}> Confidence: {email}</p>}
+        </div> */}
         <Footer />
       </div>);
 }
