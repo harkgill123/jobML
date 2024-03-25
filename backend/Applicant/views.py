@@ -101,6 +101,7 @@ def recommended_jobs(request):
 
         jobs_query_set = JobPosting.objects.filter(id__in=job_ids)
         jobs_list = list(jobs_query_set)
+        print(jobs_list)
         jobs_ordered = sorted(jobs_list, key=lambda job: job_ids.index(job.id))
 
         serialized_jobs = serializers.serialize('json', jobs_ordered)
@@ -126,20 +127,81 @@ def update_feedback(request):
     except Exception as e:
         return JsonResponse({"error": str(e)}, status=500)
 
+# def get_recommendations(request):
+#     from Applicant.recommendations import top_recommendations
+#     user = getUserFromRequest(request=request)
+#     try:
+#         top_entries = top_recommendations(user_id=user.id)
+#         job_ids = [suggestion['job_id'] for suggestion in top_entries]
+#         jobs = JobPosting.objects.filter(id__in=job_ids)
+#         job_mapping = {job.id: job for job in jobs}
+#         ordered_jobs = [job_mapping[job_id] for job_id in job_ids if job_id in job_mapping]
+        
+#         serialized_jobs = serializers.serialize('json', ordered_jobs)
+#         return JsonResponse({"recommended_jobs": serialized_jobs})
+#     except Resume.DoesNotExist:
+#         return JsonResponse({"error": "user couldnt be found"}, status=400)
+# def get_recommendations(request):
+#     from django.core import serializers
+#     from django.http import JsonResponse
+#     from UserAuth.models import JobPosting, FeedbackforJob  # Assuming FeedbackforJob is the correct model name
+#     from Applicant.recommendations import top_recommendations
+#     # Assuming getUserFromRequest is a function that extracts a user object from the request
+
+#     user = getUserFromRequest(request=request)
+#     try:
+#         top_entries = top_recommendations(user_id=user.id)
+#         job_ids_scores = {suggestion['job_id']: suggestion['score'] for suggestion in top_entries}
+#         jobs = JobPosting.objects.filter(id__in=job_ids_scores.keys())
+#         job_mapping = {job.id: job for job in jobs}
+#         ordered_jobs_with_scores = []
+#         for job_id, score in job_ids_scores.items():
+#             if job_id in job_mapping:
+#                 job = job_mapping[job_id]
+#                 job_data = serializers.serialize('python', [job])[0]  # Serialize to Python native data structure
+#                 job_data['fields']['score'] = score  # Adding the score to the job data
+#                 ordered_jobs_with_scores.append(job_data)
+
+#         # If you need the result in JSON string format
+#         serialized_jobs_with_scores = json.dumps(ordered_jobs_with_scores)  # Convert the list of dictionaries to a JSON string
+
+#         return JsonResponse({"recommended_jobs": serialized_jobs_with_scores})
+#     except Resume.DoesNotExist:
+#         return JsonResponse({"error": "user couldn't be found"}, status=400)
 def get_recommendations(request):
+    from django.http import JsonResponse
+    from UserAuth.models import JobPosting, FeedbackforJob  # Assuming this is the correct model name
     from Applicant.recommendations import top_recommendations
+    # Assuming getUserFromRequest is a function that extracts a user object from the request
+    import json
+
     user = getUserFromRequest(request=request)
     try:
         top_entries = top_recommendations(user_id=user.id)
-        job_ids = [suggestion['job_id'] for suggestion in top_entries]
-        jobs = JobPosting.objects.filter(id__in=job_ids)
+        job_ids_scores = {suggestion['job_id']: suggestion['score'] for suggestion in top_entries}
+        jobs = JobPosting.objects.filter(id__in=job_ids_scores.keys())
         job_mapping = {job.id: job for job in jobs}
-        ordered_jobs = [job_mapping[job_id] for job_id in job_ids if job_id in job_mapping]
-        serialized_jobs = serializers.serialize('json', ordered_jobs)
-        return JsonResponse({"recommended_jobs": serialized_jobs})
+        
+        ordered_jobs_with_scores = []
+        for job_id, score in job_ids_scores.items():
+            if job_id in job_mapping:
+                job = job_mapping[job_id]
+                # Serialize manually, excluding the date attribute
+                job_data = {
+                    "id": job.id,
+                    # Add or exclude fields as needed, for example:
+                    "title": job.title,
+                    "job_description": job.job_description,
+                    "company" : job.company_name,
+                    "location": job.location,
+                    # Do not include the date attribute here
+                    "score": score,  # Adding the score
+                }
+                ordered_jobs_with_scores.append(job_data)
+
+        return JsonResponse({"recommended_jobs": ordered_jobs_with_scores})
     except Resume.DoesNotExist:
-        return JsonResponse({"error": "user couldnt be found"}, status=400)
-    
+        return JsonResponse({"error": "user couldn't be found"}, status=400)
 @csrf_exempt
 def search_jobs(request):
     if request.method == 'POST':

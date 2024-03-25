@@ -24,14 +24,19 @@ type job = {
     experience_required?: string;
 
   };
-
+type confidence_rating = {
+  score : string;
+}
 type LocationState = {
     job: job;
+    confidence_rating: confidence_rating;
   };
 const FeaturedJobsPage: React.FC = () => {
     const location = useLocation();
     const state = location.state as LocationState;
     console.log("State:", state.job)
+    console.log("rating:", state.confidence_rating)
+    // console.log("score is",state.sc1)
     if (!state?.job) {
         return <Navigate to="/candidate-search-page" />;
       }
@@ -46,6 +51,8 @@ const FeaturedJobsPage: React.FC = () => {
         skills,
         experience_required,
     } = state.job;
+    const score = state.confidence_rating;
+    console.log(score)
     console.log(skills)
     const HandleApply = () =>{
         console.log("apply")
@@ -93,7 +100,10 @@ const FeaturedJobsPage: React.FC = () => {
           <h2 className={styles.sectionTitle}>Deadline</h2>
           {application_deadline && <p className={styles.jobApplicationDeadline}>Deadline: {new Date(application_deadline).toLocaleDateString()}</p>}
         </div>
-        
+        <div className={styles.jobDescriptionSection}>
+          <h2 className={styles.sectionTitle}>Confidence Rating</h2>
+          {score && <p className={styles.jobExperienceRequired}> Confidence: {Number(score)}</p>}
+        </div>
         </div>
             <button className={styles.findJobButton} onClick={HandleApply}>Apply</button> {/* Added find job button */}
           </div>

@@ -26,32 +26,25 @@ const CandidateHomepage = () => {
         }
         const json = await response.json();
         console.log('Received jobs:', json);
+        
+        let jobsArray = json.recommended_jobs.map(item => {
+          // Transform the item into something else
+          console.log(item)
+          return {
+            id: item.id,
+            title: item.title,
+              company: item.company,
+              location: item.location,
+              score: item.score
+            
+          };
+        });
+        console.log("logging jobs array")
+        console.log(jobsArray)
+        setFeaturedJobs(jobsArray);
 
-        if (json.hasOwnProperty('recommended_jobs')) {
-          let jobsArray = [];
-          try {
-            jobsArray = JSON.parse(json.recommended_jobs);
-          } catch (e) {
-            console.error('Parsing error on recommended_jobs:', e);
-          }
 
-          if (Array.isArray(jobsArray)) {
-            const mappedJobs = jobsArray.map(item => {
-              const job = item.fields;
-              return {
-                id: item.pk,
-                title: job.title,
-                company: job.company_name,
-                location: job.location
-              };
-            });
-            setFeaturedJobs(mappedJobs);
-          } else {
-            console.error('recommended_jobs is not an array:', jobsArray);
-          }
-        } else {
-          console.error('Expected an array of jobs, but received:', json);
-        }
+     
       } catch (error) {
         console.error('Error fetching recommended jobs:', error);
       } finally {

@@ -8,6 +8,7 @@ export type Job = {
   title: string;
   company?: string; // Optional if the backend may not provide this field
   location?: string; // Optional if the backend may not provide this field
+  score?: string;
 };
 
 export type FeaturedJobProps = {
@@ -20,7 +21,8 @@ export type FeaturedJobProps = {
 const FeaturedJob = ({ jobsYouMightLike, featuredJobs }: FeaturedJobProps) => {
   const token = localStorage.getItem('token');
   const navigate = useNavigate();
-
+  console.log("featured jobs")
+  console.log(featuredJobs)
   const handleLike = async (jobId: number) => {
     try {
       console.log('Token:', token);
@@ -66,7 +68,7 @@ const FeaturedJob = ({ jobsYouMightLike, featuredJobs }: FeaturedJobProps) => {
       console.error('Error sending dislike:', error);
     }
   };
-  const handlejobclick = async (jobId : number)=>{
+  const handlejobclick = async (jobId : number,score: string)=>{
     console.log("job clicked")
     try {
       const response = await fetch('http://localhost:8000/Applicant/get_jobpost/', {
@@ -84,7 +86,7 @@ const FeaturedJob = ({ jobsYouMightLike, featuredJobs }: FeaturedJobProps) => {
       
       const data = await response.json();
       console.log('job response:', data);
-      navigate("/featured-jobs-page/",{state: {job : data.job_post}})
+      navigate("/featured-jobs-page/",{state: {job : data.job_post,confidence_rating : score}})
     } catch (error) {
       console.error('Error sending dislike:', error);
     }
@@ -96,9 +98,10 @@ const FeaturedJob = ({ jobsYouMightLike, featuredJobs }: FeaturedJobProps) => {
       </div>
       <div className={styles.jobsContainer}>
         {featuredJobs.map((job) => (
+          
           <div key={job.id} className={styles.job}>
-            <button onClick={() => handlejobclick(job.id)} className={styles.jobTitle}>{job.title}</button>
-            <div className={styles.companyName}>{job.company}</div>
+            <button onClick={() => handlejobclick(job.id,job.score ?? "100")} className={styles.jobTitle}>{job.title}</button>
+            <div className={styles.companyName}>{job.company},{job.score}</div>
             <div className={styles.locationName}>{job.location}</div>
             <div className={styles.interactionIcons}>
               <button className={styles.likeButton} onClick={() => handleLike(job.id)}>
