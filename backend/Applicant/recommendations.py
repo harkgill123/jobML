@@ -73,11 +73,13 @@ def update_user_feedback(user_id, job_id, feedback):
     feedback_entry.save()
 
 def top_recommendations(user_id):
+    print("printing user id")
+    print(user_id)
     top_feedback_entries = FeedbackforJob.objects.filter(
         user_id = user_id, 
         feedback = 0,
     ).order_by('-score')[:12] 
-    top_entries_list = [{'user_id': entry.user_id,'job_id': entry.job_posting_id} for entry in top_feedback_entries]
+    top_entries_list = [{'user_id': entry.user_id,'job_id': entry.job_posting_id,"score" : entry.score} for entry in top_feedback_entries]
     return top_entries_list
 
 def clean_text(text):
@@ -187,7 +189,7 @@ def give_suggestions(user_id, user_job_title, user_job_description, user_skills)
             "job_id": job_id,
             "suggestions": job_title,
             "score": confidence_rating, # Score is now confidence rating!
-            "feedback": 0 
+            "feedback": 0,
         })
     update_feedback_database(user_id, new_suggestions_list)
     update_model_version_database(user_id, Model_Version)
