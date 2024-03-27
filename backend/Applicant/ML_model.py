@@ -188,7 +188,8 @@ def train_model():
 
     print("Accuracy for probability:", accuracy_score(y_test, y_pred))
     print(classification_report(y_test, y_pred))
-
+    
+    # -------------- Save Model Components --------------
     dir_path = f'model_settings_ver{MODEL_VERSION}'
     if not os.path.exists(dir_path):
         os.makedirs(dir_path)
