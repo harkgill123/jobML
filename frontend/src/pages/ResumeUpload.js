@@ -27,6 +27,7 @@ const ResumeUpload = () => {
   const [address, setAddress] = useState("");
   const [desc, setDesc] = useState("");
   const [desc2, setDesc2] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   const navigate = useNavigate();
 
@@ -48,7 +49,7 @@ const ResumeUpload = () => {
       alert('Please select a file first!');
       return;
     }
-  
+    setIsLoading(true);
     // Create a FormData object to build the multipart/form-data request
     const formData = new FormData();
     formData.append('file', cvFile);
@@ -74,14 +75,17 @@ const ResumeUpload = () => {
         // Update for first education entry
         setSchool1(result['educations'][0]['school_name']);
         setDegree1(result['educations'][0]['degree']);
-        // Add handling for start and end dates if present in your JSON data
+        setStartDate1(result['educations'][0]['start_date']);
+        setEndDate1(result['educations'][0]['end_date']);
+
       }
 
       if (result['educations'] && result['educations'].length > 1) {
         // Update for first education entry
         setSchool2(result['educations'][1]['school_name']);
         setDegree2(result['educations'][1]['degree']);
-        // Add handling for start and end dates if present in your JSON data
+        setStartDate2(result['educations'][1]['start_date']);
+        setEndDate2(result['educations'][1]['end_date']);
       }
 
       if (result['work_experiences'] && result['work_experiences'].length > 0) {
@@ -89,8 +93,8 @@ const ResumeUpload = () => {
         setCompanyName1(result['work_experiences'][0]['company_name']);
         setJobTitle1(result['work_experiences'][0]['job_title']);
         setDesc(result['work_experiences'][0]['job_description']);
-
-        // Add handling for start and end dates if present in your JSON data
+        setStartWorkDate1(result['work_experiences'][0]['start_date']);
+        setEndWorkDate1(result['work_experiences'][0]['end_date']);
       }
 
       if (result['work_experiences'] && result['work_experiences'].length > 1) {
@@ -98,19 +102,29 @@ const ResumeUpload = () => {
         setCompanyName2(result['work_experiences'][1]['company_name']);
         setJobTitle2(result['work_experiences'][1]['job_title']);
         setDesc2(result['work_experiences'][0]['job_description']);
+        setStartWorkDate2(result['work_experiences'][1]['start_date']);
+        setEndWorkDate2(result['work_experiences'][1]['end_date']);
       }
 
       // Correct handling for skills (assuming you modify your JSON or parse the string)
       setSkills(result['resume_skills']);
 
       setAddress(result['Address']);
-  
-      setFileUploaded(true); // Indicate that the file upload and data extraction were successful
-    } catch (error) {
+      setFileUploaded(true);
+      setIsLoading(false);
+        } catch (error) {
       console.error('There was an error uploading the file', error);
     }
   };
   
+
+  const handleManualUpload = async (event) => {
+    setFileUploaded(true);
+
+    }
+  
+
+
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -164,25 +178,50 @@ const ResumeUpload = () => {
     }
   };
 
+  const LoadingIcon = () => (
+    <div className={styles.loadingContainer}>
+      <div className={styles.categoryIconGroup}>
+        <div className={styles.sitelogo}>
+          <div className={styles.digitalMarketing} />
+          <div className={styles.digitalMarketing1} />
+          <div className={styles.digitalMarketing2} />
+          <div className={styles.sitelogo1} />
+        </div>
+        <h3 className={styles.jobsync}>JobSync</h3>
+    </div>
+  </div>
+  );
+
+
+
   return (
     <>
       <MainFrame1 />
       <div className={styles.container}>
         <h2 className={styles.uploadTitle}>Please upload a PDF of your resume</h2>
-        <form onSubmit={handleResumeUpload}>
-          <div className={styles.fileUploadContainer}>
-            <input
-              type="file"
-              onChange={handleCvFileChange}
-              className={styles.fileInput}
-              accept=".pdf"
-            />
-            <button type="submit" className={styles.submitButton}>
-              Upload
-            </button>
-          </div>
-        </form>
-        {fileUploaded && (
+        <form>
+  <div className={styles.fileUploadContainer}>
+    <input
+      type="file"
+      onChange={handleCvFileChange}
+      className={styles.fileInput}
+      accept=".pdf"
+    />
+    {/* Prevent the default form submission behavior */}
+    <button type="button" onClick={handleResumeUpload} className={styles.submitButton}>
+      Upload
+    </button>
+    <button type="button" onClick={handleManualUpload} className={styles.submitButton}>
+      Manually Upload
+    </button>
+  </div>
+</form>
+
+        {isLoading ? (
+        <div className={styles.loadingContainer}>
+          <LoadingIcon />
+        </div>
+      ) : fileUploaded && (
           <>
           <h2 className={styles.formTitle}>Please verify or edit your resume below</h2>
           <form onSubmit={handleSubmit} className={styles.resumeForm}>
