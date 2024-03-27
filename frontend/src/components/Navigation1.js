@@ -71,6 +71,7 @@ const Navigation1 = () => {
       <div className={styles.science}>
         <button className={styles.navButton} onClick={() => navigate('/candidate-homepage')}>Home</button>
         <button className={styles.navButton} onClick={() => navigate('/candidate-liked-jobs')}>Liked Jobs</button>
+        <button className={styles.navButton} onClick={() => navigate('/candidate-stats')}>Stats</button>
         <button className={styles.navButton} onClick={() => navigate('/candidate-my-profile')}>My Profile</button>
         <button className={styles.navButton} onClick={handleLogout}>Log-out</button>
       </div>

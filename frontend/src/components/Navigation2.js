@@ -103,6 +103,7 @@ const Navigation2 = () => {
         <div className={styles.science}>
           <button className={styles.navButton} onClick={() => navigate('/employer-homepage')}>Home</button>
           <button className={styles.navButton} onClick={handleLikedApplicants}>Liked Applicants</button>
+          <button className={styles.navButton} onClick={() => navigate('/candidate-stats')}>Stats</button>
           <button className={styles.navButton} onClick={() => navigate('/employer-my-profile')}>My Profile</button>
           <button className={styles.navButton} onClick={handleLogout}>Log-out</button>
         </div>

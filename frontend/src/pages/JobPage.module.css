@@ -13,20 +13,31 @@
   max-width: 1200px; /* Adjust max-width as needed */
   margin: 0 auto; /* Center horizontally */
 }
+.jobDetailHeader {
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  margin-bottom: 20px;
+  display: flex; /* Use flexbox */
+  justify-content: space-between; /* Align children to both ends */
+  align-items: center; /* Align children vertically */
+}
+
 .findJobButton {
-  white-space: nowrap; /* This prevents the text from wrapping */
-  background-color: var(--primary-500);  color: white;
+  white-space: nowrap;
+  background-color: var(--primary-500);  
+  color: white;
   border: none;
   padding: 10px 20px;
   font-weight: 550;
-  margin-left: 10px; /* Adjust as necessary */
-  border-radius: 5px; /* Adjust as necessary */
+  border-radius: 5px;
   cursor: pointer;
-  font-size: 1rem; /* Adjust as necessary */
-  justify-content: center;
-  align-items: center;
-  
+  font-size: 1rem;
+  align-self: flex-end; /* Align button to the end */
+  margin-left: auto; /* Push the button to the right */
 }
+
 .jobDetailHeader,
 .jobDescriptionSection,
 .jobDetailSection {

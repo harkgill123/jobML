@@ -98,12 +98,13 @@ const FeaturedJob = ({ jobsYouMightLike, featuredJobs }: FeaturedJobProps) => {
       </div>
       <div className={styles.jobsContainer}>
         {featuredJobs.map((job) => (
-          
-          <div key={job.id} className={styles.job}>
-            <button onClick={() => handlejobclick(job.id,job.score ?? "100")} className={styles.jobTitle}>{job.title}</button>
-            <div className={styles.companyName}>{job.company},{job.score}</div>
+          <button onClick={() => handlejobclick(job.id, job.score ?? "100")} key={job.id} className={styles.job}>
+            <div className={styles.jobTitle}>{job.title}</div>
+            <div className={styles.companyName}>{job.company}</div>
             <div className={styles.locationName}>{job.location}</div>
+            
             <div className={styles.interactionIcons}>
+            <div className={styles.score}>{job.score}</div>
               <button className={styles.likeButton} onClick={() => handleLike(job.id)}>
                 <img
                   className={styles.thumbsupIcon}
@@ -121,7 +122,7 @@ const FeaturedJob = ({ jobsYouMightLike, featuredJobs }: FeaturedJobProps) => {
                 />
               </button>
             </div>
-          </div>
+          </button>
         ))}
       </div>
     </section>

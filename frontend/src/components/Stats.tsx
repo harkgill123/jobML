@@ -1,45 +1,67 @@
-import { FunctionComponent } from "react";
-import styles from "./Stats.module.css";
+import React, { useState, useEffect } from 'react';
+import styles from './Stats.module.css'; // assuming you have this CSS file
 
-const Stats: FunctionComponent = () => {
+const Stats = () => {
+  const [statsData, setStatsData] = useState({
+    totalUsers: 0,
+    totalRecruiters: 0,
+    totalApplicants: 0,
+    totalJobPostings: 0,
+    dataScienceRoles: 0,
+    frontendRoles: 0
+  });
+
+  useEffect(() => {
+    fetchStatsData();
+  }, []); // Empty dependency array ensures this effect runs only once on component mount
+
+  const fetchStatsData = async () => {
+    try {
+      const response = await fetch('http://localhost:8000/UserAuth/stats_view'); // Replace '/api/stats_view' with your actual backend API endpoint
+      if (!response.ok) {
+        throw new Error('Failed to fetch data');
+      }
+      const data = await response.json();
+      setStatsData({
+        totalUsers: data.total_users,
+        totalRecruiters: data.total_recruiters,
+        totalApplicants: data.total_applicants,
+        totalJobPostings: data.total_job_postings,
+        dataScienceRoles: data.data_science_roles,
+        frontendRoles: data.frontend_roles
+      });
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
+  };
+
   return (
-    <section className={styles.newJobPostingsFunFacts}>
-      <div className={styles.totalFeedbackFunFacts}>
-        <div className={styles.statisticsParent}>
-          <div className={styles.statistics}>Statistics</div>
-          <div className={styles.newJobPostings}>
-            <div className={styles.funFacts}>
-              <div className={styles.div}>589</div>
-              <div className={styles.appliedJobs}>Applied jobs</div>
-            </div>
-            <div className={styles.funFacts1}>
-              <div className={styles.div1}>238</div>
-              <div className={styles.likedJobs}>Liked jobs</div>
-            </div>
-            <div className={styles.funFacts2}>
-              <div className={styles.div2}>574</div>
-              <div className={styles.openHiringPositions}>
-                Open hiring positions
-              </div>
-            </div>
-          </div>
-        </div>
-        <div className={styles.funFactsParent}>
-          <div className={styles.funFacts3}>
-            <div className={styles.newJobPostings1}>589</div>
-            <div className={styles.companiesHiring}>Companies hiring</div>
-          </div>
-          <div className={styles.funFacts4}>
-            <div className={styles.div3}>238</div>
-            <div className={styles.newJobPostings2}>New job postings</div>
-          </div>
-          <div className={styles.funFacts5}>
-            <div className={styles.div4}>574</div>
-            <div className={styles.totalFeedback}>Total feedback</div>
-          </div>
-        </div>
+    <div className={styles.statsContainer}>
+      <div className={styles.statsBox} style={{ backgroundColor: '#3c90ff33' }}>
+        <div className={styles.statValue}>{statsData.totalApplicants}</div>
+        <div className={styles.statLabel}>Total Applicants</div>
       </div>
-    </section>
+      <div className={styles.statsBox} style={{ backgroundColor: '#ffc13c38' }}>
+        <div className={styles.statValue}>{statsData.totalRecruiters}</div>
+        <div className={styles.statLabel}>Total Recruiters</div>
+      </div>
+      <div className={styles.statsBox} style={{ backgroundColor: '#ff3c9d38' }}>
+        <div className={styles.statValue}>{statsData.totalUsers}</div>
+        <div className={styles.statLabel}>Total Users</div>
+      </div>
+      <div className={styles.statsBox} style={{ backgroundColor: '#3c90ff33' }}>
+        <div className={styles.statValue}>{statsData.frontendRoles}</div>
+        <div className={styles.statLabel}>Frontend Roles</div>
+      </div>
+      <div className={styles.statsBox} style={{ backgroundColor: '#ffc13c38' }}>
+        <div className={styles.statValue}>{statsData.totalJobPostings}</div>
+        <div className={styles.statLabel}>Total Job Postings</div>
+      </div>
+      <div className={styles.statsBox} style={{ backgroundColor: '#ff3c9d38' }}>
+        <div className={styles.statValue}>{statsData.dataScienceRoles}</div>
+        <div className={styles.statLabel}>Data Science Roles</div>
+      </div>
+    </div>
   );
 };
 

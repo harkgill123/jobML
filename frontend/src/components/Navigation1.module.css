@@ -119,6 +119,8 @@
   font-size: var(--body-small-500-size);
   color: var(--gray-900);
   flex-grow: 2;
+  margin-left: 25px;
+  margin-right: 25px;
 }
 .search {
   width: 100%;

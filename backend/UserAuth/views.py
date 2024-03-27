@@ -14,6 +14,7 @@ from Applicant.views import getUserFromRequest
 from django.core.exceptions import ObjectDoesNotExist
 import pprint
 import json
+from django.views.decorators.csrf import csrf_exempt
 
 class SignUpView(APIView):
     def post(self, request):
@@ -237,7 +238,7 @@ class UpdateJobPosting(APIView):
                 job_posting.skills.add(skill_instance)
 
         return Response({'message': 'Job posting updated successfully.'}, status=status.HTTP_200_OK)
-
+@csrf_exempt
 def stats_view(request):
     total_users = User.objects.count()
     total_recruiters = User.objects.filter(user_type=User.UserType.RECRUITER).count()

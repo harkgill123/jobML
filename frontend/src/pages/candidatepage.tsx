@@ -42,6 +42,8 @@ const CandidatePage: React.FC = () => {
 //   const { jobId } = useParams<{ jobId: string }>();
   const location = useLocation();
   const state = location.state as LocationState;
+  const token = localStorage.getItem('token');
+
   console.log("State:", state.applicant)
   if (!state?.applicant) {
     return <Navigate to="/employer-search-page" />;
@@ -57,15 +59,48 @@ const CandidatePage: React.FC = () => {
     projects,
   } = state.applicant;
   const filteredWorkExperiences = work_experiences?.filter(experience => experience.company_name !== "Default Company");
+  
+  
+  
+  const HandleContact = async () => {
+    console.log("apply clicked")
+    try {
+      const response = await fetch('http://localhost:8000/Applicant/send_email_to_recruiter/', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ job_id: jobId}),
+      });
+  
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      
+      const data = await response.json();
+      console.log('email sent response:', data);
+      
+    } catch (error) {
+      console.error('Error sending dislike:', error);
+    }
+  }
+  
+  
+  
+  
   return (
     <div className={styles.jobPage}>
       <Navigation2 />
   
       <div className={styles.jobContent}>
         <div className={styles.jobDetailHeader}>
-          <h1 className={styles.jobTitle}>{name}</h1>
-          {email && <p className={styles.jobCompany}>{email}</p>}
-          {phone_number && <p className={styles.jobLocation}>{phone_number}</p>}
+          <div>
+            <h1 className={styles.jobTitle}>{name}</h1>
+            {email && <p className={styles.jobCompany}>{email}</p>}
+            {phone_number && <p className={styles.jobLocation}>{phone_number}</p>}
+          </div>
+          <button className={styles.findJobButton} onClick={HandleContact}>Contact</button>
         </div>
      
      

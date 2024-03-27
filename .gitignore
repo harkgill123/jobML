@@ -6,6 +6,7 @@ venv/
 ENV/
 env.bak/
 venv.bak/
+.env.local
 
 __pycache__/
 *.py[cod]

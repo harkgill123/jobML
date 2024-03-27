@@ -9,13 +9,32 @@ const CandidateSearchPage: FunctionComponent = () => {
   const navigate = useNavigate();
   const jobs = location.state?.jobs || [];
   const searchQuery = location.state?.searchQuery;
+  const token = localStorage.getItem('token');
 
-  const viewJob = (jobId: number, job: any) => {
-    // This will navigate to a new route and add the job ID to the URL path.
-    // It will also pass the job data to the route so it can be displayed on the next page.
-    navigate(`/job/${jobId}`, { state: { job } });
-  };
 
+  const viewJob = async (jobId : number)=>{
+    console.log("job clicked")
+    try {
+      const response = await fetch('http://localhost:8000/Applicant/get_jobpost/', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ job_id: jobId}),
+      });
+  
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      
+      const data = await response.json();
+      console.log('job response:', data);
+      navigate(`/job/${jobId}`,{state: {job : data.job_post, job_id : jobId}})
+    } catch (error) {
+      console.error('Error sending dislike:', error);
+    }
+  }
   return (
     <div className={styles.candidateSearchPage}>
       <Navigation1 />
@@ -32,7 +51,7 @@ const CandidateSearchPage: FunctionComponent = () => {
             </div>
             <button
               className={styles.viewJobButton}
-              onClick={() => viewJob(job.id, job)}
+              onClick={() => viewJob(job.id)}
             >
               View Job
             </button>

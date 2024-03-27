@@ -1,32 +1,28 @@
 .heading {
   width: 100%;
-  text-align: left; /* Aligns the text to the left */
-  padding-left: 16px; /* This padding should match the job cards' container left padding or margin */
+  text-align: left;
+  padding-left: 16px;
 }
 
 .jobsYouMight {
   user-select: none;
   cursor: default;
-  font-size: 2rem; /* Size of the heading */
-  line-height: 1.2; /* Line height for the heading */
-  font-weight: 500; /* Font weight for the heading */
-  padding-bottom: 16px; /* Space below the heading */
-  font-family: 'Roboto', sans-serif; /* Roboto font */
+  font-size: 2rem;
+  line-height: 1.2;
+  font-weight: 500;
+  padding-bottom: 16px;
+  font-family: 'Roboto', sans-serif;
   margin-left: 0;
   text-align: center;
-  width: auto; /* Auto width to only take up the required space */
+  width: auto;
 }
 
-
-
-/* This resets any default styles to prevent inconsistencies */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
-/* The main container for the featured job section */
 .featuredJob {
   display: flex;
   flex-direction: column;
@@ -36,37 +32,59 @@
   padding-bottom: 50px;
 }
 
-/* The container that holds all job cards */
 .jobsContainer {
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-between; /* Ensures that there's space between the job cards */
-  gap: 24px; /* Spacing between cards */
-  max-width: 1200px; /* Adjust the max width to fit 3 cards */
-  margin: auto; /* Centers the container */
+  justify-content: space-between;
+  gap: 24px;
+  max-width: 1200px;
+  margin: auto;
 }
 
-/* Individual job cards */
 .job {
   user-select: none;
-  cursor: default;
-  width: 360px; /* Width of each card */
-  padding: 25px; /* Padding inside the cards */
-  border-radius: 6px; /* Rounded corners */
-  background-color: #fff; /* Background color for the card */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Box-shadow for depth */
+  cursor: pointer; /* Changed from default because this is now a button */
+  width: 360px;
+  padding: 25px;
+  border-radius: 6px;
+  background-color: #fff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   display: flex;
   flex-direction: column;
-  justify-content: space-between; /* Space out the content */
-  font-family: var(--font-roboto), sans-serif; /* Roboto font */
+  justify-content: space-between;
+  font-family: var(--font-roboto), sans-serif;
   position: relative;
+  padding-bottom: 60px; /* Adjust if needed */
+  border: none; /* Remove default button border */
+  outline: none; /* Remove focus outline */
+  box-sizing: border-box; /* Added to account for padding and borders in total width and height */
+  text-align: left; /* Align text to the left inside the button */
+  transition: box-shadow 0.3s ease, transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
+
+.job:hover {
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3); /* Darken the shadow on hover */
+  transform: scale(1.03);
+  transition: transform 0.3s ease;
+}
+
+.score {
+  position: absolute;
+  bottom: 30px; /* Position adjusted to place above the buttons */
+  left: 50%; /* Center horizontally */
+  transform: translateX(-50%); /* Offset by half width to truly center */
+  font-size: 14px;
+  color: #005A9C;
+  text-align: center;
+  width: 100%; /* Set width to 100% of the container */
+}
+
 .interactionIcons {
   position: absolute;
-  bottom: 16px; /* Adjust the distance from the bottom as needed */
-  right: 16px; /* Adjust the distance from the right as needed */
+  bottom: 16px;
+  right: 16px;
   display: flex;
-  gap: 8px; /* Space between buttons */
+  gap: 8px;
 }
 
 .likeButton,
@@ -75,65 +93,67 @@
   border: none;
   cursor: pointer;
   padding: 0;
-  border-radius: 4px; /* Optional: Adds rounded corners to the buttons */
-  transition: background-color 0.3s ease; /* Smooth transition for the hover effect */
+  border-radius: 4px;
+  transition: background-color 0.3s ease;
 }
 
 .likeButton:hover {
-  background-color: #4CAF50; /* Green background on hover for like button */
+  background-color: #4CAF50;
 }
 
 .dislikeButton:hover {
-  background-color: #F44336; /* Red background on hover for dislike button */
+  background-color: #F44336;
 }
 
-/* Icon styles */
 .thumbsupIcon,
 .thumbsdownIcon {
-  width: 24px; /* Set your desired icon size */
+  width: 24px;
   height: auto;
-  display: block; /* Ensures the icon fills the button */
+  display: block;
 }
 
-/* Style for job title */
 .jobTitle {
-  font-size: 15px; /* Size of the job title text */
-  color: #333; /* Color of the job title text */
-  margin-bottom: 1px; /* Spacing below the title */
-  font-weight: 500; /* Medium weight for Roboto */
-  background: transparent;
-  border: 0cm;
+  text-align: left;
+  font-size: 18px;
+  color: #333;
+  margin-bottom: 1px;
   font-weight: bold;
+  background: transparent;
+  border: 0;
+  padding: 0;
+  white-space: nowrap; /* Prevents the text from wrapping */
+  overflow: hidden; /* Hides text that overflows the container */
+  text-overflow: ellipsis; /* Adds ellipsis to text that overflows */
+  display: block; /* Makes it a block-level element to occupy its own line */
+  width: 100%; /* Adjust width as necessary, accounting for padding */
 }
 
-/* Style for company name */
 .companyName {
-  font-size: 16px; /* Size of the company name text */
-  color: #666; /* Color of the company name text */
-  margin-bottom: 4px; /* Spacing below the company name */
+  font-size: 16px;
+  color: #666;
+  margin-bottom: 4px;
+  margin-top: 4px;
 }
 
-/* Style for location name */
 .locationName {
-  font-size: 14px; /* Size of the location text */
-  color: #999; /* Color of the location text */
+  font-size: 14px;
+  color: #999;
 }
 
-/* Responsive adjustments */
 @media screen and (max-width: 1200px) {
   .jobsContainer {
-    justify-content: center; /* Center cards on medium screens */
+    justify-content: center;
   }
 }
 
 @media screen and (max-width: 768px) {
   .job {
-    width: calc(50% - 24px); /* 2 cards per row on smaller screens */
+    width: calc(50% - 24px);
   }
 }
 
 @media screen and (max-width: 480px) {
   .job {
-    width: 100%; /* 1 card per row on very small screens */
+    width: 100%;
   }
 }

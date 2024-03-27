@@ -2,7 +2,7 @@ import React from 'react';
 import { useParams, useLocation, Navigate } from 'react-router-dom';
 import Navigation1 from "../components/Navigation1";
 import Footer from "../components/Footer";
-import styles from './JobPage.module.css';
+import styles from './FeaturedJobsPage.module.css';
 
 
 
@@ -85,16 +85,23 @@ const FeaturedJobsPage: React.FC = () => {
         console.error('Error sending dislike:', error);
       }
     }
+    
     return (    <div className={styles.jobPage}>
       <Navigation1 />
     
         <div className={styles.jobContent}>
-          <div className={styles.jobDetailHeader}>
-            <h1 className={styles.jobTitle}>{title}</h1>
-            {company_name && <p className={styles.jobCompany}>{company_name}</p>}
-            {loc && <p className={styles.jobLocation}>{loc}</p>}
-          </div>
-      
+        <div className={styles.jobDetailHeader}>
+        <div>
+          <h1 className={styles.jobTitle}>{title}</h1>
+          {company_name && <p className={styles.jobCompany}>{company_name}</p>}
+          {loc && <p className={styles.jobLocation}>{loc}</p>}
+        </div>
+        <button className={styles.findJobButton} onClick={HandleApply}>Apply</button>
+      </div>
+      <div className={styles.jobDescriptionSection}>
+        
+          {score && <p className={styles.jobExperienceRequired}> Confidence: {Number(score)}</p>}
+        </div>
           <div className={styles.jobDescriptionSection}>
             <h2 className={styles.sectionTitle}>Description</h2>
             {description && <p className={styles.jobDescription}>{description}</p>}
@@ -128,12 +135,8 @@ const FeaturedJobsPage: React.FC = () => {
           <h2 className={styles.sectionTitle}>Deadline</h2>
           {application_deadline && <p className={styles.jobApplicationDeadline}>Deadline: {new Date(application_deadline).toLocaleDateString()}</p>}
         </div>
-        <div className={styles.jobDescriptionSection}>
-          <h2 className={styles.sectionTitle}>Confidence Rating</h2>
-          {score && <p className={styles.jobExperienceRequired}> Confidence: {Number(score)}</p>}
+
         </div>
-        </div>
-            <button className={styles.findJobButton} onClick={HandleApply}>Apply</button> {/* Added find job button */}
           </div>
           
           {/* <div className={styles.jobDescriptionSection}>

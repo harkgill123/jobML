@@ -31,6 +31,8 @@ import EmployerRecommendedCandidates from "./pages/EmployerRecommendedCandidates
 import EmployerMyProfile from "./pages/EmployerMyProfile";
 import EditJobPage from "./pages/EditJobPage";
 import FeaturedJobsPage from "./pages/FeaturedJobsPage";
+import CandidateStats from "./pages/CandidateStats";
+
 function App() {
   const action = useNavigationType();
   const location = useLocation();

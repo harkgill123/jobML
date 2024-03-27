@@ -363,6 +363,8 @@ html, body {
 
 .viewJobButton:hover {
   background-color: var(--color-dodgerblue);
+  transform: scale(1.03);
+  transition: transform 0.3s ease;
 }
 
 .editJobButton {
@@ -380,6 +382,8 @@ html, body {
 
 .editJobButton:hover {
   background-color: var(--color-dodgerblue);
+  transform: scale(1.03);
+  transition: transform 0.3s ease;
 }
 
 
@@ -400,6 +404,8 @@ html, body {
 
 .createJobButton2:hover {
   background-color: var(--color-dodgerblue);
+  transform: scale(1.03);
+  transition: transform 0.3s ease;
 }
 
 .buttonsContainer {
