@@ -64,26 +64,26 @@ const CandidatePage: React.FC = () => {
   
   const HandleContact = async () => {
     console.log("apply clicked")
-    try {
-      const response = await fetch('http://localhost:8000/Applicant/send_email_to_recruiter/', {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ job_id: jobId}),
-      });
+    // try {
+    //   const response = await fetch('http://localhost:8000/Applicant/send_email_to_recruiter/', {
+    //     method: 'POST',
+    //     headers: {
+    //       'Authorization': `Bearer ${token}`,
+    //       'Content-Type': 'application/json',
+    //     },
+    //     body: JSON.stringify({ job_id: jobId}),
+    //   });
   
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
+    //   if (!response.ok) {
+    //     throw new Error(`HTTP error! status: ${response.status}`);
+    //   }
       
-      const data = await response.json();
-      console.log('email sent response:', data);
+    //   const data = await response.json();
+    //   console.log('email sent response:', data);
       
-    } catch (error) {
-      console.error('Error sending dislike:', error);
-    }
+    // } catch (error) {
+    //   console.error('Error sending dislike:', error);
+    // }
   }
   
   

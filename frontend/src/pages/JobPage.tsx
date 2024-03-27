@@ -74,12 +74,6 @@ const HandleApply = async () => {
   }
 }
 
-
-
-
-
-
-
   return (
     <div className={styles.jobPage}>
       <Navigation1 />
@@ -93,28 +87,48 @@ const HandleApply = async () => {
         </div>
         <button className={styles.findJobButton} onClick={HandleApply}>Apply</button>
       </div>
-      
-          <div className={styles.jobDescriptionSection}>
+      <div className={styles.jobDescriptionSection}>
             <h2 className={styles.sectionTitle}>Description</h2>
-            {description && <p className={styles.jobDescription}>{description}</p>}
+            {description && (
+              <div className={styles.jobDescriptionContent}>
+                {/* First split by new lines, then map and check each line for bullets or dashes */}
+                {description.split(/\r\n|\r|\n/).map((line, lineIndex) => {
+                  // Then split by the pattern that detects standalone bullets or dashes
+                  return line.split(/(•|-| -) /).map((text, textIndex, array) => {
+                    // Check if the text is a bullet or dash, and not an empty string
+                    if (text === '•' || text === '-' || text === ' -') {
+                      // The next item in the array will be the text after bullet/dash
+                      // Return null for the bullet/dash, as we will add it before the actual text item
+                      return null;
+                    } else {
+                      // If the previous item was a bullet/dash, prepend it to this text
+                      const bulletOrDash = array[textIndex - 1] === '•' || array[textIndex - 1] === '-' ? array[textIndex - 1] + ' ' : '';
+                      return (
+                        <div key={`${lineIndex}-${textIndex}`} className={styles.jobDescriptionListItem}>
+                          {bulletOrDash}{text}
+                        </div>
+                      );
+                    }
+                  });
+                })}
+              </div>
+            )}
           </div>
-      
-          <div className={styles.jobDetailSection}>
-
-        <div className={styles.jobDescriptionSection}>
-          <h2 className={styles.sectionTitle}>Skills</h2>
-          {skills && skills.length > 0 ? (
-            <ul className={styles.list}>
-              {skills.map((skill,index) => (
-                <li key={index} className={styles.listItem}>
-                  {skill}
-                </li>
-              ))}
-            </ul>
-          ) : (
-            <p>No skills information provided.</p>
-          )}
-        </div>
+      <div className={styles.jobDetailSection}>
+              <div className={styles.jobDescriptionSection}>
+                <h2 className={styles.sectionTitle}>Skills</h2>
+                {skills && skills.length > 0 ? (
+                  <div className={styles.skillsContainer}> {/* Change from <ul> to <div> */}
+                    {skills.map((skill, index) => (
+                      <span key={index} className={styles.skillBox}> {/* Change from <li> to <span> */}
+                        {skill}
+                      </span>
+                    ))}
+                  </div>
+                ) : (
+                  <p>No skills information provided.</p>
+                )}
+            </div>
         <div className={styles.jobDescriptionSection}>
           <h2 className={styles.sectionTitle}>Experience</h2>
           {experience_required && <p className={styles.jobExperienceRequired}>Experience: {experience_required}</p>}
