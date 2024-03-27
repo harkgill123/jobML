@@ -36,9 +36,12 @@ type Applicant = {
   work_experiences?: WorkExperience[];
   projects?: string[];
 };
-
+type confidence_rating = {
+  score : string;
+}
 type LocationState = {
   applicant: Applicant;
+  confidence_rating: confidence_rating;
 };
 
 const CandidatePage: React.FC = () => {
@@ -66,7 +69,7 @@ const CandidatePage: React.FC = () => {
     projects,
   } = state.applicant;
   const filteredWorkExperiences = work_experiences?.filter(experience => experience.company_name !== "Default Company");
-
+  const score = state.confidence_rating;
   useEffect(() => {
     const fetchJobPostings = async () => {
       try {
@@ -157,6 +160,7 @@ console.log('Email sent response:', data);
           </div>
 
           <div className={styles.jobActions}>
+      
     {Array.isArray(jobPostings) && jobPostings.length > 0 ? (
       <>
         <select 
@@ -179,9 +183,27 @@ console.log('Email sent response:', data);
     )}
   </div>
         </div>
-     
-     
-        <div className={styles.jobDescriptionSection}>
+        
+          
+            
+            {score && (
+              <div className={styles.jobDescriptionSection}>
+              <div className={styles.jobExperienceRequired}>
+                <h2 className={styles.sectionTitle}>Resume Match</h2>
+                <div className={styles.progressContainer}>
+                  <progress
+                    className={styles.jobConfidenceProgress}
+                    value={Number(score)}
+                    max="100"
+                  ></progress>
+                  <div className={styles.percentageLabel}>{Number(score)}%</div>
+                </div>
+              </div>
+              </div>
+            )}
+          
+              
+  <div className={styles.jobDescriptionSection}>
   <h2 className={styles.sectionTitle}>Education</h2>
   {educations && educations.length > 0 ? (
     <ul className={styles.list}>
