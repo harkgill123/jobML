@@ -13,7 +13,7 @@ const CandidateProfile = () => {
   const [confirmNewPassword, setConfirmNewPassword] = useState('');
   const [emailUpdateMessage, setEmailUpdateMessage] = useState('');
   const [passwordUpdateMessage, setPasswordUpdateMessage] = useState('');
-
+  const [resumeUpdateMessage, setResumeUpdateMessage] = useState('');
 
   // stuf to edit resume
 
@@ -247,6 +247,8 @@ const CandidateProfile = () => {
       const data = await response.json();
 
       if (response.ok) {
+        setResumeUpdateMessage('Resume has been update'); // Set success message
+        setTimeout(() => setResumeUpdateMessage(''), 5000); // Optional: Clear message after 5 seconds
         console.log('update success:');
 
       } else {
@@ -365,6 +367,7 @@ const CandidateProfile = () => {
               <h3 className={styles.inputTitle}>Address</h3>
               <input type="text" placeholder="Address" value={address} onChange={e => setAddress(e.target.value)} />
             </div>
+            {resumeUpdateMessage && <div className={styles.updateMessage}>{resumeUpdateMessage}</div>}
             <button onClick={handleUpdateResumeClick} className={styles.button}>
               Update Resume
             </button>
