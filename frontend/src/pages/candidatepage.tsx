@@ -117,9 +117,6 @@ const CandidatePage: React.FC = () => {
     }
   };
   
-
-
-
   const HandleContact = async () => {
     console.log("apply clicked")
     try {
@@ -135,17 +132,6 @@ const CandidatePage: React.FC = () => {
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
-      
-      const data = await response.text();
-console.log('Email sent response:', data);
-      
-    } catch (error) {
-      console.error('Error while sending email:', error);
-    }
-  }
-  
-  
-  
   
   return (
     <div className={styles.jobPage}>
