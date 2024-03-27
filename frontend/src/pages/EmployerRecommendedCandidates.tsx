@@ -21,13 +21,15 @@ type LocationState = {
 };
 
 type UserFields = {
+  id: number;
   name: string;
   email: string;
   phone_number: string;
+  score: string;
 };
 
 type UserResponse = {
-  pk: number;
+  // pk: number;
   fields: UserFields;
 };
 
@@ -36,6 +38,7 @@ type User = {
   name: string;
   email: string;
   phone_number: string;
+  score: string;
 };
 type Skill = {
   skill_name: string;
@@ -63,6 +66,7 @@ skills?: Skill[];
 educations?: Education[];
 work_experiences?: WorkExperience[];
 projects?: string[];
+
 };
 
 const EmployerRecommendedCandidates: React.FC = () => {
@@ -109,16 +113,20 @@ const EmployerRecommendedCandidates: React.FC = () => {
         }
 
         const jsonResponse = await response.json();
+        console.log("printing")
         console.log(jsonResponse)
-        const usersArray: UserResponse[] = jsonResponse.recommended_users;
 
-        const users = usersArray.map(({ pk, fields }) => ({
-          id: pk,
+        const usersArray: UserFields[] = jsonResponse.recommended_users;
+        console.log(usersArray)
+
+        const users = usersArray.map(fields => ({
+          
+          id: fields.id,
           name: fields.name,
           email: fields.email,
-          phone_number: fields.phone_number
+          phone_number: fields.phone_number,
+          score: fields.score
         }));
-
         setRecommendedCandidates(users);
         console.log(recommendedCandidates)
         setIsLoading(false);
@@ -154,7 +162,7 @@ const EmployerRecommendedCandidates: React.FC = () => {
       setApplicant(data)
       
       // If you want to navigate to the candidate page and pass the user info
-      navigate(`/candidatepage/${user.id}`, { state: { applicant: data } });
+      navigate(`/candidatepage/${user.id}`, { state: { applicant: data,confidence_rating : user.score } });
 
     } catch (error) {
       console.error('Error fetching user details:', error);
@@ -276,6 +284,7 @@ const EmployerRecommendedCandidates: React.FC = () => {
                     <h2 className={styles.candidateName}>{user.name}</h2>
                     <p className={styles.candidatePhoneNumber}>{user.phone_number}</p>
                     <p className={styles.candidateEmail}>{user.email}</p>
+                    {/* <p className={styles.candidateEmail}>{user.score}</p> */}
                   </div>
                   {/* New container for all action buttons */}
                   <div className={styles.actionButtons}>

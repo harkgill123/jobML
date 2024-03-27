@@ -178,7 +178,7 @@ html, body {
   display: flex;
   justify-content: center;
   align-items: flex-start; /* This will align the form to the top */
-  height: calc(100vh - 60px); /* Adjusted for navbar, replace 60px with your navbar's height */
+  height: calc(100vh - 0px); /* Adjusted for navbar, replace 60px with your navbar's height */
   width: 100%;
   padding-top: var(--margin-top-value); /* Replace this variable with your desired margin top value */
   box-sizing: border-box;
@@ -191,7 +191,7 @@ html, body {
   padding: 0; /* Adjust if needed */
   box-sizing: border-box;
   gap: var(--gap-13xl);
-  margin: 300px auto; /* This will center the form horizontally and remove top margin */
+  margin: 175px auto; /* This will center the form horizontally and remove top margin */
 }
 
 

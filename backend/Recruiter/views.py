@@ -100,6 +100,7 @@ def search_applicants(request):
     applicants_list = []
     for applicant in applicants:
         applicant_dict = {
+            'id': applicant.id,
             'name': applicant.name,
             'email': applicant.email,
             'phone_number': applicant.phone_number,
@@ -192,6 +193,7 @@ def get_recommendations(request):
     job_id = data['job_id']
     try:
         top_entries = top_recommendations(job_id=job_id)
+        print(top_entries)
         user_ids_scores = {suggestion['user_id']: suggestion['score'] for suggestion in top_entries}
         users = User.objects.filter(id__in=user_ids_scores.keys())
         
@@ -223,6 +225,7 @@ def display_user_info(request):
         user = User.objects.get(id=user_id)
 
         user_data = {
+            'id': user.id,
             'name': user.name,
             'email': user.email,
             'phone_number': user.phone_number,
@@ -280,7 +283,7 @@ def liked_applicants(request):
 
     return JsonResponse({'applicants': jobs_with_applicants})
 
-
+@csrf_exempt
 def sendEmailtoApplicant(request):
     data = json.loads(request.body)
     user = getUserFromRequest(request=request) 
@@ -288,7 +291,7 @@ def sendEmailtoApplicant(request):
     job_posting = JobPosting.objects.get(id=job_id)
     applicant_id = data.get('applicant_id')
     applicant = User.objects.get(id=applicant_id)
-    recipient_email = applicant.user.email
+    recipient_email = "applicant.email"
 
     subject = f'{job_posting.company_name} is reaching out to you regarding their opening {job_posting.title}'
     message = f"This is a message regarding  job posting titled {job_posting.title}. {job_posting.company_name} would like tointerview you. Please reply to the following email address with your availability next week. \n Email Address: {user.email} \n Regards,\n JobSync Team "

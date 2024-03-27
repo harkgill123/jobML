@@ -118,7 +118,7 @@ def top_recommendations(job_id):
         job_posting_id = job_id, 
         feedback = 0,
     ).order_by('-score')[:12]  
-    top_entries_list = [{'job_id': entry.job_posting_id,'user_id': entry.user_id} for entry in top_feedback_entries]
+    top_entries_list = [{'job_id': entry.job_posting_id,'user_id': entry.user_id,"score":entry.score} for entry in top_feedback_entries]
     return top_entries_list
 
 def give_suggestions(job_id, job_title, job_description, job_skills):
