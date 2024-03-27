@@ -193,6 +193,7 @@ def get_recommendations(request):
     job_id = data['job_id']
     try:
         top_entries = top_recommendations(job_id=job_id)
+        print(top_entries)
         user_ids_scores = {suggestion['user_id']: suggestion['score'] for suggestion in top_entries}
         users = User.objects.filter(id__in=user_ids_scores.keys())
         
