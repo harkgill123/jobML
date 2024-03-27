@@ -191,12 +191,26 @@ def get_recommendations(request):
     job_id = data['job_id']
     try:
         top_entries = top_recommendations(job_id=job_id)
-        user_ids = [suggestion['user_id'] for suggestion in top_entries]
-        users = User.objects.filter(id__in=user_ids)
+        user_ids_scores = {suggestion['user_id']: suggestion['score'] for suggestion in top_entries}
+        users = User.objects.filter(id__in=user_ids_scores.keys())
         
-        serialized_users = serializers.serialize('json', users, fields=('id', 'name','email','phone_number'))
+        user_mapping = {user.id: user for user in users}
         
-        return JsonResponse({"recommended_users": json.loads(serialized_users)})
+        ordered_users_with_scores = []
+        for user_id, score in user_ids_scores.items():
+            if user_id in user_mapping:
+                user = user_mapping[user_id]
+                # Assuming user has fields id, name, email, phone_number
+                user_data = {
+                    "id": user.id,
+                    "name": user.name,
+                    "email": user.email,
+                    "phone_number": user.phone_number,
+                    "score": score,  # Adding the score
+                }
+                ordered_users_with_scores.append(user_data)
+        
+        return JsonResponse({"recommended_users": ordered_users_with_scores})
     except User.DoesNotExist: 
         return JsonResponse({"error": "user couldn't be found"}, status=400)
     

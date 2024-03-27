@@ -24,6 +24,8 @@ from django.db.models.functions import Concat
 from Applicant.recommendations import give_suggestions, update_user_feedback
 from django.views.decorators.csrf import csrf_exempt
 from django.core.serializers import serialize
+from Recruiter.ML_model_resume import MODEL_VERSION
+
 
 
 def getUserFromRequest(request):
@@ -56,9 +58,14 @@ class ResumeCreateView(APIView):
     def post(self, request, *args, **kwargs):
         user = getUserFromRequest(request=request)
         print(request.data)
-
+        model_version_str = str(MODEL_VERSION)
         serializer = ResumeSerializer(data=request.data, context={'user': user})
         if serializer.is_valid():
+            ModelVersion.objects.update_or_create(
+                user_id=user.id,
+                defaults={
+                    'latest_version': model_version_str  
+                })
             serializer.save(user=user)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         else:
@@ -169,12 +176,7 @@ def update_feedback(request):
 #     except Resume.DoesNotExist:
 #         return JsonResponse({"error": "user couldn't be found"}, status=400)
 def get_recommendations(request):
-    from django.http import JsonResponse
-    from UserAuth.models import JobPosting, FeedbackforJob  # Assuming this is the correct model name
     from Applicant.recommendations import top_recommendations
-    # Assuming getUserFromRequest is a function that extracts a user object from the request
-    import json
-
     user = getUserFromRequest(request=request)
     try:
         top_entries = top_recommendations(user_id=user.id)
@@ -186,15 +188,12 @@ def get_recommendations(request):
         for job_id, score in job_ids_scores.items():
             if job_id in job_mapping:
                 job = job_mapping[job_id]
-                # Serialize manually, excluding the date attribute
                 job_data = {
                     "id": job.id,
-                    # Add or exclude fields as needed, for example:
                     "title": job.title,
                     "job_description": job.job_description,
                     "company" : job.company_name,
                     "location": job.location,
-                    # Do not include the date attribute here
                     "score": score,  # Adding the score
                 }
                 ordered_jobs_with_scores.append(job_data)

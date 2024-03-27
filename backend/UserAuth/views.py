@@ -8,7 +8,7 @@ from django.core.serializers import serialize
 from django.http import JsonResponse
 from .forms import SignupForm
 from .serializers import CompleteUserSerializer, ResumeToSkillsSerializer, UserSerializer, ResumeSerializer, EducationSerializer, WorkExperienceSerializer, UserSerializer, JobPostingSerializer
-from .models import ModelVersion, Education, WorkExperience, Resume, JobPosting, ListOfSkills, ResumeToSkills
+from .models import ModelVersion, Education, WorkExperience, Resume, JobPosting, ListOfSkills, ResumeToSkills,ModelVersionResume
 from Applicant.ML_model import MODEL_VERSION
 from Applicant.views import getUserFromRequest
 from django.core.exceptions import ObjectDoesNotExist
@@ -132,6 +132,9 @@ class UpdateResumeInfo(APIView):
         user = getUserFromRequest(request)
         #pprint.pprint(request.data)
         user_data = request.data.get('user', {})
+        #Need to fix
+        ModelVersion.objects.update_or_create(user_id=user.id,defaults={'model_version': 0  })
+
         resume_skills = request.data.get('resume_skills', [])
         if user_data:
             user_serializer = UserSerializer(user, data=user_data, partial=True)
@@ -235,5 +238,6 @@ class UpdateJobPosting(APIView):
             for skill_name in skill_names:
                 skill_instance, created = ListOfSkills.objects.get_or_create(skill_name=skill_name)      
                 job_posting.skills.add(skill_instance)
+        ModelVersionResume.objects.update_or_create(job_posting_id=job_id,defaults={'model_version': 0  })
 
         return Response({'message': 'Job posting updated successfully.'}, status=status.HTTP_200_OK)
