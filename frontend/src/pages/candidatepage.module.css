@@ -13,7 +13,52 @@
     max-width: 1200px; /* Adjust max-width as needed */
     margin: 0 auto; /* Center horizontally */
   }
-  
+  .jobActions {
+    display: flex;
+    justify-content: flex-end; /* Align items to the end (right) */
+    align-items: center; /* Center-align items vertically */
+    gap: 10px; /* Adjust the gap between elements as needed */
+  }
+  .jobDetailHeader {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    margin-bottom: 20px;
+    display: flex; /* Use flexbox */
+    justify-content: space-between; /* Align children to both ends */
+    align-items: center; /* Align children vertically */
+  }
+  .jobTitleDropdown {
+    padding: 0.5em; /* Add some padding inside the dropdown */
+    border-radius: 5px; /* Rounded corners */
+    border: 1px solid #ccc; /* A light grey border */
+    font-size: 1em; /* Match font size with the form */
+    cursor: pointer; /* Change cursor to pointer */
+    align-self: flex-end; /* Align button to the end */
+    margin-left: auto; /* Push the button to the right */
+
+  }
+  .findJobButton {
+    white-space: nowrap;
+    background-color: var(--primary-500);  
+    color: white;
+    border: none;
+    padding: 9.8px 20px;
+    font-weight: 550;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1rem;
+    align-self: flex-end; /* Align button to the end */
+    margin-left: auto; /* Push the button to the right */
+  }
+
+  .findJobButton:hover {
+    background-color: var(--color-dodgerblue);
+    transform: scale(1.03);
+    transition: transform 0.3s ease;
+  }
+
   .jobDetailHeader,
   .jobDescriptionSection,
   .jobDetailSection {
