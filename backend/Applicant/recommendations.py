@@ -152,7 +152,7 @@ def give_suggestions(user_id, user_job_title, user_job_description, user_skills)
     top_cos_sim = cos_sim.sort_values('score', ascending=False)[:30]
     
     # --------- Second Logistics Regression: Predicted probability of user liking Job ---------
-    top_jobs_features = comps.loc[top_cos_sim.index]  # Assuming 'comps' has job features indexed by job ID
+    top_jobs_features = comps.loc[top_cos_sim.index] 
 
     probabilities = feedback_lr.predict_proba(top_jobs_features)[:, 1]  # Assuming 1 is the label for 'like'
     
@@ -164,7 +164,6 @@ def give_suggestions(user_id, user_job_title, user_job_description, user_skills)
     top_cos_sim['combined_score'] = top_cos_sim['score'] + top_cos_sim['like_probability']
     top_cos_sim_sorted_by_combined = top_cos_sim.sort_values('combined_score', ascending=False)
 
-    #TO DO: add logic to calculate the confidence rating
     max_score = top_cos_sim['score'].max()
     min_score = top_cos_sim['score'].min()
     max_like_probability = top_cos_sim['like_probability'].max()
@@ -182,7 +181,6 @@ def give_suggestions(user_id, user_job_title, user_job_description, user_skills)
     new_suggestions_list = []
     for job_id, details in top_cos_sim.iterrows():
         job_title = samp_for_cluster[samp_for_cluster['id'] == job_id]['title'].values[0]
-        score = details['score']
         confidence_rating = round(details['confidence_rating'] * 100, 2)
         new_suggestions_list.append({
             "user_id": user_id,
