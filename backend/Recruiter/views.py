@@ -18,7 +18,8 @@ from Recruiter.ML_model_resume import MODEL_VERSION
 from .serializers import UserSerializer
 import traceback
 from collections import defaultdict
-
+from django.core.mail import send_mail
+from django.http import HttpResponse
 
 
 def getUserFromRequest(request):
@@ -267,3 +268,20 @@ def liked_applicants(request):
     return JsonResponse({'applicants': jobs_with_applicants})
 
 
+def sendEmailtoApplicant(request):
+    data = json.loads(request.body)
+    user = getUserFromRequest(request=request) 
+    job_id = data.get('job_id')
+    job_posting = JobPosting.objects.get(id=job_id)
+    applicant_id = data.get('applicant_id')
+    applicant = User.objects.get(id=applicant_id)
+    recipient_email = applicant.user.email
+
+    subject = f'{job_posting.company_name} is reaching out to you regarding their opening {job_posting.title}'
+    message = f"This is a message regarding  job posting titled {job_posting.title}. {job_posting.company_name} would like tointerview you. Please reply to the following email address with your availability next week. \n Email Address: {user.email} \n Regards,\n JobSync Team "
+    from_email = 'jobsynccanada@gmail.com'  
+    recipient_list = [recipient_email]
+
+    send_mail(subject, message, from_email, recipient_list)
+
+    return HttpResponse("Email sent successfully.")

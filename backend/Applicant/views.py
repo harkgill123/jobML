@@ -24,6 +24,8 @@ from django.db.models.functions import Concat
 from Applicant.recommendations import give_suggestions, update_user_feedback
 from django.views.decorators.csrf import csrf_exempt
 from django.core.serializers import serialize
+from django.core.mail import send_mail
+from django.http import HttpResponse
 
 
 def getUserFromRequest(request):
@@ -297,3 +299,25 @@ def liked_jobs(request):
     ))
     print(jobs_list)
     return JsonResponse({'jobs': jobs_list}, safe=False)
+
+@csrf_exempt
+def sendEmailtoRecruiter(request):
+    data = json.loads(request.body)
+    user = getUserFromRequest(request=request) 
+    job_id = data.get('job_id')
+    job_posting = JobPosting.objects.get(id=job_id)
+    subject = f'{user.name} has applied to your Job Posting: {job_posting.title}'
+    message = f"This is a message regarding your job posting titled {job_posting.title}. {user.name} has applied to this position. To reach the applicant to further the process, the following contact information is available \n Phone Number: {user.phone_number} \n Email Address: {user.email} \n\n Regards,\n JobSync Team "
+    from_email = 'jobsynccanada@gmail.com'  
+    
+
+    if job_posting.user == None:
+        return HttpResponse("Email sent successfully.")
+    else:
+        recipient_email = job_posting.user.email
+
+    recipient_list = [recipient_email]
+    send_mail(subject, message, from_email, recipient_list)
+    
+    return HttpResponse("Email sent successfully.")
+

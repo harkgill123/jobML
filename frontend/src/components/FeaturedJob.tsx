@@ -86,7 +86,7 @@ const FeaturedJob = ({ jobsYouMightLike, featuredJobs }: FeaturedJobProps) => {
       
       const data = await response.json();
       console.log('job response:', data);
-      navigate("/featured-jobs-page/",{state: {job : data.job_post,confidence_rating : score}})
+      navigate("/featured-jobs-page/",{state: {job : data.job_post,confidence_rating : score,job_id : jobId}})
     } catch (error) {
       console.error('Error sending dislike:', error);
     }
