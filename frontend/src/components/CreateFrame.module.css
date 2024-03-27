@@ -367,7 +367,7 @@
   padding: 0; /* Adjust if needed */
   box-sizing: border-box;
   gap: var(--gap-13xl);
-  margin: 200px auto; /* This will center the form horizontally and remove top margin */
+  margin: 50px auto; /* This will center the form horizontally and remove top margin */
 }
 .logIn {
   /* Add styles to make it look more like a clickable link or button */
