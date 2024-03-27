@@ -8,7 +8,7 @@ type Job = {
 
   title: string;
   company_name?: string;
-  loc?: string;
+  location?: string;
   description?: string;
   posted_date?: Date;
   application_deadline?: Date;
@@ -28,8 +28,8 @@ type job_id = {
 }
 const JobPage: React.FC = () => {
   // const { jobId } = useParams<{ jobId: string }>();
-  const location = useLocation();
-  const state = location.state as LocationState;
+  const location1 = useLocation();
+  const state = location1.state as LocationState;
   const token = localStorage.getItem('token');
 
   if (!state?.job) {
@@ -39,7 +39,7 @@ const JobPage: React.FC = () => {
   const {
     title,
     company_name,
-    loc,
+    location,
     description,
     posted_date,
     application_deadline,
@@ -77,16 +77,63 @@ const HandleApply = async () => {
   return (
     <div className={styles.jobPage}>
       <Navigation1 />
-  
       <div className={styles.jobContent}>
       <div className={styles.jobDetailHeader}>
         <div>
           <h1 className={styles.jobTitle}>{title}</h1>
           {company_name && <p className={styles.jobCompany}>{company_name}</p>}
-          {loc && <p className={styles.jobLocation}>{loc}</p>}
         </div>
         <button className={styles.findJobButton} onClick={HandleApply}>Apply</button>
       </div>
+      <div className={styles.jobDetailSection}>
+              <div className={styles.jobDescriptionSection}>
+                <h2 className={styles.sectionTitle}>Job Overview</h2>
+                <div className={styles.jobOverviewContainer}>
+                  <div className={styles.jobPosted}>
+                    <img src="/calendarblank.svg" alt="Calendar Icon" className={styles.icon} />
+                    <div className={styles.textContainer}>
+                      <span className={styles.subHeading}>JOB POSTED:</span>
+                      <span className={styles.date}>{posted_date && new Date(posted_date).toLocaleDateString()}</span>
+                    </div>
+                  </div>
+                  <div className={styles.jobExpire}>
+                    <img src="/timer.svg" alt="Timer Icon" className={styles.icon} />
+                    <div className={styles.textContainer}>
+                      <span className={styles.subHeading}>JOB EXPIRE IN:</span>
+                      <span className={styles.date}>{application_deadline && new Date(application_deadline).toLocaleDateString()}</span>
+                    </div>
+                  </div>
+                  <div className={styles.location}>
+                    <img src="/maptrifold.svg" alt="Maptrifold Icon" className={styles.icon} />
+                    <div className={styles.textContainer}>
+                      <span className={styles.subHeading}>LOCATION:</span>
+                      <span className={styles.locationDetail}>{location}</span>
+                    </div>
+                  </div>
+                  <div className={styles.experience}>
+                    <img src="/briefcase.svg" alt="Briefcase Icon" className={styles.icon} />
+                    <div className={styles.textContainer}>
+                      <span className={styles.subHeading}>EXPERIENCE:</span>
+                      <span className={styles.experienceLevel}>{experience_required}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div className={styles.jobDescriptionSection}>
+                <h2 className={styles.sectionTitle}>Skills</h2>
+                {skills && skills.length > 0 ? (
+                  <div className={styles.skillsContainer}> {/* Change from <ul> to <div> */}
+                    {skills.map((skill, index) => (
+                      <span key={index} className={styles.skillBox}> {/* Change from <li> to <span> */}
+                        {skill}
+                      </span>
+                    ))}
+                  </div>
+                ) : (
+                  <p>No skills information provided.</p>
+                )}
+              </div>
+            </div>
       <div className={styles.jobDescriptionSection}>
             <h2 className={styles.sectionTitle}>Description</h2>
             {description && (
@@ -114,35 +161,7 @@ const HandleApply = async () => {
               </div>
             )}
           </div>
-      <div className={styles.jobDetailSection}>
-              <div className={styles.jobDescriptionSection}>
-                <h2 className={styles.sectionTitle}>Skills</h2>
-                {skills && skills.length > 0 ? (
-                  <div className={styles.skillsContainer}> {/* Change from <ul> to <div> */}
-                    {skills.map((skill, index) => (
-                      <span key={index} className={styles.skillBox}> {/* Change from <li> to <span> */}
-                        {skill}
-                      </span>
-                    ))}
-                  </div>
-                ) : (
-                  <p>No skills information provided.</p>
-                )}
-            </div>
-        <div className={styles.jobDescriptionSection}>
-          <h2 className={styles.sectionTitle}>Experience</h2>
-          {experience_required && <p className={styles.jobExperienceRequired}>Experience: {experience_required}</p>}
-        </div>
-        <div className={styles.jobDescriptionSection}>
-          <h2 className={styles.sectionTitle}>Posted Date</h2>
-          {posted_date && <p className={styles.jobPostedDate}>Posted: {new Date(posted_date).toLocaleDateString()}</p>}
-        </div>
-        <div className={styles.jobDescriptionSection}>
-          <h2 className={styles.sectionTitle}>Deadline</h2>
-          {application_deadline && <p className={styles.jobApplicationDeadline}>Deadline: {new Date(application_deadline).toLocaleDateString()}</p>}
-        </div>
-
-        </div>
+          
           </div>
   
       <Footer />
