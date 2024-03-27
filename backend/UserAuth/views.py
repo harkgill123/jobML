@@ -237,3 +237,28 @@ class UpdateJobPosting(APIView):
                 job_posting.skills.add(skill_instance)
 
         return Response({'message': 'Job posting updated successfully.'}, status=status.HTTP_200_OK)
+
+def stats_view(request):
+    total_users = User.objects.count()
+    total_recruiters = User.objects.filter(user_type=User.UserType.RECRUITER).count()
+    total_applicants = User.objects.filter(user_type=User.UserType.APPLICANT).count()
+    total_job_postings = JobPosting.objects.count()
+
+    data_science_roles = JobPosting.objects.filter(
+        skills__skill_name__in=['Python', 'SQL']
+    ).distinct().count()
+
+    frontend_roles = JobPosting.objects.filter(
+        skills__skill_name__in=['React', 'VueJS']
+    ).distinct().count()
+
+    data = {
+        'total_users': total_users,
+        'total_recruiters': total_recruiters,
+        'total_applicants': total_applicants,
+        'total_job_postings': total_job_postings,
+        'data_science_roles': data_science_roles,
+        'frontend_roles': frontend_roles,
+    }
+
+    return JsonResponse(data)

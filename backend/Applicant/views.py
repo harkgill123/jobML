@@ -306,13 +306,17 @@ def sendEmailtoRecruiter(request):
     user = getUserFromRequest(request=request) 
     job_id = data.get('job_id')
     job_posting = JobPosting.objects.get(id=job_id)
-    recipient_email = job_posting.user.email
-
     subject = f'{user.name} has applied to your Job Posting: {job_posting.title}'
-    message = f"This is a message regarding your job posting titled {job_posting.title}. {user.name} has applied to this position. To reach the applicant to further the process,the following contact information is available \n Phone Number: {user.phone_number} \n Email Address: {user.email} \n Regards,\n JobSync Team "
+    message = f"This is a message regarding your job posting titled {job_posting.title}. {user.name} has applied to this position. To reach the applicant to further the process, the following contact information is available \n Phone Number: {user.phone_number} \n Email Address: {user.email} \n\n Regards,\n JobSync Team "
     from_email = 'jobsynccanada@gmail.com'  
-    recipient_list = [recipient_email]
+    
 
+    if job_posting.user == None:
+        return HttpResponse("Email sent successfully.")
+    else:
+        recipient_email = job_posting.user.email
+
+    recipient_list = [recipient_email]
     send_mail(subject, message, from_email, recipient_list)
     
     return HttpResponse("Email sent successfully.")
