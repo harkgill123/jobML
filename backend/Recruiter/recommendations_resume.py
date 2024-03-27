@@ -201,8 +201,8 @@ def give_suggestions(job_id, job_title, job_description, job_skills):
             "score": confidence_rating,
             "feedback": 0  # Initial feedback value
         })
-    # update_feedback_database(job_id, new_suggestions_list)
-    # update_model_version_database(job_id, Model_Version)
+    update_feedback_database(job_id, new_suggestions_list)
+    update_model_version_database(job_id, Model_Version)
     return new_suggestions_list
 
 # ------------- initial rec -------------
