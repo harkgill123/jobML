@@ -85,7 +85,6 @@ const HandleApply = async () => {
         </div>
         <button className={styles.findJobButton} onClick={HandleApply}>Apply</button>
       </div>
-      <div className={styles.jobDetailSection}>
               <div className={styles.jobDescriptionSection}>
                 <h2 className={styles.sectionTitle}>Job Overview</h2>
                 <div className={styles.jobOverviewContainer}>
@@ -133,7 +132,6 @@ const HandleApply = async () => {
                   <p>No skills information provided.</p>
                 )}
               </div>
-            </div>
       <div className={styles.jobDescriptionSection}>
             <h2 className={styles.sectionTitle}>Description</h2>
             {description && (

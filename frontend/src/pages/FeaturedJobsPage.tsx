@@ -112,7 +112,6 @@ const FeaturedJobsPage: React.FC = () => {
               </div>
             )}
           </div>
-          <div className={styles.jobDetailSection}>
               <div className={styles.jobDescriptionSection}>
                 <h2 className={styles.sectionTitle}>Job Overview</h2>
                 <div className={styles.jobOverviewContainer}>
@@ -160,7 +159,7 @@ const FeaturedJobsPage: React.FC = () => {
                   <p>No skills information provided.</p>
                 )}
               </div>
-            </div>
+
           <div className={styles.jobDescriptionSection}>
             <h2 className={styles.sectionTitle}>Description</h2>
             {description && (
