@@ -99,10 +99,13 @@
 
 .likeButton:hover {
   background-color: #4CAF50;
+  transform: scale(1.03);
+  transition: transform 0.3s ease;
 }
-
 .dislikeButton:hover {
   background-color: #F44336;
+  transform: scale(1.03);
+  transition: transform 0.3s ease;
 }
 
 .thumbsupIcon,

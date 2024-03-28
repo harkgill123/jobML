@@ -32,6 +32,8 @@ import EmployerMyProfile from "./pages/EmployerMyProfile";
 import EditJobPage from "./pages/EditJobPage";
 import FeaturedJobsPage from "./pages/FeaturedJobsPage";
 import CandidateStats from "./pages/CandidateStats";
+import RecommendedCandidate from "./pages/RecommendedCandidate";
+import EmployerStats from "./pages/EmployerStats"
 
 function App() {
   const action = useNavigationType();
@@ -57,10 +59,14 @@ function App() {
         title = "";
         metaDescription = "";
         break;
-      case "/candidatepage":
+      case "/candidatepage/:user_id":
           title = "";
           metaDescription = "";
           break;
+      case "/recommended-candidate/:user_id":
+        title = "";
+        metaDescription = "";
+        break;
       case "/featured-jobs-page":
         title=""
         metaDescription=""
@@ -157,6 +163,10 @@ function App() {
         title = "";
         metaDescription = "";
         break;
+      case "/employer-stats":
+        title = "";
+        metaDescription = "";
+        break;
     }
 
     if (title) {
@@ -181,7 +191,9 @@ function App() {
       <Route path="/candidate-my-profile" element={<CandidateMyProfile />} />
       <Route path="/candidate-search-page" element={<CandidateSearchPage />} />
       <Route path="/candidate-stats" element={<CandidateStats />} />
+      <Route path="/employer-stats" element={<EmployerStats />} />
       <Route path="/candidatepage/:user_id" element={<CandidatePage />} />
+      <Route path="/recommended-candidate/:user_id" element={<RecommendedCandidate />} />
       <Route path="/featured-jobs-page/" element={<FeaturedJobsPage />} />
       <Route
         path="/candidate-applied-jobs"

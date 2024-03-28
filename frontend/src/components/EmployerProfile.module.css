@@ -166,6 +166,8 @@
   .button2:hover,
   .button:hover {
     background-color: var(--color-dodgerblue);
+    transform: scale(1.03);
+    transition: transform 0.3s ease;
   }
   .candidateSettingsChild {
     align-self: stretch;
@@ -836,6 +838,8 @@
   }
   .button:hover {
     background-color: #0056b3; /* Darker shade on hover */
+    transform: scale(1.03);
+    transition: transform 0.3s ease;
   }
   .deleteButton:hover {
     background-color: #8b0000; /* Darker shade on hover */

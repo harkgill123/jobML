@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams, useLocation, Navigate } from 'react-router-dom';
 import Navigation2 from "../components/Navigation2";
 import Footer from "../components/Footer";
-import styles from './candidatepage.module.css';
+import styles from './RecommendedCandidate.module.css';
 
 type JobPosting = {
   id: string; // or number, depending on your data
@@ -44,7 +44,7 @@ type LocationState = {
   confidence_rating: confidence_rating;
 };
 
-const CandidatePage: React.FC = () => {
+const RecommendedCandidate: React.FC = () => {
 //   const { jobId } = useParams<{ jobId: string }>();
   const location = useLocation();
   const state = location.state as LocationState;
@@ -173,7 +173,22 @@ console.log('Email sent response:', data);
               <h2 className={styles.noJobsMessage}>You have not created any jobs yet.</h2>
             )}
           </div>
-        </div>    
+        </div>
+        <div className={styles.jobDescriptionSection}>
+            <h2 className={styles.sectionTitle}>Job Match</h2>
+            {score && (
+              <div className={styles.jobExperienceRequired}>
+                <div className={styles.progressContainer}>
+                  <progress
+                    className={styles.jobConfidenceProgress}
+                    value={Number(score)}
+                    max="100"
+                  ></progress>
+                  <div className={styles.percentageLabel}>{Number(score)}%</div>
+                </div>
+              </div>
+            )}
+        </div>      
         <div className={styles.jobDescriptionSection}>
           <h2 className={styles.sectionTitle}>Education</h2>
           {educations && educations.length > 0 ? (
@@ -244,4 +259,4 @@ console.log('Email sent response:', data);
   
 };
 
-export default CandidatePage;
+export default RecommendedCandidate;

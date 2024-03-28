@@ -1,6 +1,6 @@
 import { FunctionComponent, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import styles from "./CandidateProfile.module.css";
+import styles from "./EmployerProfile.module.css";
 
 const EmployerProfile = () => {
   const [name, setName] = useState('');

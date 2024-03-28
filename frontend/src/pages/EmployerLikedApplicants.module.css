@@ -89,6 +89,8 @@
 
 .viewJobButton:hover {
   background-color: var(--color-dodgerblue);
+  transform: scale(1.03);
+  transition: transform 0.3s ease;
 }
 
 .noResults {

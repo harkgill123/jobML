@@ -163,7 +163,7 @@ const EmployerRecommendedCandidates: React.FC = () => {
       setApplicant(data)
       
       // If you want to navigate to the candidate page and pass the user info
-      navigate(`/candidatepage/${user.id}`, { state: { applicant: data,confidence_rating : user.score } });
+      navigate(`/recommended-candidate/${user.id}`, { state: { applicant: data,confidence_rating : user.score } });
 
     } catch (error) {
       console.error('Error fetching user details:', error);

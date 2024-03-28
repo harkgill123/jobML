@@ -96,6 +96,8 @@
   
   .viewCandidateButton:hover {
     background-color: var(--color-dodgerblue);
+    transform: scale(1.03);
+    transition: transform 0.3s ease;
   }
 
   .interactionIcons {
@@ -121,10 +123,14 @@
   
   .likeButton:hover {
     background-color: #4CAF50; /* Green background on hover for like button */
+    transform: scale(1.03);
+    transition: transform 0.3s ease;
   }
   
   .dislikeButton:hover {
     background-color: #F44336; /* Red background on hover for dislike button */
+    transform: scale(1.03);
+    transition: transform 0.3s ease;
   }
   
   /* Icon styles */

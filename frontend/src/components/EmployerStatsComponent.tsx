@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import styles from './Stats.module.css'; // assuming you have this CSS file
-import PieChart from "../components/PieChart";
-import Graph from "../components/StatsGraph";
+import styles from './EmployerStatsComponent.module.css'; // assuming you have this CSS file
+import PieChart from "../components/EmployerPieChart";
+import Graph from "../components/EmployerStatsGraph";
 
 const Stats = () => {
   const [statsData, setStatsData] = useState({
