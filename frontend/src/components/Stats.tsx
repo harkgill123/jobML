@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import styles from './Stats.module.css'; // assuming you have this CSS file
+import PieChart from "../components/PieChart";
+import Graph from "../components/StatsGraph";
 
 const Stats = () => {
   const [statsData, setStatsData] = useState({
@@ -37,29 +39,44 @@ const Stats = () => {
 
   return (
     <div className={styles.statsContainer}>
-      <div className={styles.statsBox} style={{ backgroundColor: '#3c90ff33' }}>
-        <div className={styles.statValue}>{statsData.totalApplicants}</div>
-        <div className={styles.statLabel}>Total Applicants</div>
+      <div className={styles.statsGroup}>
+        <div className={styles.statsBox} style={{ backgroundColor: '#ffffff' }}>
+          <img src="/briefcase2.svg" alt="Calendar Icon" className={styles.image} />
+          <div className={styles.statsBoxVertical}>
+            <div className={styles.statValue}>{statsData.totalApplicants}</div>
+            <div className={styles.statLabel}>Total Applicants</div>
+          </div>
+        </div>
+        <div className={styles.statsBox} style={{ backgroundColor: '#ffffff' }}>
+          <img src="/briefcase2.svg" alt="Calendar Icon" className={styles.image} />
+          <div className={styles.statsBoxVertical}>
+            <div className={styles.statValue}>{statsData.totalRecruiters}</div>
+            <div className={styles.statLabel}>Total Recruiters</div>
+          </div>
+        </div>
+        <div className={styles.statsBox} style={{ backgroundColor: '#ffffff' }}>
+          <img src="/briefcase2.svg" alt="Calendar Icon" className={styles.image} />
+          <div className={styles.statsBoxVertical}>
+            <div className={styles.statValue}>{statsData.totalUsers}</div>
+            <div className={styles.statLabel}>Total Users</div>
+          </div>
+        </div>
+        <div className={styles.statsBox} style={{ backgroundColor: '#ffffff' }}>
+          <img src="/briefcase2.svg" alt="Calendar Icon" className={styles.image} />
+          <div className={styles.statsBoxVertical}>
+            <div className={styles.statValue}>{statsData.totalJobPostings}</div>
+            <div className={styles.statLabel}>Total Job Postings</div>
+          </div>
+        </div>
       </div>
-      <div className={styles.statsBox} style={{ backgroundColor: '#ffc13c38' }}>
-        <div className={styles.statValue}>{statsData.totalRecruiters}</div>
-        <div className={styles.statLabel}>Total Recruiters</div>
-      </div>
-      <div className={styles.statsBox} style={{ backgroundColor: '#ff3c9d38' }}>
-        <div className={styles.statValue}>{statsData.totalUsers}</div>
-        <div className={styles.statLabel}>Total Users</div>
-      </div>
-      <div className={styles.statsBox} style={{ backgroundColor: '#3c90ff33' }}>
-        <div className={styles.statValue}>{statsData.frontendRoles}</div>
-        <div className={styles.statLabel}>Frontend Roles</div>
-      </div>
-      <div className={styles.statsBox} style={{ backgroundColor: '#ffc13c38' }}>
-        <div className={styles.statValue}>{statsData.totalJobPostings}</div>
-        <div className={styles.statLabel}>Total Job Postings</div>
-      </div>
-      <div className={styles.statsBox} style={{ backgroundColor: '#ff3c9d38' }}>
-        <div className={styles.statValue}>{statsData.dataScienceRoles}</div>
-        <div className={styles.statLabel}>Data Science Roles</div>
+      <div className={styles.statsGroup2}>
+          <div className={styles.statsBox2} style={{ backgroundColor: '#ffc13c38' }}>
+            <Graph/>
+          </div>
+          <div className={styles.statsBox1} style={{ backgroundColor: '#ff3c9d38' }}>
+            <PieChart/>
+          <div className={styles.statLabel}>pie chart</div>
+        </div>
       </div>
     </div>
   );

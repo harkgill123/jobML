@@ -78,10 +78,10 @@
 }
 
 .viewJobButton {
-  padding: 10px 20px;
   background-color: var(--primary-500);
   color: white;
   border: none;
+  padding: 10px 20px;
   border-radius: 5px;
   cursor: pointer;
   transition: background-color 0.3s;

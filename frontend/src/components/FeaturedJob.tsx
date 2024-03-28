@@ -104,7 +104,6 @@ const FeaturedJob = ({ jobsYouMightLike, featuredJobs }: FeaturedJobProps) => {
             <div className={styles.locationName}>{job.location}</div>
             
             <div className={styles.interactionIcons}>
-            <div className={styles.score}>{job.score}</div>
               <button className={styles.likeButton} onClick={() => handleLike(job.id)}>
                 <img
                   className={styles.thumbsupIcon}

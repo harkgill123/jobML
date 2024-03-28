@@ -78,13 +78,14 @@ const EmployerRecommendedCandidates: React.FC = () => {
   const [recommendedCandidates, setRecommendedCandidates] = useState<User[]>([]);
   const [applicant, setApplicant] = useState<Applicant | null>(null);
   const [isLoading, setIsLoading] = useState(true); // State to track loading status
-
+  useEffect(() => {
+    // This effect runs once on component mount
+    window.scrollTo(0, 0);
+  }, []); 
   useEffect(() => {
     console.log("Applicant state updated:", applicant);
   }, [applicant]);
   
-
-
   const {
     title,
     company_name,
@@ -244,34 +245,74 @@ const EmployerRecommendedCandidates: React.FC = () => {
             {company_name && <p className={styles.jobCompany}>{company_name}</p>}
             {jobLocation && <p className={styles.jobLocation}>{jobLocation}</p>}
           </div>
-  
           <div className={styles.jobDescriptionSection}>
-            <h2 className={styles.sectionTitle}>Description</h2>
-            {job_description && <p className={styles.jobDescription}>{job_description}</p>}
+            <h2 className={styles.sectionTitle}>Job Overview</h2>
+            <div className={styles.jobOverviewContainer}>
+              <div className={styles.jobPosted}>
+                <img src="/calendarblank.svg" alt="Calendar Icon" className={styles.icon} />
+                <div className={styles.textContainer}>
+                  <span className={styles.subHeading}>JOB POSTED:</span>
+                  <span className={styles.date}>{posted_date && new Date(posted_date).toLocaleDateString()}</span>
+                </div>
+              </div>
+              <div className={styles.jobExpire}>
+                <img src="/timer.svg" alt="Timer Icon" className={styles.icon} />
+                <div className={styles.textContainer}>
+                  <span className={styles.subHeading}>JOB EXPIRE IN:</span>
+                  <span className={styles.date}>{application_deadline && new Date(application_deadline).toLocaleDateString()}</span>
+                </div>
+              </div>
+              <div className={styles.experience}>
+                <img src="/briefcase.svg" alt="Briefcase Icon" className={styles.icon} />
+                <div className={styles.textContainer}>
+                  <span className={styles.subHeading}>EXPERIENCE:</span>
+                  <span className={styles.experienceLevel}>{experience_required}</span>
+                </div>
+              </div>
+            </div>
           </div>
           <div className={styles.jobDescriptionSection}>
             <h2 className={styles.sectionTitle}>Skills</h2>
             {skills && skills.length > 0 ? (
-              <ul className={styles.list}>
+              <div className={styles.skillsContainer}> {/* Change from <ul> to <div> */}
                 {skills.map((skill, index) => (
-                  <li key={index} className={styles.listItem}>
+                  <span key={index} className={styles.skillBox}> {/* Change from <li> to <span> */}
                     {skill}
-                  </li>
+                  </span>
                 ))}
-              </ul>
+              </div>
             ) : (
               <p>No skills information provided.</p>
             )}
           </div>
-  
-          <div className={styles.jobDetailSection}>
-            {posted_date && <p className={styles.jobPostedDate}>Posted: {new Date(posted_date).toLocaleDateString()}</p>}
-            {application_deadline && <p className={styles.jobApplicationDeadline}>Deadline: {new Date(application_deadline).toLocaleDateString()}</p>}
-            {experience_required && <p className={styles.jobExperienceRequired}>Experience: {experience_required}</p>}
+          <div className={styles.jobDescriptionSection}>
+            <h2 className={styles.sectionTitle}>Description</h2>
+            {job_description && (
+              <div className={styles.jobDescriptionContent}>
+                {/* First split by new lines, then map and check each line for bullets or dashes */}
+                {job_description.split(/\r\n|\r|\n/).map((line, lineIndex) => {
+                  // Then split by the pattern that detects standalone bullets or dashes
+                  return line.split(/(•|-| -) /).map((text, textIndex, array) => {
+                    // Check if the text is a bullet or dash, and not an empty string
+                    if (text === '•' || text === '-' || text === '-') {
+                      // The next item in the array will be the text after bullet/dash
+                      // Return null for the bullet/dash, as we will add it before the actual text item
+                      return null;
+                    } else {
+                      // If the previous item was a bullet/dash, prepend it to this text
+                      const bulletOrDash = array[textIndex - 1] === '•' || array[textIndex - 1] === '-' ? array[textIndex - 1] + ' ' : '';
+                      return (
+                        <div key={`${lineIndex}-${textIndex}`} className={styles.jobDescriptionListItem}>
+                          {bulletOrDash}{text}
+                        </div>
+                      );
+                    }
+                  });
+                })}
+              </div>
+            )}
           </div>
         </div>
-  
-        {/* Right Column for Additional Content */}
         <div className={styles.additionalContentColumn}>
           {isLoading ? (
             <LoadingIcon />

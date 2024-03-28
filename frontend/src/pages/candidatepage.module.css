@@ -20,23 +20,24 @@
     gap: 10px; /* Adjust the gap between elements as needed */
   }
   .jobDetailHeader {
-    background-color: #fff;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     padding: 20px;
-    margin-bottom: 20px;
-    display: flex; /* Use flexbox */
-    justify-content: space-between; /* Align children to both ends */
-    align-items: center; /* Align children vertically */
+    background: #ffffff; /* Or any color that fits your design */
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   }
   .jobTitleDropdown {
-    padding: 0.5em; /* Add some padding inside the dropdown */
-    border-radius: 5px; /* Rounded corners */
-    border: 1px solid #ccc; /* A light grey border */
-    font-size: 1em; /* Match font size with the form */
-    cursor: pointer; /* Change cursor to pointer */
-    align-self: flex-end; /* Align button to the end */
-    margin-left: auto; /* Push the button to the right */
+    padding: 10px;
+    font-size: 1rem;
+    border-radius: 5px;
+    border: 1px solid #ddd; /* Light border color */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    background-size: 12px;
 
   }
   .jobExperienceRequired {
@@ -123,9 +124,9 @@
   }
   
   .jobTitle {
-    font-size: 2.5rem; /* Increase font size */
-    font-weight: bold;
-    margin-bottom: 1rem; /* Increase margin */
+    font-size: 2rem;
+    color: #333;
+    margin-bottom: 0.5rem;
   }
   
   .jobCompany, 
@@ -174,4 +175,51 @@
     color: #333;
     line-height: 1.5;
     margin-top: 30px;
+  }
+
+  .skillsContainer {
+    display: flex; /* Use flexbox to layout skill boxes */
+    flex-wrap: wrap; /* Allow skill boxes to wrap */
+    gap: 10px; /* Add some space between skill boxes */
+  }
+  
+  .skillBox {
+    background-color: #e8e8e8ca; /* Light grey background */
+    padding: 5px 10px; /* Padding inside the skill boxes */
+    border-radius: 5px; /* Rounded corners */
+    font: roboto;
+    font-size: 0.875rem; /* Smaller font size */
+    color:#26ba45; /* Green font color */
+    box-shadow: 0 2px 2px rgba(0, 0, 0, 0.12); /* Add a subtle shadow for depth */
+  }
+
+  
+  .jobDescriptionContent {
+    margin-top: 1rem;
+  }
+  .jobDescriptionListItem {
+    font-size: 1rem;
+    color: #666;
+    line-height: 1.6;
+    margin-bottom: 0.75rem;
+    text-align: justify;
+  }
+  .educationItem {
+    background: #f9f9f9; /* Light grey background */
+    border-radius: 5px; /* Rounded corners */
+    padding: 15px; /* Padding inside each education item */
+    margin-bottom: 10px; /* Space between education items */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Soft shadow for depth */
+  }
+  
+  .educationDetail {
+    font-size: 1rem; /* Font size for education details */
+    color: #666; /* Dark grey text color for better readability */
+    margin-bottom: 5px; /* Space between details */
+    line-height: 1.4; /* Line height for readability */
+  }
+  
+  .educationDetail strong {
+    color: #000; /* Bold text for labels */
+    margin-right: 5px; /* Space after label */
   }

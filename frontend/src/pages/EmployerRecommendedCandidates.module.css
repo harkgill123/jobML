@@ -53,12 +53,6 @@
     margin-bottom: 0.5rem; /* Increase margin */
   }
   
-  .jobDescription {
-    font-size: 1.25rem; /* Increase font size */
-    color: #333;
-    line-height: 1.5;
-  }
-  
   .sectionTitle {
     font-size: 1.5rem; /* Increase font size */
     font-weight: bold;
@@ -109,7 +103,6 @@
     display: flex;
     gap: 8px; /* Space between buttons */
     margin-bottom: 16px;
-    margin-left: 50px; /* Space above the View Candidate button */
   }
   
   /* Button styles */
@@ -150,7 +143,7 @@
     display: flex; /* Use flexbox to lay out the children */
     flex-direction: column; /* Stack children vertically */
     align-items: right; /* Center children horizontally */
-    width: 15%; /* Take the full width of the parent */
+    width: 25%; /* Take the full width of the parent */
   }
 
   .recommendationsHeading {
@@ -209,11 +202,6 @@
   .digitalMarketing2 {
     animation: bounce 1.5s infinite 0.4s; /* Increased from 1.2s to 2s */
   }
-  
-  
-  
-  
-  
   
   .loadingContainer {
     width: 100%;
@@ -290,4 +278,88 @@
     flex-direction: row;
     align-items: center;
     justify-content: flex-start;
+  }
+
+  .jobDescriptionContent {
+    margin-top: 1rem;
+  }
+  
+  .jobDescriptionParagraph, .jobDescriptionListItem {
+    font-size: 1rem;
+    color: #666;
+    line-height: 1.6;
+    margin-bottom: 0.75rem;
+    text-align: justify;
+  }
+  .jobDescriptionSection {
+    /* ... existing styles ... */
+    /* Increase padding inside the box for larger overall size */
+    padding: 30px; /* Adjust as needed */
+  }
+  
+  .jobOverviewContainer {
+    display: flex;
+    justify-content: space-evenly; /* Adjust the space distribution */
+    align-items: center;
+    margin-top: 20px;
+    /* Reduce the space between sections if necessary */
+    gap: 15px; /* Adjust this value to bring sections closer together */
+  }
+  
+  .jobPosted,
+  .jobExpire,
+  .experience,
+  .location {
+    flex-basis: 20%; /* Adjust this basis as needed to control the initial width of each section */
+    text-align: center;
+    margin: 10px; /* Adjust margins to control space between sections */
+  }
+  
+  .icon {
+    display: block; /* Icons need to be block-level for margins to apply */
+    margin: 0 auto 10px; /* Center the icon and add space below */
+    width: 40px; /* Increase size as necessary */
+    height: 40px; /* Increase size as necessary */
+  }
+  
+  .textContainer {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .subHeading {
+    font-size: 1.1rem; /* Increase font size */
+    color: #555; /* Adjust color as needed */
+    margin-bottom: 5px;
+  }
+  
+  .date,
+  .experienceLevel,
+  .locationDetail  {
+    font-size: 1.2rem; /* Increase font size */
+    font-weight: bold;
+    color: #000; /* Adjust color as needed */
+  }
+  
+  /* You can remove the media query if you do not need responsiveness */
+  @media (max-width: 768px) {
+    .jobOverviewContainer {
+      flex-direction: column;
+    }
+  }
+  
+  .skillsContainer {
+    display: flex; /* Use flexbox to layout skill boxes */
+    flex-wrap: wrap; /* Allow skill boxes to wrap */
+    gap: 10px; /* Add some space between skill boxes */
+  }
+  
+  .skillBox {
+    background-color: #e8e8e8ca; /* Light grey background */
+    padding: 5px 10px; /* Padding inside the skill boxes */
+    border-radius: 5px; /* Rounded corners */
+    font: roboto;
+    font-size: 0.875rem; /* Smaller font size */
+    color:#26ba45; /* Green font color */
+    box-shadow: 0 2px 2px rgba(0, 0, 0, 0.12); /* Add a subtle shadow for depth */
   }
