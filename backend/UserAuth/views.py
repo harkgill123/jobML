@@ -257,6 +257,26 @@ def stats_view(request):
         skills__skill_name__in=['React', 'VueJS']
     ).distinct().count()
 
+    python = JobPosting.objects.filter(
+        skills__skill_name__in=['Python']
+    ).distinct().count()
+
+    java = JobPosting.objects.filter(
+        skills__skill_name__in=['Java']
+    ).distinct().count()
+
+    css = JobPosting.objects.filter(
+        skills__skill_name__in=['CSS']
+    ).distinct().count()
+
+    html = JobPosting.objects.filter(
+        skills__skill_name__in=['HTML']
+    ).distinct().count()
+
+    c = JobPosting.objects.filter(
+        skills__skill_name__in=['C']
+    ).distinct().count()
+
     data = {
         'total_users': total_users,
         'total_recruiters': total_recruiters,
@@ -264,6 +284,11 @@ def stats_view(request):
         'total_job_postings': total_job_postings,
         'data_science_roles': data_science_roles,
         'frontend_roles': frontend_roles,
+        'python': python,
+        'java' : java,
+        'css' : css,
+        'html' : html,
+        'c' : c
     }
 
     return JsonResponse(data)
