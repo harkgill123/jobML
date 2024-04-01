@@ -35,13 +35,31 @@ const EmployerCreateAccount = () => {
       });
 
       if (response.ok) {
-        const data = await response.json();
-        // Handle success
-        console.log(data);
-        navigate('/employer-homepage');
+        const loginResponse = await fetch('http://localhost:8000/UserAuth/Login/', {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ email, password }),
+        });
+
+        if (loginResponse.ok) {
+          const loginData = await loginResponse.json();
+          localStorage.setItem('token', loginData.token);
+          console.log('Auto sign-in successful', loginData);
+
+          // Since this page is only for applicants, navigate directly to the resume upload page
+          navigate("/employer-homepage");
+        } else {
+          // Handle failed login
+          console.error("Auto sign-in failed after account creation");
+          // Optionally, provide user feedback here
+        }
       } else {
-        // Handle error
-        console.error("Signup failed:", response);
+        // Handle account creation error
+        const errorData = await signupResponse.json();
+        console.error("Signup failed:", errorData);
+        // Optionally, provide user feedback here
       }
     } catch (error) {
       console.error("There was an error during the signup process", error);
