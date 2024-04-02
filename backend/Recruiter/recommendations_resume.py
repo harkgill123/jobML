@@ -171,11 +171,9 @@ def give_suggestions(job_id, job_title, job_description, job_skills):
     
     # Add probabilities to top_cos_sim and sort by it
     top_cos_sim['like_probability'] = probabilities
-    top_cos_sim_sorted = top_cos_sim.sort_values('like_probability', ascending=False)
 
     # ---------Adding scores ---------
     top_cos_sim['combined_score'] = top_cos_sim['score'] + top_cos_sim['like_probability']
-    top_cos_sim_sorted_by_combined = top_cos_sim.sort_values('combined_score', ascending=False)
 
     max_score = top_cos_sim['score'].max()
     min_score = top_cos_sim['score'].min()
@@ -189,7 +187,8 @@ def give_suggestions(job_id, job_title, job_description, job_skills):
     beta = 0.2
 
     top_cos_sim['confidence_rating'] = alpha * top_cos_sim['normalized_score'] + beta * top_cos_sim['normalized_like_probability']
-
+    top_cos_sim = top_cos_sim.sort_values('confidence_rating', ascending=False)
+   
     new_suggestions_list = []
     for user_id, data  in top_cos_sim.iterrows():
         resume_title = samp_for_cluster[samp_for_cluster['user_id'] == user_id]['title'].values[0]
@@ -208,9 +207,9 @@ def give_suggestions(job_id, job_title, job_description, job_skills):
 # ------------- initial rec -------------
 # placeholder
 # sel_job_id = 1
-# user_skills = "python, html, css"
-# user_title = "Software Developer"
-# user_description = "wrote code in python and debugged problems"
+# user_skills = "HTML, CSS, react, python"
+# user_title = "Frontend Delevoper"
+# user_description = "made web apps using react and css"
 # print(f"Resume input: {user_skills}, {user_title}, {user_description}")
 
 # cos_sim_result = give_suggestions(sel_job_id, user_skills, user_description, user_title)
