@@ -15,6 +15,8 @@ from django.core.exceptions import ObjectDoesNotExist
 import pprint
 import json
 from django.views.decorators.csrf import csrf_exempt
+from django.db.models import Q
+
 
 class SignUpView(APIView):
     def post(self, request):
@@ -257,6 +259,39 @@ def stats_view(request):
         skills__skill_name__in=['React', 'VueJS']
     ).distinct().count()
 
+    python = JobPosting.objects.filter(
+        skills__skill_name__in=['Python']
+    ).distinct().count()
+
+    java = JobPosting.objects.filter(
+        skills__skill_name__in=['Java']
+    ).distinct().count()
+
+    css = JobPosting.objects.filter(
+        skills__skill_name__in=['CSS']
+    ).distinct().count()
+
+    html = JobPosting.objects.filter(
+        skills__skill_name__in=['HTML']
+    ).distinct().count()
+
+    c = JobPosting.objects.filter(
+        skills__skill_name__in=['C']
+    ).distinct().count()
+
+
+    backend_roles = JobPosting.objects.filter(
+        title__icontains='backend'
+    ).count()
+
+    computer_engineering_roles = JobPosting.objects.filter(
+        Q(title__icontains='computer') | Q(title__icontains='software engineer')
+    ).count()
+
+    electrical_engineering_roles = JobPosting.objects.filter(
+        title__icontains='electrical'
+    ).count()
+
     data = {
         'total_users': total_users,
         'total_recruiters': total_recruiters,
@@ -264,6 +299,14 @@ def stats_view(request):
         'total_job_postings': total_job_postings,
         'data_science_roles': data_science_roles,
         'frontend_roles': frontend_roles,
+        'backend_roles': backend_roles,  
+        'computer_engineering_roles': computer_engineering_roles, 
+        'electrical_engineering_roles': electrical_engineering_roles,  
+        'python': python,
+        'java': java,
+        'css': css,
+        'html': html,
+        'c': c
     }
 
     return JsonResponse(data)
