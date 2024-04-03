@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import MainFrame1 from "../components/MainFrame1";
+import Navigation3 from "../components/Navigation3";
 import styles from "./ResumeUpload.module.css";
 import { useNavigate } from "react-router-dom";
 
@@ -196,7 +196,7 @@ const ResumeUpload = () => {
 
   return (
     <>
-      <MainFrame1 />
+      <Navigation3 />
       <div className={styles.container}>
         <h2 className={styles.uploadTitle}>Please upload a PDF of your resume</h2>
         <form>

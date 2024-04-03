@@ -1,6 +1,7 @@
 import React from 'react';
 import { Doughnut } from 'react-chartjs-2';
 import { Chart as ChartJS, ArcElement, TooltipItem, Tooltip, Legend } from 'chart.js';
+import Chart from 'chart.js/auto';
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 

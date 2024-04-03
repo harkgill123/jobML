@@ -5,7 +5,6 @@ import DashBoard from "../components/PieChart";
 import MapComponent from "../components/MapComponent"; // Import the MapComponent
 import styles from "./CandidateStats.module.css";
 import Footer from "../components/Footer";
-import Footer1 from "../components/Footer1";
 
 const CandidateStats: FunctionComponent = () => {
   return (
@@ -15,7 +14,7 @@ const CandidateStats: FunctionComponent = () => {
       <div className={styles.candidateDashboard}>
         <Stats />
         <MapComponent /> {styles.mapContainer}
-        <Footer1/>
+        <Footer/>
       </div>
       
     </>

@@ -1,12 +1,12 @@
 import { FunctionComponent } from "react";
-import MainFrame1 from "../components/MainFrame1";
+import Navigation3 from "../components/Navigation3";
 import CreateFrame from "../components/CreateFrame";
 import styles from "./CreateAccount.module.css";
 
 const CreateAccount: FunctionComponent = () => {
   return (
     <div className={styles.candidateCreateAccount}>
-      <MainFrame1 />
+      <Navigation3 />
       <CreateFrame />
     </div>
   );

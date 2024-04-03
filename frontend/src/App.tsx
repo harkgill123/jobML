@@ -10,17 +10,10 @@ import JobPage from "./pages/JobPage";
 import CandidateHomepage from "./pages/CandidateHomepage";
 import CandidateMyProfile from "./pages/CandidateMyProfile";
 import CandidateSearchPage from "./pages/CandidateSearchPage";
-import CandidateDashboard from "./pages/CandidateDashboard";
-import CandidateAppliedJobs from "./pages/CandidateAppliedJobs";
 import CandidateFavoriteJobs from "./pages/CandidateFavoriteJobs";
 import CandidateSettingAccount from "./pages/CandidateSettingAccount";
 import EmployerHomepage from "./pages/EmployerHomepage";
-import EmployerDashboard from "./pages/EmployerDashboard";
 import EmployerLikedApplicants from "./pages/EmployerLikedApplicants";
-import EmployerSavedCandidates from "./pages/EmployerSavedCandidates";
-import EmployerPostAJob from "./pages/EmployerPostAJob";
-import EmployerSettingsPersonal from "./pages/EmployerSettingsPersonal";
-import EmployerSettingsAccount from "./pages/EmployerSettingsAccount";
 import EmployerSearchPage from "./pages/EmployerSearchPage";
 import CreateAccount from "./pages/CreateAccount";
 import EmployerCreateAccount from "./pages/EmployerCreateAccount";
@@ -83,47 +76,11 @@ function App() {
         title = "";
         metaDescription = "";
         break;
-      case "/candidate-dashboard":
-        title = "";
-        metaDescription = "";
-        break;
-      case "/candidate-applied-jobs":
-        title = "";
-        metaDescription = "";
-        break;
       case "/candidate-favorite-jobs":
         title = "";
         metaDescription = "";
         break;
-      case "/candidate-setting-account":
-        title = "";
-        metaDescription = "";
-        break;
       case "/employer-homepage":
-        title = "";
-        metaDescription = "";
-        break;
-      case "/employer-dashboard":
-        title = "";
-        metaDescription = "";
-        break;
-      case "/employer-my-jobs":
-        title = "";
-        metaDescription = "";
-        break;
-      case "/employer-saved-candidates":
-        title = "";
-        metaDescription = "";
-        break;
-      case "/employer-post-a-job":
-        title = "";
-        metaDescription = "";
-        break;
-      case "/employer-settings-personal":
-        title = "";
-        metaDescription = "";
-        break;
-      case "/employer-settings-account":
         title = "";
         metaDescription = "";
         break;
@@ -167,8 +124,12 @@ function App() {
         title = "";
         metaDescription = "";
         break;
+      case "/employer-my-profile":
+        title = "";
+        metaDescription = "";
+        break;
     }
-
+    
     if (title) {
       document.title = title;
     }
@@ -195,34 +156,13 @@ function App() {
       <Route path="/candidatepage/:user_id" element={<CandidatePage />} />
       <Route path="/recommended-candidate/:user_id" element={<RecommendedCandidate />} />
       <Route path="/featured-jobs-page/" element={<FeaturedJobsPage />} />
-      <Route
-        path="/candidate-applied-jobs"
-        element={<CandidateAppliedJobs />}
-      />
-      <Route
-        path="/candidate-liked-jobs"
-        element={<CandidateFavoriteJobs />}
-      />
-      <Route
-        path="/candidate-setting-account"
-        element={<CandidateSettingAccount />}
-      />
+
+      <Route path="/candidate-liked-jobs" element={<CandidateFavoriteJobs />} />
+      <Route path="/candidate-setting-account" element={<CandidateSettingAccount />} />
       <Route path="/employer-homepage" element={<EmployerHomepage />} />
-      <Route path="/employer-dashboard" element={<EmployerDashboard />} />
       <Route path="/employer-liked-applicants" element={<EmployerLikedApplicants />} />
-      <Route
-        path="/employer-saved-candidates"
-        element={<EmployerSavedCandidates />}
-      />
-      <Route path="/employer-post-a-job" element={<EmployerPostAJob />} />
-      <Route
-        path="/employer-settings-personal"
-        element={<EmployerSettingsPersonal />}
-      />
-      <Route
-        path="/employer-my-profile"
-        element={<EmployerMyProfile />}
-      />
+
+      <Route path="/employer-my-profile" element={<EmployerMyProfile />} />
       <Route path="/edit-job/:jobId" element={<EditJobPage />} />
       <Route path="/employer-my-profile" element={<EmployerMyProfile />} />
       <Route path="/employer-search-page" element={<EmployerSearchPage />} />
