@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import styles from './EmployerStatsComponent.module.css'; // assuming you have this CSS file
-import PieChart from "../components/EmployerPieChart";
+import styles from './Stats.module.css'; // assuming you have this CSS file
+import PieChart from '../components/PieChart';
 import Graph from "../components/EmployerStatsGraph";
 
 const Stats = () => {
@@ -10,7 +10,15 @@ const Stats = () => {
     totalApplicants: 0,
     totalJobPostings: 0,
     dataScienceRoles: 0,
-    frontendRoles: 0
+    frontendRoles: 0,
+    backend_roles: 0,
+    computer_engineering_roles:0,
+    electrical_engineering_roles:0,
+    python:0,
+    java:0,
+    css:0,
+    html:0,
+    c:0,
   });
 
   useEffect(() => {
@@ -30,7 +38,15 @@ const Stats = () => {
         totalApplicants: data.total_applicants,
         totalJobPostings: data.total_job_postings,
         dataScienceRoles: data.data_science_roles,
-        frontendRoles: data.frontend_roles
+        frontendRoles: data.frontend_roles,
+        backend_roles:  data.backend_roles,
+        computer_engineering_roles:  data.computer_engineering_roles,
+        electrical_engineering_roles:  data.electrical_engineering_roles,
+        python:data.python,
+        java:data.java,
+        css:data.css,
+        html:data.html,
+        c:data.c,
       });
     } catch (error) {
       console.error('Error fetching data:', error);
@@ -48,21 +64,21 @@ const Stats = () => {
           </div>
         </div>
         <div className={styles.statsBox} style={{ backgroundColor: '#ffffff' }}>
-          <img src="/briefcase2.svg" alt="Calendar Icon" className={styles.image} />
+          <img src="/user.svg" alt="Calendar Icon" className={styles.image} />
           <div className={styles.statsBoxVertical}>
             <div className={styles.statValue}>{statsData.totalRecruiters}</div>
             <div className={styles.statLabel}>Total Recruiters</div>
           </div>
         </div>
         <div className={styles.statsBox} style={{ backgroundColor: '#ffffff' }}>
-          <img src="/briefcase2.svg" alt="Calendar Icon" className={styles.image} />
+          <img src="/users.svg" alt="Calendar Icon" className={styles.image} />
           <div className={styles.statsBoxVertical}>
             <div className={styles.statValue}>{statsData.totalUsers}</div>
             <div className={styles.statLabel}>Total Users</div>
           </div>
         </div>
         <div className={styles.statsBox} style={{ backgroundColor: '#ffffff' }}>
-          <img src="/briefcase2.svg" alt="Calendar Icon" className={styles.image} />
+          <img src="/stack.svg" alt="Calendar Icon" className={styles.image} />
           <div className={styles.statsBoxVertical}>
             <div className={styles.statValue}>{statsData.totalJobPostings}</div>
             <div className={styles.statLabel}>Total Job Postings</div>
@@ -71,10 +87,10 @@ const Stats = () => {
       </div>
       <div className={styles.statsGroup2}>
           <div className={styles.statsBox2} style={{ backgroundColor: '#ffc13c38' }}>
-            <Graph/>
+            <Graph statsData={statsData} />
           </div>
           <div className={styles.statsBox1} style={{ backgroundColor: '#ff3c9d38' }}>
-            <PieChart/>
+            <PieChart statsData={statsData} />
         </div>
       </div>
     </div>

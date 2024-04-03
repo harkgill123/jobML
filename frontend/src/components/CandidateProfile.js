@@ -247,7 +247,7 @@ const CandidateProfile = () => {
       const data = await response.json();
 
       if (response.ok) {
-        setResumeUpdateMessage('Resume has been update'); // Set success message
+        setResumeUpdateMessage('Resume has been updated'); // Set success message
         setTimeout(() => setResumeUpdateMessage(''), 5000); // Optional: Clear message after 5 seconds
         console.log('update success:');
 

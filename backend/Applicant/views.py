@@ -27,7 +27,7 @@ from django.core.serializers import serialize
 from django.core.mail import send_mail
 from django.http import HttpResponse
 from Recruiter.ML_model_resume import MODEL_VERSION
-
+import numpy as np
 
 def getUserFromRequest(request):
     auth_header = request.META.get('HTTP_AUTHORIZATION')
@@ -195,9 +195,12 @@ def get_recommendations(request):
                     "job_description": job.job_description,
                     "company" : job.company_name,
                     "location": job.location,
-                    "score": score,  # Adding the score
+                    "score": round((np.log(1 + np.clip(float(score), 0, 100)) * 100) / np.log(101),2),  # Adding the score
                 }
                 ordered_jobs_with_scores.append(job_data)
+        ordered_jobs_with_scores.sort(key=lambda x: x['score'], reverse=True)
+
+        print(ordered_jobs_with_scores)
 
         return JsonResponse({"recommended_jobs": ordered_jobs_with_scores})
     except Resume.DoesNotExist:

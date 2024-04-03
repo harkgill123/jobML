@@ -2,27 +2,30 @@ import React from 'react';
 import Chart from 'chart.js/auto';
 import { Bar } from 'react-chartjs-2';
 
-// Define the data structure you provided
-const dataPoints = [
-  ["Python", 500],
-  ["Java", 400],
-  ["JavaScript", 30],
-  ["CSS", 30],
-  ["HTML", 20],
-  ["C", 300],
-];
-
-const StatsGraph: React.FC = () => {
-  // Extract the labels and values from the dataPoints array
-  const labels = dataPoints.map((dp) => dp[0]);
-  const values = dataPoints.map((dp) => dp[1]);
-
+// Props type definition
+type SkillData = {
+  python: number;
+  java: number;
+  css: number;
+  html: number;
+  c: number;
+};
+type StatsGraphProps = {
+  statsData: SkillData;
+};
+const StatsGraph: React.FC<StatsGraphProps> = ({ statsData }) => {
   const data = {
-    labels: labels,
+    labels:['Python', 'Java', 'CSS', 'HTML', 'C'],
     datasets: [
       {
         label: 'Number of Jobs per Skill',
-        data: values,
+        data: [
+          statsData.python,
+          statsData.java,
+          statsData.css,
+          statsData.html,
+          statsData.c,
+        ],
         backgroundColor: 'rgba(54, 162, 235, 0.5)',
         borderColor: 'rgba(54, 162, 235, 1)',
         borderWidth: 1,
@@ -34,14 +37,14 @@ const StatsGraph: React.FC = () => {
     plugins: {
       title: {
         display: true,
-        text: 'Total Skills per Applicant',
+        text: 'Total Skills Per Applicant',
         font: {
           size: 24,
         },
       },
       legend: {
         display: true,
-        position: 'bottom' as const, // Change here
+        position: 'bottom' as const,
       },
     },
     scales: {
@@ -52,7 +55,6 @@ const StatsGraph: React.FC = () => {
     responsive: true,
     maintainAspectRatio: false,
   };
-  
 
   return <Bar data={data} options={options} />;
 };

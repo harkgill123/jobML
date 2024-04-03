@@ -12,38 +12,49 @@ type PieChartProps = {
     totalJobPostings: number;
     dataScienceRoles: number;
     frontendRoles: number;
-    backendRoles: number;
+    backend_roles: number;
+    computer_engineering_roles: number,
+    electrical_engineering_roles:number
   };
 };
 
 const PieChart: React.FC<PieChartProps> = ({ statsData }) => {
   // Create the data object using statsData
   const data = {
-    labels: ['Data Science', 'Frontend', 'Backend', 'Other'],
+    labels: ['Data Science', 'Frontend', 'Backend', 'Computer Engineering', 'Electircal Engineering', 'Other'],
     datasets: [
       {
         label: '# of Votes',
         data: [
           statsData.dataScienceRoles,
           statsData.frontendRoles,
-          statsData.backendRoles,
+          statsData.backend_roles,
+          statsData.computer_engineering_roles,
+          statsData.electrical_engineering_roles,
           statsData.totalJobPostings - (
             statsData.dataScienceRoles +
             statsData.frontendRoles +
-            statsData.backendRoles
+            statsData.backend_roles +
+            statsData.computer_engineering_roles +
+           statsData.electrical_engineering_roles
+
           ),
         ],
         backgroundColor: [
-          '#FF6384',
-          '#36A2EB',
-          '#FFCE56',
-          '#cc65fe',
+          '#FF6384', // existing pink
+          '#36A2EB', // existing blue
+          '#FFCE56', // existing yellow
+          '#cc65fe', // existing purple
+          '#4BC0C0', // new teal
+          '#FF9F40', // new orange
         ],
         hoverBackgroundColor: [
-          '#FF6384',
-          '#36A2EB',
-          '#FFCE56',
-          '#cc65fe',
+          '#FF6384', // existing pink
+          '#36A2EB', // existing blue
+          '#FFCE56', // existing yellow
+          '#cc65fe', // existing purple
+          '#4BC0C0', // new teal
+          '#FF9F40', // new orange
         ],
       },
     ],

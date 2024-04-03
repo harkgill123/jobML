@@ -208,9 +208,10 @@ def get_recommendations(request):
                     "name": user.name,
                     "email": user.email,
                     "phone_number": user.phone_number,
-                    "score": score, 
+                    "score": float(score), 
                 }
                 ordered_users_with_scores.append(user_data)
+        ordered_users_with_scores.sort(key=lambda x: x['score'], reverse=True)
         
         return JsonResponse({"recommended_users": ordered_users_with_scores})
     except User.DoesNotExist: 
@@ -291,13 +292,13 @@ def sendEmailtoApplicant(request):
     job_posting = JobPosting.objects.get(id=job_id)
     applicant_id = data.get('applicant_id')
     applicant = User.objects.get(id=applicant_id)
-    recipient_email = "applicant.email"
+    recipient_email = applicant.email
 
     subject = f'{job_posting.company_name} is reaching out to you regarding their opening {job_posting.title}'
     message = f"This is a message regarding  job posting titled {job_posting.title}. {job_posting.company_name} would like tointerview you. Please reply to the following email address with your availability next week. \n Email Address: {user.email} \n Regards,\n JobSync Team "
     from_email = 'jobsynccanada@gmail.com'  
     recipient_list = [recipient_email]
-
+    print(recipient_list)
     send_mail(subject, message, from_email, recipient_list)
 
     return HttpResponse("Email sent successfully.")
