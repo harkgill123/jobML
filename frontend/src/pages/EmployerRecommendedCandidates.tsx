@@ -229,6 +229,7 @@ const EmployerRecommendedCandidates: React.FC = () => {
         </div>
         <h3 className={styles.jobsync}>JobSync</h3>
     </div>
+    <h2 className={styles.loadingHeading}>Please wait while we find the perfect candidates!</h2>
   </div>
   );
 
@@ -315,7 +316,9 @@ const EmployerRecommendedCandidates: React.FC = () => {
         </div>
         <div className={styles.additionalContentColumn}>
           {isLoading ? (
+
             <LoadingIcon />
+            
           ) : (
             <>
               <h2 className={styles.recommendationsHeading}>Candidates you might like...</h2>
